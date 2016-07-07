@@ -1,27 +1,27 @@
 package net.arccotangent.amathng;
 
-import org.apache.commons.lang3.StringUtils;
-import org.nevec.rjm.BigDecimalMath;
+import org.apfloat.Apfloat;
+import org.apfloat.ApfloatMath;
+import org.apfloat.Apint;
+import org.apfloat.ApintMath;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.ArrayList;
 
 public class Main {
 
 	public static final String VERSION = "20160706";
-	public static final int NUMBER_PRECISION = 100;
+	public static final long NUMBER_PRECISION = Configuration.getPrecision();
+	public static final int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
 
-	public static BigDecimal num() {
-		BigDecimal a = new BigDecimal("0");
-		a = a.setScale(NUMBER_PRECISION, RoundingMode.HALF_UP);
-		a = a.stripTrailingZeros();
+	public static Apfloat num() {
+		Apfloat a = new Apfloat("0", NUMBER_PRECISION);
 		return a;
 	}
 
-	public static BigDecimal num(String arg) {
-		BigDecimal a = new BigDecimal(arg);
-		a = a.setScale(NUMBER_PRECISION, RoundingMode.HALF_UP);
-		a = a.stripTrailingZeros();
+	public static Apfloat num(String arg) {
+		Apfloat a = new Apfloat(arg, NUMBER_PRECISION);
 		return a;
 	}
 
@@ -91,92 +91,119 @@ public class Main {
 					"ord <numbers> - Order numbers smallest to greatest\n" +
 					"ccm <radius> - Calculate circumference of circle\n" +
 					"rand <min> <max> [seed] - Generate random integer between MIN and MAX with optional SEED\n" +
-					"prm <number> - Test if number is prime by Miller-Rabin primality test\n" +
+					"prm <number> - Test if number is a probable prime by Miller-Rabin and Lucas-Lehmer primality tests\n" +
 					"genprm <bits> - Generate a prime number with bitsize BITS\n" +
 					"\nMAXIMUM PRECISION IS SET TO " + NUMBER_PRECISION + " DECIMAL PLACES\n");
 			System.exit(1);
 		}
 
+		Configuration.createConfiguration();
+
 		int opcode = Opcode.getOpcode(args[0], argc);
 
 		if (opcode == 1) {
-			BigDecimal res = num();
+			Apfloat res = num();
 			for (int i = 1; i < args.length; i++) {
-				res = res.add(new BigDecimal(args[i]));
+				res = res.add(new Apfloat(args[i]));
 			}
-			System.out.println(res.stripTrailingZeros().toPlainString());
+			System.out.println(res.toString(true));
 		} else if (opcode == 2) {
-			BigDecimal res = num(args[1]);
+			Apfloat res = num(args[1]);
 			for (int i = 2; i < args.length; i++) {
-				res = res.subtract(new BigDecimal(args[i]));
+				res = res.subtract(new Apfloat(args[i]));
 			}
-			System.out.println(res.stripTrailingZeros().toPlainString());
+			System.out.println(res.toString(true));
 		} else if (opcode == 3) {
-			BigDecimal res = num(args[1]);
+			Apfloat res = num(args[1]);
 			for (int i = 2; i < args.length; i++) {
-				res = res.multiply(new BigDecimal(args[i]));
+				res = res.multiply(new Apfloat(args[i]));
 			}
-			System.out.println(res.stripTrailingZeros().toPlainString());
+			System.out.println(res.toString(true));
 		} else if (opcode == 4) {
-			BigDecimal res = num(args[1]);
+			Apfloat res = num(args[1]);
 			for (int i = 2; i < args.length; i++) {
-				res = res.divide(new BigDecimal(args[i]), NUMBER_PRECISION, RoundingMode.HALF_UP);
+				res = res.divide(new Apfloat(i, NUMBER_PRECISION));
 			}
-			System.out.println(res.stripTrailingZeros().toPlainString());
+			System.out.println(res.toString(true));
 		} else if (opcode == 5) {
-			BigDecimal res = num(args[1]);
-			BigDecimal exponent = num(args[2]);
-			res = BigDecimalMath.pow(res, exponent);
-			System.out.println(res.stripTrailingZeros().toPlainString());
+			Apfloat res = num(args[1]);
+			Apfloat exponent = num(args[2]);
+			//long exponent = Long.parseLong(args[2]);
+			//res = ApfloatMath.pow(res, exponent);
+			res = ApfloatMath.pow(res, exponent);
+			System.out.println(res.toString(true));
 		} else if (opcode == 6) {
-			BigDecimal num = num(args[1]);
-			boolean i = false; //complex number?
-			if (num.signum() == -1)
-				i = true;
-			else if (num.signum() == 0) {
-				System.out.println("0");
-				System.exit(0);
-			}
-			num = num.abs();
-			BigDecimal res = BigDecimalMath.root(2, num);
-			System.out.println(res.stripTrailingZeros().toPlainString() + (i ? "i" : ""));
+			Apfloat num = num(args[1]);
+			Apfloat res = ApfloatMath.root(num, 2);
+			System.out.println(res.toString(true));
 		} else if (opcode == 7) {
-			BigDecimal a = num(args[1]);
-			BigDecimal b = num(args[2]);
-			BigDecimal c = num(args[3]);
+			Apfloat a = num(args[1]);
+			Apfloat b = num(args[2]);
+			Apfloat c = num(args[3]);
 
-			BigDecimal discrim2 = MathUtils.getDiscrimSquared(a, b, c);
-			boolean i = false;
-			if (discrim2.signum() == -1) {
-				i = true;
-				discrim2 = discrim2.abs();
-			}
+			Apfloat discrim2 = MathUtils.getDiscrimSquared(a, b, c);
 
-			BigDecimal discrim;
+			Apfloat discrim;
 			if (discrim2.signum() == 0) {
 				discrim = MathUtils.ZERO;
 			} else {
-				discrim = BigDecimalMath.root(2, discrim2);
+				discrim = ApfloatMath.root(discrim2, 2);
 			}
 
-			BigDecimal neg_b = b.negate();
-			BigDecimal ta = a.multiply(MathUtils.TWO);
+			Apfloat neg_b = b.negate();
+			Apfloat ta = a.multiply(MathUtils.TWO);
 
-			BigDecimal x1 = neg_b.add(discrim).divide(ta, NUMBER_PRECISION, RoundingMode.HALF_UP);
-			BigDecimal x2 = neg_b.subtract(discrim).divide(ta, NUMBER_PRECISION, RoundingMode.HALF_UP);
+			Apfloat x1 = neg_b.add(discrim).divide(ta);
+			Apfloat x2 = neg_b.subtract(discrim).divide(ta);
 
-			System.out.println("Discriminant = " + discrim.stripTrailingZeros().toPlainString() + (i ? "i" : ""));
-			System.out.println("x1 = " + x1.stripTrailingZeros().toPlainString() + (i ? "i" : ""));
-			System.out.println("x2 = " + x2.stripTrailingZeros().toPlainString() + (i ? "i" : ""));
+			System.out.println("Discriminant = " + discrim.toString(true));
+			System.out.println("x1 = " + x1.toString(true));
+			System.out.println("x2 = " + x2.toString(true));
 		} else if (opcode == 8) {
-			BigDecimal num = num(args[1]);
+			Apfloat num = num(args[1]);
 			System.out.println(MathUtils.getSignificantFigures(num));
+		} else if (opcode == 9) {
+			Apfloat radius = num(args[1]);
+			Apfloat area = radius.multiply(radius);
+			area = area.multiply(ApfloatMath.pi(NUMBER_PRECISION));
+			System.out.println(area.toString(true));
+		} else if (opcode == 10) {
+			Apfloat a = num(args[1]);
+			Apfloat b = num(args[2]);
+			Apfloat mod = a.mod(b);
+			System.out.println(mod.toString(true));
+		} else if (opcode == 11) {
+			Apint num = new Apint(args[1]);
+			boolean prime = num.toBigInteger().isProbablePrime(CERTAINTY);
+			System.out.println((prime ? "Probably prime (Probability = " + MathUtils.probability(CERTAINTY).multiply(new Apfloat(100)).toString(true) + "%)" : "Definitely composite"));
+		} else if (opcode == 12) {
+			SecureRandom rng = new SecureRandom();
+			Apint min = new Apint(args[1]);
+			Apint max = new Apint(args[2]);
+
+			Apint num = MathUtils.getRandom(min, max, rng);
+
+			System.out.println(num.toString(true));
+			num = num.toRadix(16);
+			System.out.println("Base 16 number: " + num.toString(true));
+		} else if (opcode == 13) {
+			Apint num = new Apint(args[1]);
+			ArrayList<Apint> factorz = MathUtils.factor(num);
+			System.out.print(num.toString(true) + ":");
+			for (int i = 0; i < factorz.size(); i++) {
+				System.out.print(" " + factorz.get(i).toString(true));
+			}
+			System.out.println("");
+		} else if (opcode == 14) {
+			Apint a = new Apint(args[1]);
+			Apint b = new Apint(args[2]);
+			System.out.println(ApintMath.gcd(a, b).toString(true));
 		} else if (opcode == -1) {
 			System.out.println("amath-ng: ERROR: Review your argument count!");
 		} else if (opcode == -2) {
 			System.out.println("amath-ng: ERROR: Invalid operation!");
 		} else {
-			System.out.println("amath-ng: ERROR: INVOPC - Please send this error to the developers! (opcode " + opcode + ", argc " + argc + ", opargc " + (argc - 1) + ")");
+			System.out.println("amath-ng: ERROR: INVOPC - Please send this error to the developers! (opcode " + opcode + ", argc " + (argc + 1) + ", opargc " + argc + ")");
 		}
 
 		System.exit(0);

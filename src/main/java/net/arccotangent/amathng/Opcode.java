@@ -58,6 +58,21 @@ public class Opcode {
 				return 11;
 			else
 				return -1;
+		} else if (operation.equalsIgnoreCase("rand")) {
+			if (argc == 2 || argc == 3)
+				return 12;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("fac")) {
+			if (argc == 1)
+				return 13;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("gcd")) {
+			if (argc == 2)
+				return 14;
+			else
+				return -1;
 		} else {
 			return -2;
 		}
