@@ -6,7 +6,6 @@ import org.apfloat.Apint;
 import org.apfloat.ApintMath;
 
 import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -84,7 +83,10 @@ public class MathUtils {
 
 	public static Apint gcd(Apint a, Apint b) {
 		Apint r = a.mod(b);
-		return null;
+		if (!r.equals(ZERO_INT)) {
+			return gcd(b, r);
+		}
+		return b;
 	}
 
 }
