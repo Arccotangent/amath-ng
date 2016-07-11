@@ -1,7 +1,7 @@
 package net.arccotangent.amathng;
 
-import org.apfloat.Apfloat;
-import org.apfloat.ApfloatMath;
+import org.apfloat.Apcomplex;
+import org.apfloat.ApcomplexMath;
 import org.apfloat.Apint;
 import org.apfloat.ApintMath;
 
@@ -11,32 +11,32 @@ import java.util.Random;
 
 public class MathUtils {
 
-	public static final Apfloat ZERO = new Apfloat("0", Main.NUMBER_PRECISION);
+	public static final Apcomplex ZERO = Main.num("0");
 	public static final Apint ZERO_INT = new Apint("0");
-	public static final Apfloat ONE = new Apfloat("1", Main.NUMBER_PRECISION);
+	public static final Apcomplex ONE = Main.num("1");
 	public static final Apint ONE_INT = new Apint("1");
-	public static final Apfloat TWO = new Apfloat("2", Main.NUMBER_PRECISION);
+	public static final Apcomplex TWO = Main.num("2");
 	public static final Apint TWO_INT = new Apint("2");
-	public static final Apfloat THREE = new Apfloat("3", Main.NUMBER_PRECISION);
+	public static final Apcomplex THREE = Main.num("3");
 	public static final Apint THREE_INT = new Apint("3");
-	public static final Apfloat FOUR = new Apfloat("4", Main.NUMBER_PRECISION);
+	public static final Apcomplex FOUR = Main.num("4");
 	public static final Apint FOUR_INT = new Apint("4");
 
-	public static Apfloat getDiscrimSquared(Apfloat a, Apfloat b, Apfloat c) {
-		Apfloat b2 = b.multiply(b);
-		Apfloat fac = FOUR.multiply(a).multiply(c);
+	public static Apcomplex getDiscrimSquared(Apcomplex a, Apcomplex b, Apcomplex c) {
+		Apcomplex b2 = b.multiply(b);
+		Apcomplex fac = FOUR.multiply(a).multiply(c);
 		return b2.subtract(fac);
 	}
 
-	public static long getSignificantFigures(Apfloat input) {
+	public static long getSignificantFigures(Apcomplex input) {
 		return (input.scale() < 0
 						? input.precision() - input.scale()
 						: input.precision());
 	}
 
-	public static Apfloat probability(int certainty) {
-		Apfloat ONE_HALF = new Apfloat(0.5);
-		Apfloat a = ApfloatMath.pow(ONE_HALF, new Apfloat(certainty));
+	public static Apcomplex probability(int certainty) {
+		Apcomplex ONE_HALF = Main.num("0.5");
+		Apcomplex a = ApcomplexMath.pow(ONE_HALF, Main.num(Integer.toString(certainty)));
 		return ONE.subtract(a);
 	}
 
@@ -87,6 +87,39 @@ public class MathUtils {
 			return gcd(b, r);
 		}
 		return b;
+	}
+
+	public static Apcomplex[] getVertex(Apcomplex a, Apcomplex b, Apcomplex c) {
+		Apcomplex x, y;
+
+		//We solve by completing the square here
+		//Side work
+		Apcomplex b2 = b.divide(a);
+		b2 = b2.divide(TWO);
+		Apcomplex cs = ApcomplexMath.pow(b2, TWO);
+		//End side work
+
+		Apcomplex neg_cs = cs.negate();
+		y = c.add(neg_cs);
+		x = ApcomplexMath.sqrt(cs);
+
+		if (b.real().compareTo(ZERO.real()) == -1)
+			x = x.negate(); //"drop" minus sign if b is negative
+
+		x = x.negate(); //vertex x is negated
+
+		Apcomplex[] vertex = {x, y};
+		return vertex;
+	}
+
+	public static boolean verifyVertex(Apcomplex a, Apcomplex b, Apcomplex x) {
+		Apcomplex neg_b = b.negate();
+		Apcomplex test_x = neg_b.divide(a);
+
+		if (test_x.equals(x))
+			return true;
+		else
+			return false;
 	}
 
 }

@@ -1,28 +1,77 @@
 package net.arccotangent.amathng;
 
-import org.apfloat.Apfloat;
-import org.apfloat.ApfloatMath;
-import org.apfloat.Apint;
-import org.apfloat.ApintMath;
+import org.apache.commons.lang3.StringUtils;
+import org.apfloat.*;
 
-import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class Main {
 
-	public static final String VERSION = "20160706";
-	public static final long NUMBER_PRECISION = Configuration.getPrecision();
+	public static final String VERSION = "20160711";
+	public static final long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static final int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
 
-	public static Apfloat num() {
-		Apfloat a = new Apfloat("0", NUMBER_PRECISION);
-		return a;
+	public static Apcomplex num() {
+		Apfloat real = new Apfloat("0", NUMBER_PRECISION);
+		Apfloat imag = new Apfloat("0", NUMBER_PRECISION);
+		return new Apcomplex(real, imag);
 	}
 
-	public static Apfloat num(String arg) {
-		Apfloat a = new Apfloat(arg, NUMBER_PRECISION);
-		return a;
+	public static Apcomplex num(String real_value) {
+		if (real_value.equalsIgnoreCase("i")) {
+			Apfloat real = new Apfloat("0", NUMBER_PRECISION);
+			Apfloat imag = new Apfloat("1", NUMBER_PRECISION);
+			return new Apcomplex(real, imag);
+		} else if (real_value.endsWith("i") || real_value.endsWith("I")) {
+			real_value = StringUtils.removeEndIgnoreCase(real_value, "i");
+			Apfloat real = new Apfloat("0", NUMBER_PRECISION);
+			Apfloat imag = new Apfloat(real_value, NUMBER_PRECISION);
+			return new Apcomplex(real, imag);
+		} else {
+			Apfloat real = new Apfloat(real_value, NUMBER_PRECISION);
+			Apfloat imag = new Apfloat("0", NUMBER_PRECISION);
+			return new Apcomplex(real, imag);
+		}
+	}
+
+	public static Apcomplex num(String real_value, String imaginary_value) {
+		Apfloat real = new Apfloat(real_value, NUMBER_PRECISION);
+		Apfloat imag = new Apfloat(imaginary_value, NUMBER_PRECISION);
+		return new Apcomplex(real, imag);
+	}
+
+	public static String fc(Apcomplex toFormat) {
+		String real = toFormat.real().toString(true);
+		String imag = toFormat.imag().toString(true);
+		String fmt;
+
+		if (real.equals("0")) {
+			if (imag.equals("0")) {
+				fmt = "0";
+			} else if (imag.equals("1")) {
+				fmt = "i";
+			} else if (imag.equals("-1")) {
+				fmt = "-i";
+			} else {
+				fmt = imag + "i";
+			}
+		} else {
+			if (imag.equals("0")) {
+				fmt = real;
+			} else if (imag.equals("1")) {
+				fmt = real + " + i";
+			} else if (imag.equals("-1")) {
+				fmt = real + " - i";
+			} else if (imag.contains("-")) {
+				imag = StringUtils.remove(imag, "-");
+				fmt = real + " - " + imag + "i";
+			} else {
+				fmt = real + " + " + imag + "i";
+			}
+		}
+
+		return fmt;
 	}
 
 	public static void main(String[] args) {
@@ -97,81 +146,79 @@ public class Main {
 			System.exit(1);
 		}
 
-		Configuration.createConfiguration();
+		Configuration.createConfiguration(); //Create configuration if and only if it doesn't already exist
 
 		int opcode = Opcode.getOpcode(args[0], argc);
 
 		if (opcode == 1) {
-			Apfloat res = num();
+			Apcomplex res = num();
 			for (int i = 1; i < args.length; i++) {
-				res = res.add(new Apfloat(args[i]));
+				res = res.add(num(args[i]));
 			}
-			System.out.println(res.toString(true));
+			System.out.println(fc(res));
 		} else if (opcode == 2) {
-			Apfloat res = num(args[1]);
+			Apcomplex res = num(args[1]);
 			for (int i = 2; i < args.length; i++) {
-				res = res.subtract(new Apfloat(args[i]));
+				res = res.subtract(num(args[i]));
 			}
-			System.out.println(res.toString(true));
+			System.out.println(fc(res));
 		} else if (opcode == 3) {
-			Apfloat res = num(args[1]);
+			Apcomplex res = num(args[1]);
 			for (int i = 2; i < args.length; i++) {
-				res = res.multiply(new Apfloat(args[i]));
+				res = res.multiply(num(args[i]));
 			}
-			System.out.println(res.toString(true));
+			System.out.println(fc(res));
 		} else if (opcode == 4) {
-			Apfloat res = num(args[1]);
+			Apcomplex res = num(args[1]);
 			for (int i = 2; i < args.length; i++) {
-				res = res.divide(new Apfloat(i, NUMBER_PRECISION));
+				res = res.divide(num(args[i]));
 			}
-			System.out.println(res.toString(true));
+			System.out.println(fc(res));
 		} else if (opcode == 5) {
-			Apfloat res = num(args[1]);
-			Apfloat exponent = num(args[2]);
-			//long exponent = Long.parseLong(args[2]);
-			//res = ApfloatMath.pow(res, exponent);
-			res = ApfloatMath.pow(res, exponent);
-			System.out.println(res.toString(true));
+			Apcomplex res = num(args[1]);
+			Apcomplex exponent = num(args[2]);
+			res = ApcomplexMath.pow(res, exponent);
+			System.out.println(fc(res));
 		} else if (opcode == 6) {
-			Apfloat num = num(args[1]);
-			Apfloat res = ApfloatMath.root(num, 2);
-			System.out.println(res.toString(true));
+			Apcomplex num = num(args[1]);
+			Apcomplex res = ApcomplexMath.sqrt(num);
+			System.out.println(fc(res));
 		} else if (opcode == 7) {
-			Apfloat a = num(args[1]);
-			Apfloat b = num(args[2]);
-			Apfloat c = num(args[3]);
+			Apcomplex a = num(args[1]);
+			Apcomplex b = num(args[2]);
+			Apcomplex c = num(args[3]);
 
-			Apfloat discrim2 = MathUtils.getDiscrimSquared(a, b, c);
+			Apcomplex discrim2 = MathUtils.getDiscrimSquared(a, b, c);
 
-			Apfloat discrim;
-			if (discrim2.signum() == 0) {
+			Apcomplex discrim;
+			if (discrim2.real().signum()== 0) {
 				discrim = MathUtils.ZERO;
 			} else {
-				discrim = ApfloatMath.root(discrim2, 2);
+				discrim = ApcomplexMath.root(discrim2, 2);
 			}
 
-			Apfloat neg_b = b.negate();
-			Apfloat ta = a.multiply(MathUtils.TWO);
+			Apcomplex neg_b = b.negate();
+			Apcomplex ta = a.multiply(MathUtils.TWO);
 
-			Apfloat x1 = neg_b.add(discrim).divide(ta);
-			Apfloat x2 = neg_b.subtract(discrim).divide(ta);
+			Apcomplex x1 = neg_b.add(discrim).divide(ta);
+			Apcomplex x2 = neg_b.subtract(discrim).divide(ta);
 
-			System.out.println("Discriminant = " + discrim.toString(true));
-			System.out.println("x1 = " + x1.toString(true));
-			System.out.println("x2 = " + x2.toString(true));
+			System.out.println("Discriminant = " + fc(discrim));
+			System.out.println("x1 = " + fc(x1));
+			System.out.println("x2 = " + fc(x2));
 		} else if (opcode == 8) {
-			Apfloat num = num(args[1]);
+			Apcomplex num = num(args[1]);
 			System.out.println(MathUtils.getSignificantFigures(num));
 		} else if (opcode == 9) {
-			Apfloat radius = num(args[1]);
-			Apfloat area = radius.multiply(radius);
+			Apcomplex radius = num(args[1]);
+			Apcomplex area = radius.multiply(radius);
 			area = area.multiply(ApfloatMath.pi(NUMBER_PRECISION));
-			System.out.println(area.toString(true));
+			System.out.println(fc(area));
 		} else if (opcode == 10) {
-			Apfloat a = num(args[1]);
-			Apfloat b = num(args[2]);
-			Apfloat mod = a.mod(b);
-			System.out.println(mod.toString(true));
+			Apcomplex a = num(args[1]);
+			Apcomplex b = num(args[2]);
+			Apcomplex mod = a.real().mod(b.real());
+			System.out.println(fc(mod));
 		} else if (opcode == 11) {
 			Apint num = new Apint(args[1]);
 			boolean prime = num.toBigInteger().isProbablePrime(CERTAINTY);
@@ -198,6 +245,26 @@ public class Main {
 			Apint a = new Apint(args[1]);
 			Apint b = new Apint(args[2]);
 			System.out.println(ApintMath.gcd(a, b).toString(true));
+		} else if (opcode == 15) {
+			Apcomplex a = num(args[1]);
+			Apcomplex b = num(args[2]);
+			Apcomplex c = num(args[3]);
+
+			Apcomplex[] vertex = MathUtils.getVertex(a, b, c); //vertex[0] = x, vertex[1] = y
+			System.out.println("Vertex: (" + vertex[0] + ", " + vertex[1] + ")");
+			System.out.println("Vertex form equation: y = (x + " + vertex[0].negate() + ")^2 + " + vertex[1]);
+			boolean verified = MathUtils.verifyVertex(a, b, vertex[0]);
+			System.out.println(verified ? "Vertex verified" : "Vertex NOT verified!");
+		} else if (opcode == 16) {
+			Apcomplex a = num(args[1]);
+			Apcomplex b = num(args[2]);
+
+			Apcomplex a2 = ApcomplexMath.pow(a, 2);
+			Apcomplex b2 = ApcomplexMath.pow(b, 2);
+			Apcomplex c2 = a2.add(b2);
+			Apcomplex c = ApcomplexMath.sqrt(c2);
+
+			System.out.println(fc(c));
 		} else if (opcode == -1) {
 			System.out.println("amath-ng: ERROR: Review your argument count!");
 		} else if (opcode == -2) {

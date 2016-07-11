@@ -73,6 +73,16 @@ public class Opcode {
 				return 14;
 			else
 				return -1;
+		} else if (operation.equalsIgnoreCase("vtx")) {
+			if (argc == 3)
+				return 15;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("hypot")) {
+			if (argc == 2)
+				return 16;
+			else
+				return -1;
 		} else {
 			return -2;
 		}
