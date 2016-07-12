@@ -188,6 +188,66 @@ public class Opcode {
 				return 37;
 			else
 				return -1;
+		} else if (operation.equalsIgnoreCase("pprm")) {
+			if (argc == 1)
+				return 38;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("hl")) {
+			if (argc == 1)
+				return 39;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("csc")) {
+			if (argc == 1)
+				return 40;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("sec")) {
+			if (argc == 1)
+				return 41;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("cot")) {
+			if (argc == 1)
+				return 42;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("acsc")) {
+			if (argc == 1)
+				return 43;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("asec")) {
+			if (argc == 1)
+				return 44;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("acot")) {
+			if (argc == 1)
+				return 45;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("logb")) {
+			if (argc == 2)
+				return 46;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("lcm")) {
+			if (argc == 2)
+				return 47;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("getf")) {
+			if (argc == 1)
+				return 48;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("cbc")) {
+			if (argc == 4)
+				return 49;
+			else
+				return -1;
 		} else {
 			return -2;
 		}

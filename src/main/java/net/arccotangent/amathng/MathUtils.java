@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apfloat.*;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -50,6 +51,53 @@ public class MathUtils {
 		}
 		return sorted;
 	}
+
+	public static Apint[] getPrimes(int amount) {
+		Apint[] primez = new Apint[amount];
+
+		Apint num = THREE_INT;
+		int i = 0;
+		while (i < amount) {
+			if (num.toBigInteger().isProbablePrime(Main.CERTAINTY)) {
+				primez[i] = num;
+				i++;
+			}
+			num = num.add(TWO_INT);
+		}
+
+
+		return primez;
+	}
+
+	public static Apint generateRandomPrime(int bits) {
+		BigInteger tmp;
+		do {
+			tmp = new BigInteger(bits, new SecureRandom());
+		} while(!tmp.isProbablePrime(Main.CERTAINTY));
+
+		return new Apint(tmp);
+	}
+
+	public static Apint[] getFactors(Apint num) {
+		ArrayList<Apint> factorz = new ArrayList<>();
+
+		if (num.compareTo(TWO_INT) < 1) {
+			throw new IllegalArgumentException("You cannot enter integers less than or equal to 2.");
+		}
+
+		for (Apint i = ONE_INT; i.compareTo(num) < 1; i = i.add(ONE_INT)) {
+			if (num.mod(i).compareTo(ZERO_INT) == 0) {
+				factorz.add(i);
+				Apint[] sqrt = ApintMath.sqrt(num);
+				if (sqrt[0].compareTo(i) == 0 && sqrt[1].compareTo(ZERO_INT) == 0)
+					factorz.add(i);
+			}
+		}
+
+		Apint[] factors = new Apint[factorz.size()];
+		return factorz.toArray(factors);
+	}
+
 
 	public static Apcomplex getCompoundInterest(Apcomplex principal, Apcomplex pct_rate, Apcomplex compounds, Apcomplex time) {
 		pct_rate = pct_rate.divide(ONE_HUNDRED);

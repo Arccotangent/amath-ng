@@ -5,13 +5,10 @@ import org.apfloat.*;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.IllegalFormatException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
 
-	public static final String VERSION = "20160711";
+	public static final String VERSION = "20160712";
 	public static final long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static final int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
 
@@ -22,41 +19,83 @@ public class Main {
 	}
 
 	public static Apcomplex num(String real_value) throws IllegalArgumentException {
-		if (!real_value.contains("i")) {
-			Apfloat real = new Apfloat(real_value, NUMBER_PRECISION);
+		if (real_value.equalsIgnoreCase("pi")) {
+			Apfloat real = ApfloatMath.pi(NUMBER_PRECISION);
 			Apfloat imag = new Apfloat("0", NUMBER_PRECISION);
 			return new Apcomplex(real, imag);
+		} else if (real_value.equalsIgnoreCase("-i")) {
+			Apfloat real = new Apfloat("0", NUMBER_PRECISION);
+			Apfloat imag = new Apfloat("-1", NUMBER_PRECISION);
+			return new Apcomplex(real, imag);
 		} else {
-			boolean neg_r = false;
-			boolean neg_i = false;
-			real_value = StringUtils.replace(real_value, "I", "i");
+			if (!real_value.contains("i")) {
+				Apfloat real = new Apfloat(real_value, NUMBER_PRECISION);
+				Apfloat imag = new Apfloat("0", NUMBER_PRECISION);
+				return new Apcomplex(real, imag);
+			} else {
+				boolean neg_r = false;
+				boolean neg_i = false;
+				boolean neg_0 = false;
+				real_value = StringUtils.replace(real_value, "I", "i");
 
-			if (real_value.charAt(0) == '-') {
-				neg_r = true;
+				if (real_value.charAt(0) == '-') {
+					neg_0 = true;
+					real_value = StringUtils.removeStart(real_value, "-");
+				}
+
+				String r, i;
+
+				String[] vals = real_value.split("[+-]");
+				if (vals[0].isEmpty()) {
+					vals[0] = vals[1];
+					if (vals.length == 3)
+						vals[1] = vals[2];
+				}
+
+
+				if (!vals[0].contains("i")) {
+					if (real_value.charAt(0) == '-' || neg_0) {
+						neg_r = true;
+					}
+
+					if (real_value.substring(1).contains("-")) {
+						neg_i = true;
+					}
+					r = vals[0];
+					i = vals[1];
+				} else {
+					if (real_value.charAt(0) == '-' || neg_0) {
+						neg_i = true;
+					}
+					r = "0";
+					i = vals[0];
+				}
+
+				if (vals.length != 2) {
+					String imagstr = StringUtils.remove(vals[0], "i");
+					if (imagstr.isEmpty())
+						imagstr = "1";
+					else if (imagstr.equals("-"))
+						imagstr = "-1";
+
+					if (neg_i || neg_0) {
+						imagstr = "-" + imagstr;
+					}
+					Apfloat real = new Apfloat("0", NUMBER_PRECISION);
+					Apfloat imag = new Apfloat(imagstr, NUMBER_PRECISION);
+					return new Apcomplex(real, imag);
+				}
+
+				i = StringUtils.remove(i, "i");
+
+				if (neg_r)
+					r = "-" + r;
+
+				if (neg_i)
+					i = "-" + i;
+
+				return num(r, i);
 			}
-
-			if (real_value.substring(1).contains("-")) {
-				neg_i = true;
-			}
-
-			String[] vals = real_value.split("[+-]");
-			if (vals[0].isEmpty()) {
-				vals[0] = vals[1];
-				vals[1] = vals[2];
-			}
-
-			vals[1] = StringUtils.remove(vals[1], "i");
-
-			//vals[0] = real part
-			//vals[1] = imaginary part
-
-			if (neg_r)
-				vals[0] = "-" + vals[0];
-
-			if (neg_i)
-				vals[1] = "-" + vals[1];
-
-			return num(vals[0], vals[1]);
 		}
 	}
 
@@ -442,6 +481,114 @@ public class Main {
 			cosAngleC = cosAngleC.divide(twoAB);
 			Apcomplex angleC = MathUtils.toDegrees(ApcomplexMath.acos(cosAngleC));
 			System.out.println(fc(angleC));
+		} else if (opcode == 38) {
+			int amount = Integer.parseInt(args[1]);
+
+			Apint[] primes = MathUtils.getPrimes(amount);
+			for (int i = 0; i < primes.length; i++) {
+				System.out.println(primes[i]);
+			}
+		} else if (opcode == 39) {
+			int num = Integer.parseInt(args[1]);
+
+			Apcomplex parent = MathUtils.ONE_HUNDRED;
+			Apcomplex daughter = MathUtils.ZERO;
+			for (int i = 1; i <= num; i++) {
+				parent = parent.divide(MathUtils.TWO);
+				daughter = daughter.add(parent);
+				System.out.println("Half life " + i + ": " + fc(parent) + "% parent, " + fc(daughter) + "% daughter");
+			}
+		} else if (opcode == 40) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.sin(MathUtils.toRadians(num)));
+			System.out.println(fc(res));
+		} else if (opcode == 41) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.cos(MathUtils.toRadians(num)));
+			System.out.println(fc(res));
+		} else if (opcode == 42) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.tan(MathUtils.toRadians(num)));
+			System.out.println(fc(res));
+		} else if (opcode == 43) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.toDegrees(ApcomplexMath.asin(MathUtils.ONE.divide(num)));
+			System.out.println(fc(res));
+		} else if (opcode == 44) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.toDegrees(ApcomplexMath.acos(MathUtils.ONE.divide(num)));
+			System.out.println(fc(res));
+		} else if (opcode == 45) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.toDegrees(ApcomplexMath.atan(MathUtils.ONE.divide(num)));
+			System.out.println(fc(res));
+		} else if (opcode == 46) {
+			Apcomplex base = num(args[1]);
+			Apcomplex num = num(args[2]);
+
+			Apcomplex res = ApcomplexMath.log(num, base);
+			System.out.println(fc(res));
+		} else if (opcode == 47) {
+			Apint a = new Apint(args[1]);
+			Apint b = new Apint(args[2]);
+
+			Apint lcm = ApintMath.lcm(a, b);
+			System.out.println(lcm.toString(true));
+		} else if (opcode == 48) {
+			Apint num = new Apint(args[1]);
+
+			Apint[] factors = MathUtils.getFactors(num);
+			int fc = factors.length;
+			int left = 0, right = fc - 1;
+
+			System.out.println("FACTOR + FACTOR = SUM, PRODUCT");
+			System.out.println("Found " + fc + " total factors.");
+			System.out.println("-----------------------------------------------------------");
+
+			while (left <= right - 1) {
+				Apint ln = factors[left];
+				Apint rn = factors[right];
+				Apint sum = ln.add(rn);
+				Apint product = ln.multiply(rn);
+				System.out.println(ln.toString(true) + " + " + rn.toString(true) + " = " + sum.toString(true) + ", " + product.toString(true));
+				left++;
+				right--;
+			}
+
+		} else if (opcode == 49) {
+			Apcomplex a = num(args[1]);
+			Apcomplex b = num(args[2]);
+			Apcomplex c = num(args[3]);
+			Apcomplex d = num(args[4]);
+
+			Apcomplex discrim = Cubic.getDiscrim(a, b, c, d);
+			System.out.println("Discriminant = " + fc(discrim));
+
+			Apcomplex t0 = Cubic.getT0(a, b, c);
+			Apcomplex t1 = Cubic.getT1(a, b, c, d);
+
+			//System.out.println("T0 = " + fc(t0));
+			//System.out.println("T1 = " + fc(t1));
+
+
+			Apcomplex C = Cubic.getC(t0, t1);
+			//System.out.println("C = " + fc(C));
+
+			Apcomplex[] solutionz = Cubic.getSolutions(a, b, c, d, C, t0, discrim);
+
+			Apcomplex solutionA = solutionz[0];
+			Apcomplex solutionB = solutionz[1];
+			Apcomplex solutionC = solutionz[2];
+
+			System.out.println("x1 = " + fc(solutionA));
+			System.out.println("x2 = " + fc(solutionB));
+			System.out.println("x3 = " + fc(solutionC));
 		} else if (opcode == -1) {
 			System.out.println("amath-ng: ERROR: Review your argument count!");
 		} else if (opcode == -2) {
@@ -449,8 +596,6 @@ public class Main {
 		} else {
 			System.out.println("amath-ng: ERROR: INVOPC - Please send this error to the developers! (opcode " + opcode + ", argc " + (argc + 1) + ", opargc " + argc + ")");
 		}
-
-		System.exit(0);
 	}
 
 }
