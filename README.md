@@ -5,6 +5,7 @@ A command line calculator for many different uses, from the basic to the extreme
 
 + Apfloat 1.8.2
 + JSON 20160212
++ Apache Commons Lang 3.4
 + Java Runtime Environment (JRE) 7 or later
 
 Non-JRE dependencies are managed by Gradle, meaning you only have to have Java installed.

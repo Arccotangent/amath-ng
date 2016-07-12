@@ -5,6 +5,9 @@ import org.apfloat.*;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.IllegalFormatException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
@@ -18,20 +21,42 @@ public class Main {
 		return new Apcomplex(real, imag);
 	}
 
-	public static Apcomplex num(String real_value) {
-		if (real_value.equalsIgnoreCase("i")) {
-			Apfloat real = new Apfloat("0", NUMBER_PRECISION);
-			Apfloat imag = new Apfloat("1", NUMBER_PRECISION);
-			return new Apcomplex(real, imag);
-		} else if (real_value.endsWith("i") || real_value.endsWith("I")) {
-			real_value = StringUtils.removeEndIgnoreCase(real_value, "i");
-			Apfloat real = new Apfloat("0", NUMBER_PRECISION);
-			Apfloat imag = new Apfloat(real_value, NUMBER_PRECISION);
-			return new Apcomplex(real, imag);
-		} else {
+	public static Apcomplex num(String real_value) throws IllegalArgumentException {
+		if (!real_value.contains("i")) {
 			Apfloat real = new Apfloat(real_value, NUMBER_PRECISION);
 			Apfloat imag = new Apfloat("0", NUMBER_PRECISION);
 			return new Apcomplex(real, imag);
+		} else {
+			boolean neg_r = false;
+			boolean neg_i = false;
+			real_value = StringUtils.replace(real_value, "I", "i");
+
+			if (real_value.charAt(0) == '-') {
+				neg_r = true;
+			}
+
+			if (real_value.substring(1).contains("-")) {
+				neg_i = true;
+			}
+
+			String[] vals = real_value.split("[+-]");
+			if (vals[0].isEmpty()) {
+				vals[0] = vals[1];
+				vals[1] = vals[2];
+			}
+
+			vals[1] = StringUtils.remove(vals[1], "i");
+
+			//vals[0] = real part
+			//vals[1] = imaginary part
+
+			if (neg_r)
+				vals[0] = "-" + vals[0];
+
+			if (neg_i)
+				vals[1] = "-" + vals[1];
+
+			return num(vals[0], vals[1]);
 		}
 	}
 
@@ -131,7 +156,7 @@ public class Main {
 					"acot <number> - Reciprocal Trigonometric Function - Arccotangent\n" +
 					"\n--Science--\n\n" +
 					"sf <1 number> - Get amount of significant figures in number\n" +
-					"pcr <actual> <experimental> - Calculate percent error\n" +
+					"pcr <accepted> <experimental> - Calculate percent error\n" +
 					"hl <amount> - Print amount of half lives with respective ratios\n" +
 					"\n--Miscellaneous--\n\n" +
 					"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -142,7 +167,8 @@ public class Main {
 					"rand <min> <max> [seed] - Generate random integer between MIN and MAX with optional SEED\n" +
 					"prm <number> - Test if number is a probable prime by Miller-Rabin and Lucas-Lehmer primality tests\n" +
 					"genprm <bits> - Generate a prime number with bitsize BITS\n" +
-					"\nMAXIMUM PRECISION IS SET TO " + NUMBER_PRECISION + " DECIMAL PLACES\n");
+					"\nMAXIMUM PRECISION IS SET TO " + NUMBER_PRECISION + " SIGNIFICANT FIGURES\n" +
+					"PRIMALITY TEST CERTAINTY IS SET TO " + CERTAINTY + "\n");
 			System.exit(1);
 		}
 
@@ -265,6 +291,157 @@ public class Main {
 			Apcomplex c = ApcomplexMath.sqrt(c2);
 
 			System.out.println(fc(c));
+		} else if (opcode == 17) {
+			Apint num = new Apint(args[1]);
+
+			Apint res = MathUtils.factorial(num);
+			System.out.println(res.toString(true));
+		} else if (opcode == 18) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = ApcomplexMath.sin(MathUtils.toRadians(num));
+			System.out.println(fc(res));
+		} else if (opcode == 19) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = ApcomplexMath.cos(MathUtils.toRadians(num));
+			System.out.println(fc(res));
+		} else if (opcode == 20) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = ApcomplexMath.tan(MathUtils.toRadians(num));
+			System.out.println(fc(res));
+		} else if (opcode == 21) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.toDegrees(ApcomplexMath.asin(num));
+			System.out.println(fc(res));
+		} else if (opcode == 22) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.toDegrees(ApcomplexMath.acos(num));
+			System.out.println(fc(res));
+		} else if (opcode == 23) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex res = MathUtils.toDegrees(ApcomplexMath.atan(num));
+			System.out.println(fc(res));
+		} else if (opcode == 24) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex cbrtnum = ApcomplexMath.cbrt(num);
+			System.out.println(fc(cbrtnum));
+		} else if (opcode == 25) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex lognum = ApcomplexMath.log(num);
+			System.out.println(fc(lognum));
+		} else if (opcode == 26) {
+			Apcomplex num = num(args[1]);
+
+			Apcomplex lognum = ApcomplexMath.log(num, MathUtils.TEN);
+			System.out.println(fc(lognum));
+		} else if (opcode == 27) {
+			Apint num = new Apint(args[1]);
+
+			for (Apint i = MathUtils.ONE_INT; i.compareTo(num) < 1; i = i.add(MathUtils.ONE_INT)) {
+				System.out.println(ApintMath.pow(i, 2).toString(true));
+			}
+		} else if (opcode == 28) {
+			Apint num = new Apint(args[1]);
+			long p = Long.parseLong(args[2]);
+
+			for (Apint i = MathUtils.ONE_INT; i.compareTo(num) < 1; i = i.add(MathUtils.ONE_INT)) {
+				System.out.println(ApintMath.pow(i, p).toString(true));
+			}
+		} else if (opcode == 29) {
+			Apcomplex accepted = num(args[1]);
+			Apcomplex experimental = num(args[2]);
+
+			Apcomplex error = MathUtils.getPercentError(accepted, experimental);
+			System.out.println(fc(error));
+		} else if (opcode == 30) {
+			Apcomplex principal = num(args[1]);
+			Apcomplex pct_rate = num(args[2]);
+			Apcomplex compounds_year = num(args[3]);
+			Apcomplex time = num(args[4]);
+
+			Apcomplex total = MathUtils.getCompoundInterest(principal, pct_rate, compounds_year, time);
+			System.out.println(fc(total));
+		} else if (opcode == 31) {
+			Apcomplex result = num();
+			for (int i = 1; i <= argc; i++) {
+				result = result.add(num(args[i]));
+			}
+			result = result.divide(num(Integer.toString(argc)));
+			System.out.println(fc(result));
+		} else if (opcode == 32) {
+			Apcomplex total = num();
+			for (int i = 1; i <= argc; i++) {
+				total = total.add(num(args[i]));
+			}
+			Apcomplex avg = total.divide(num(Integer.toString(argc)));
+			Apcomplex variance = num();
+			for (int i = 1; i <= argc; i++) {
+				Apcomplex data = num(args[i]);
+				Apcomplex dfm = data.subtract(avg);
+				variance = variance.add(ApcomplexMath.pow(dfm, 2));
+			}
+			variance = variance.divide(num(Integer.toString(argc)));
+			Apcomplex stdev = ApcomplexMath.sqrt(variance);
+			System.out.println(fc(stdev));
+		} else if (opcode == 33) {
+			Apcomplex data = num(args[1]);
+			Apcomplex mean = num(args[2]);
+			Apcomplex stdev = num(args[3]);
+
+			Apcomplex zscore = data.subtract(mean);
+			zscore = zscore.divide(stdev);
+			System.out.println(fc(zscore));
+		} else if (opcode == 34) {
+			ArrayList<Apfloat> unsorted = new ArrayList<>();
+			for (int i = 1; i <= argc; i++) {
+				unsorted.add(num(args[i]).real());
+			}
+
+			Apfloat[] sorted = MathUtils.sort((Apfloat[]) unsorted.toArray());
+
+			for (int i = 0; i < sorted.length; i++) {
+				System.out.print(sorted[i].toString(true) + " ");
+			}
+		} else if (opcode == 35) {
+			Apcomplex radius = num(args[1]);
+			Apcomplex pi = num(ApfloatMath.pi(NUMBER_PRECISION).toString(true));
+			Apcomplex c = radius.multiply(MathUtils.TWO_INT).multiply(pi);
+			System.out.println(fc(c));
+		} else if (opcode == 36) {
+			System.out.println("Mark your triangle: angle A across from side A, angle B across from side B, angle C across from side C");
+			Apcomplex angleA = num(args[1]);
+			Apcomplex angleB = num(args[2]);
+			Apcomplex sideA = num(args[3]);
+
+			Apcomplex sinAngleA = ApcomplexMath.sin(MathUtils.toRadians(angleA));
+			Apcomplex sinAngleB = ApcomplexMath.sin(MathUtils.toRadians(angleB));
+
+			Apcomplex a = sideA.divide(sinAngleA);
+			Apcomplex sideB = a.multiply(sinAngleB);
+			System.out.println(fc(sideB));
+		} else if (opcode == 37) {
+			System.out.println("Mark your triangle: angle A across from side A, angle B across from side B, angle C across from side C");
+			Apcomplex sideA = num(args[1]);
+			Apcomplex sideB = num(args[2]);
+			Apcomplex sideC = num(args[3]);
+
+			Apcomplex sideASquared = ApcomplexMath.pow(sideA, 2);
+			Apcomplex sideBSquared = ApcomplexMath.pow(sideB, 2);
+			Apcomplex sideCSquared = ApcomplexMath.pow(sideC, 2);
+
+			Apcomplex twoAB = sideA.multiply(sideB).multiply(MathUtils.TWO);
+			Apcomplex cosAngleC = sideASquared.add(sideBSquared).subtract(sideCSquared);
+
+			cosAngleC = cosAngleC.divide(twoAB);
+			Apcomplex angleC = MathUtils.toDegrees(ApcomplexMath.acos(cosAngleC));
+			System.out.println(fc(angleC));
 		} else if (opcode == -1) {
 			System.out.println("amath-ng: ERROR: Review your argument count!");
 		} else if (opcode == -2) {

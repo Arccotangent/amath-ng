@@ -1,9 +1,7 @@
 package net.arccotangent.amathng;
 
-import org.apfloat.Apcomplex;
-import org.apfloat.ApcomplexMath;
-import org.apfloat.Apint;
-import org.apfloat.ApintMath;
+import org.apache.commons.lang3.StringUtils;
+import org.apfloat.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -21,6 +19,54 @@ public class MathUtils {
 	public static final Apint THREE_INT = new Apint("3");
 	public static final Apcomplex FOUR = Main.num("4");
 	public static final Apint FOUR_INT = new Apint("4");
+	public static final Apcomplex TEN = Main.num("10");
+	public static final Apint TEN_INT = new Apint("10");
+	public static final Apcomplex ONE_HUNDRED = Main.num("100");
+	public static final Apint ONE_HUNDRED_INT = new Apint("100");
+
+	public static Apcomplex toDegrees(Apcomplex radian) {
+		Apcomplex a = Main.num("180").divide(ApfloatMath.pi(Main.NUMBER_PRECISION));
+		return radian.multiply(a);
+	}
+
+	public static Apcomplex toRadians(Apcomplex degree) {
+		Apcomplex a = ApfloatMath.pi(Main.NUMBER_PRECISION).divide(Main.num("180"));
+		return degree.multiply(a);
+	}
+
+	public static Apfloat[] sort(Apfloat[] unsorted) {
+		//bubble sort
+		Apfloat[] sorted = unsorted;
+
+		for (int i = 0; i < sorted.length; i++) {
+			for (int j = i + 1; j < sorted.length; j++) {
+				Apfloat tmp = Main.num().real();
+				if (sorted[i].compareTo(sorted[j]) == 1) {
+					tmp = sorted[i];
+					sorted[i] = sorted[j];
+					sorted[j] = tmp;
+				}
+			}
+		}
+		return sorted;
+	}
+
+	public static Apcomplex getCompoundInterest(Apcomplex principal, Apcomplex pct_rate, Apcomplex compounds, Apcomplex time) {
+		pct_rate = pct_rate.divide(ONE_HUNDRED);
+
+		Apcomplex total_compounds = compounds.multiply(time);
+		Apcomplex urate = ONE.add(pct_rate);
+		urate = urate.divide(compounds);
+		Apcomplex factor = ApcomplexMath.pow(urate, total_compounds);
+
+		return principal.multiply(factor);
+	}
+
+	public static Apcomplex getPercentError(Apcomplex accepted, Apcomplex experimental) {
+		Apcomplex numer = ApcomplexMath.abs(accepted.subtract(experimental));
+		Apcomplex error = numer.divide(accepted);
+		return error.multiply(ONE_HUNDRED);
+	}
 
 	public static Apcomplex getDiscrimSquared(Apcomplex a, Apcomplex b, Apcomplex c) {
 		Apcomplex b2 = b.multiply(b);
@@ -79,14 +125,6 @@ public class MathUtils {
 		factorz.add(dx);
 
 		return factorz;
-	}
-
-	public static Apint gcd(Apint a, Apint b) {
-		Apint r = a.mod(b);
-		if (!r.equals(ZERO_INT)) {
-			return gcd(b, r);
-		}
-		return b;
 	}
 
 	public static Apcomplex[] getVertex(Apcomplex a, Apcomplex b, Apcomplex c) {

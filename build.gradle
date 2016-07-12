@@ -15,7 +15,6 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
     compile group: 'org.apfloat', name: 'apfloat', version: '1.8.2'
     compile group: 'org.json', name: 'json', version: '20160212'
-    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 }
 
 //noinspection GroovyAssignabilityCheck
