@@ -76,6 +76,7 @@ The default config will look like this:
 ```
 
 precision = Number precision in significant figures
+
 certainty = Certainty on the prime test. Higher values yield more certainty at the cost of more processing power
 
 ### Answer precision
