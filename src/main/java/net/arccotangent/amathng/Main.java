@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	public static final String VERSION = "20160712";
+	public static final String VERSION = "20160713";
 	public static final long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static final int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
 
@@ -167,7 +167,7 @@ public class Main {
 					"cpi <principal> <% rate> <compounds per year> <time in years> - Calculate compound interest\n" +
 					"getf <number> - Get factors of number in bundles of 2, then display their sum (to assist in solving quadratic equations using the factoring method)\n" +
 					"st <term number> <common difference> <first term> - Find the nth (TERM NUMBER) term of an arithmetic sequence\n" +
-					"ss <term count> <common difference> <first term> <nth term> - Find the sum of n (TERM COUNT) terms in an arithmetic sequence\n" +
+					"ss <term count> <first term> <nth term> - Find the sum of n (TERM COUNT) terms in an arithmetic sequence\n" +
 					"ncr <n> <r> - Combination (nCr)\n" +
 					"npr <n> <r> - Permutation (nPr)\n" +
 					"\n--Geometry--\n\n" +
@@ -442,12 +442,15 @@ public class Main {
 			for (int i = 1; i <= argc; i++) {
 				unsorted.add(num(args[i]).real());
 			}
+			Apfloat[] messy = new Apfloat[unsorted.size()];
+			messy = unsorted.toArray(messy);
 
-			Apfloat[] sorted = MathUtils.sort((Apfloat[]) unsorted.toArray());
+			Apfloat[] sorted = MathUtils.sort(messy);
 
 			for (int i = 0; i < sorted.length; i++) {
 				System.out.print(sorted[i].toString(true) + " ");
 			}
+			System.out.println("");
 		} else if (opcode == 35) {
 			Apcomplex radius = num(args[1]);
 			Apcomplex pi = num(ApfloatMath.pi(NUMBER_PRECISION).toString(true));
@@ -573,12 +576,7 @@ public class Main {
 			Apcomplex t0 = Cubic.getT0(a, b, c);
 			Apcomplex t1 = Cubic.getT1(a, b, c, d);
 
-			//System.out.println("T0 = " + fc(t0));
-			//System.out.println("T1 = " + fc(t1));
-
-
 			Apcomplex C = Cubic.getC(t0, t1);
-			//System.out.println("C = " + fc(C));
 
 			Apcomplex[] solutionz = Cubic.getSolutions(a, b, c, d, C, t0, discrim);
 
@@ -589,6 +587,39 @@ public class Main {
 			System.out.println("x1 = " + fc(solutionA));
 			System.out.println("x2 = " + fc(solutionB));
 			System.out.println("x3 = " + fc(solutionC));
+		} else if (opcode == 50) {
+			Apcomplex term_num = num(args[1]);
+			Apcomplex common_diff = num(args[2]);
+			Apcomplex a1 = num(args[3]);
+
+			term_num = term_num.subtract(MathUtils.ONE);
+			Apcomplex an = a1.add(common_diff.multiply(term_num));
+			System.out.println(fc(an));
+		} else if (opcode == 51) {
+			Apcomplex term_count = num(args[1]);
+			Apcomplex a1 = num(args[2]);
+			Apcomplex an = num(args[3]);
+
+			Apcomplex snNumer = term_count.multiply(a1.add(an));
+			Apcomplex sn = snNumer.divide(MathUtils.TWO);
+			System.out.println(fc(sn));
+		} else if (opcode == 52) {
+			Apint n = new Apint(args[1]);
+			Apint r = new Apint(args[2]);
+
+			Apint num = MathUtils.combination(n, r);
+			System.out.println(num.toString(true));
+		} else if (opcode == 53) {
+			Apint n = new Apint(args[1]);
+			Apint r = new Apint(args[2]);
+
+			Apint num = MathUtils.permutation(n, r);
+			System.out.println(num.toString(true));
+		} else if (opcode == 54) {
+			int bits = Integer.parseInt(args[1]);
+
+			Apint prime = MathUtils.generateRandomPrime(bits);
+			System.out.println(prime.toString(true));
 		} else if (opcode == -1) {
 			System.out.println("amath-ng: ERROR: Review your argument count!");
 		} else if (opcode == -2) {

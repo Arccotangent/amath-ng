@@ -248,6 +248,31 @@ public class Opcode {
 				return 49;
 			else
 				return -1;
+		} else if (operation.equalsIgnoreCase("st")) {
+			if (argc == 3)
+				return 50;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("ss")) {
+			if (argc == 3)
+				return 51;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("ncr")) {
+			if (argc == 2)
+				return 52;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("npr")) {
+			if (argc == 2)
+				return 53;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("genprm")) {
+			if (argc == 1)
+				return 54;
+			else
+				return -1;
 		} else {
 			return -2;
 		}

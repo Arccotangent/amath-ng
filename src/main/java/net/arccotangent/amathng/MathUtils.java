@@ -35,13 +35,31 @@ public class MathUtils {
 		return degree.multiply(a);
 	}
 
+	public static Apint combination(Apint n, Apint r) {
+		if (n.compareTo(r) == -1) {
+			return ZERO_INT;
+		}
+
+		Apint numer = factorial(n);
+		Apint denom = factorial(r).multiply(factorial(n.subtract(r)));
+
+		return numer.divide(denom);
+	}
+
+	public static Apint permutation(Apint n, Apint r) {
+		Apint numer = factorial(n);
+		Apint denom = factorial(n.subtract(r));
+
+		return numer.divide(denom);
+	}
+
 	public static Apfloat[] sort(Apfloat[] unsorted) {
 		//bubble sort
 		Apfloat[] sorted = unsorted;
 
 		for (int i = 0; i < sorted.length; i++) {
 			for (int j = i + 1; j < sorted.length; j++) {
-				Apfloat tmp = Main.num().real();
+				Apfloat tmp;
 				if (sorted[i].compareTo(sorted[j]) == 1) {
 					tmp = sorted[i];
 					sorted[i] = sorted[j];
@@ -70,10 +88,9 @@ public class MathUtils {
 	}
 
 	public static Apint generateRandomPrime(int bits) {
-		BigInteger tmp;
-		do {
-			tmp = new BigInteger(bits, new SecureRandom());
-		} while(!tmp.isProbablePrime(Main.CERTAINTY));
+		SecureRandom rng = new SecureRandom();
+		BigInteger tmp = new BigInteger(bits, rng);
+		tmp = tmp.nextProbablePrime(); //Uses a certainty of 100 (amath-ng's default), which should be good enough
 
 		return new Apint(tmp);
 	}
