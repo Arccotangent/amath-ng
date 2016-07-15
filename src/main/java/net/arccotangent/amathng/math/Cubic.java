@@ -1,12 +1,14 @@
-package net.arccotangent.amathng;
+package net.arccotangent.amathng.math;
 
+import net.arccotangent.amathng.MathUtils;
+import net.arccotangent.amathng.utils.NumberHelper;
 import org.apfloat.Apcomplex;
 import org.apfloat.ApcomplexMath;
 
 public class Cubic {
 
-	public static Apcomplex getCubeRootOfUnity() {
-		Apcomplex isqrt3 = ApcomplexMath.sqrt(Main.num("-3"));
+	private static Apcomplex getCubeRootOfUnity() {
+		Apcomplex isqrt3 = ApcomplexMath.sqrt(NumberHelper.create("-3"));
 		Apcomplex numer = isqrt3.subtract(MathUtils.ONE); //same as adding -1
 
 		return numer.divide(MathUtils.TWO);
@@ -15,7 +17,7 @@ public class Cubic {
 	public static Apcomplex getDiscrim(Apcomplex a, Apcomplex b, Apcomplex c, Apcomplex d) {
 		//discriminant = 18abcd - 4b^3d + b^2c^2 - 4ac^3 - 27a^2d^2
 
-		Apcomplex term1 = Main.num("18").multiply(a).multiply(b).multiply(c).multiply(d);
+		Apcomplex term1 = NumberHelper.create("18").multiply(a).multiply(b).multiply(c).multiply(d);
 
 		Apcomplex bCubed = ApcomplexMath.pow(b, 3);
 		Apcomplex term2 = bCubed.multiply(d).multiply(MathUtils.FOUR);
@@ -29,10 +31,9 @@ public class Cubic {
 
 		Apcomplex aSquared = ApcomplexMath.pow(a, 2);
 		Apcomplex dSquared = ApcomplexMath.pow(d, 2);
-		Apcomplex term5 = Main.num("27").multiply(aSquared).multiply(dSquared);
+		Apcomplex term5 = NumberHelper.create("27").multiply(aSquared).multiply(dSquared);
 
-		Apcomplex discrim = term1.subtract(term2).add(term3).subtract(term4).subtract(term5);
-		return discrim;
+		return term1.subtract(term2).add(term3).subtract(term4).subtract(term5);
 	}
 
 	public static Apcomplex getT0(Apcomplex a, Apcomplex b, Apcomplex c) {
@@ -46,10 +47,10 @@ public class Cubic {
 		Apcomplex bCubed = ApcomplexMath.pow(b, 3);
 		Apcomplex term1 = bCubed.multiply(MathUtils.TWO);
 
-		Apcomplex term2 = Main.num("9").multiply(a).multiply(b).multiply(c);
+		Apcomplex term2 = NumberHelper.create("9").multiply(a).multiply(b).multiply(c);
 
 		Apcomplex aSquared = ApcomplexMath.pow(a, 2);
-		Apcomplex term3 = Main.num("27").multiply(aSquared).multiply(d);
+		Apcomplex term3 = NumberHelper.create("27").multiply(aSquared).multiply(d);
 
 		return term1.subtract(term2).add(term3);
 	}
@@ -73,15 +74,13 @@ public class Cubic {
 		if (addSign) {
 			Apcomplex cbrtNumer = t1.add(cbrtNumerTerm2);
 			Apcomplex cbrt = cbrtNumer.divide(cbrtDenom);
-			Apcomplex c = ApcomplexMath.cbrt(cbrt);
 
-			return c;
+			return ApcomplexMath.cbrt(cbrt);
 		} else {
 			Apcomplex cbrtNumer = t1.subtract(cbrtNumerTerm2);
 			Apcomplex cbrt = cbrtNumer.divide(cbrtDenom);
-			Apcomplex c = ApcomplexMath.cbrt(cbrt);
 
-			return c;
+			return ApcomplexMath.cbrt(cbrt);
 		}
 	}
 
@@ -90,13 +89,12 @@ public class Cubic {
 
 		if (t0.equals(MathUtils.ZERO) && discrim.equals(MathUtils.ZERO)) { //triple root
 			Apcomplex threeA = a.multiply(MathUtils.THREE);
-			Apcomplex neg_b = b.negate();
-			Apcomplex sol = neg_b.divide(threeA);
+			Apcomplex sol = b.negate().divide(threeA);
 			solutionz[0] = sol;
 			solutionz[1] = sol;
 			solutionz[2] = sol;
 		} else if (discrim.equals(MathUtils.ZERO) && !t0.equals(MathUtils.ZERO)) { //double root
-			Apcomplex nineAD = Main.num("9").multiply(a).multiply(d);
+			Apcomplex nineAD = NumberHelper.create("9").multiply(a).multiply(d);
 			Apcomplex bc = b.multiply(c);
 			Apcomplex twoT0 = t0.multiply(MathUtils.TWO);
 
@@ -108,7 +106,7 @@ public class Cubic {
 
 			Apcomplex fourABC = MathUtils.FOUR.multiply(a).multiply(b).multiply(c);
 			Apcomplex aSquared = ApcomplexMath.pow(a, 2);
-			Apcomplex nineA2D = Main.num("9").multiply(aSquared).multiply(d);
+			Apcomplex nineA2D = NumberHelper.create("9").multiply(aSquared).multiply(d);
 			Apcomplex bCubed = ApcomplexMath.pow(b, 3);
 			Apcomplex aXT0 = a.multiply(t0);
 
@@ -158,49 +156,5 @@ public class Cubic {
 
 		return solutionz;
 	}
-
-	/*
-	public static Apcomplex getSolutionA(Apcomplex a, Apcomplex b, Apcomplex C, Apcomplex t0) {
-		Apcomplex negOneOver3A = MathUtils.ONE.divide(MathUtils.THREE.multiply(a));
-		negOneOver3A = negOneOver3A.negate();
-
-		Apcomplex cbrtOfUnityToK = MathUtils.ONE;
-		Apcomplex parTerm2 = C.multiply(cbrtOfUnityToK);
-
-		Apcomplex parTerm3 = t0.divide(parTerm2);
-
-		Apcomplex term2 = b.add(parTerm2).add(parTerm3);
-
-		return negOneOver3A.multiply(term2);
-	}
-
-	public static Apcomplex getSolutionB(Apcomplex a, Apcomplex b, Apcomplex C, Apcomplex t0) {
-		Apcomplex negOneOver3A = MathUtils.ONE.divide(MathUtils.THREE.multiply(a));
-		negOneOver3A = negOneOver3A.negate();
-
-		Apcomplex cbrtOfUnityToK = getCubeRootOfUnity();
-		Apcomplex parTerm2 = C.multiply(cbrtOfUnityToK);
-
-		Apcomplex parTerm3 = t0.divide(parTerm2);
-
-		Apcomplex term2 = b.add(parTerm2).add(parTerm3);
-
-		return negOneOver3A.multiply(term2);
-	}
-
-	public static Apcomplex getSolutionC(Apcomplex a, Apcomplex b, Apcomplex C, Apcomplex t0) {
-		Apcomplex negOneOver3A = MathUtils.ONE.divide(MathUtils.THREE.multiply(a));
-		negOneOver3A = negOneOver3A.negate();
-
-		Apcomplex cbrtOfUnityToK = getCubeRootOfUnity().multiply(getCubeRootOfUnity());
-		Apcomplex parTerm2 = C.multiply(cbrtOfUnityToK);
-
-		Apcomplex parTerm3 = t0.divide(parTerm2);
-
-		Apcomplex term2 = b.add(parTerm2).add(parTerm3);
-
-		return negOneOver3A.multiply(term2);
-	}
-	*/
 
 }

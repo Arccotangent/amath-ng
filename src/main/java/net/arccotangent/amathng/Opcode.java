@@ -59,7 +59,7 @@ public class Opcode {
 			else
 				return -1;
 		} else if (operation.equalsIgnoreCase("rand")) {
-			if (argc == 2 || argc == 3)
+			if (argc == 2)
 				return 12;
 			else
 				return -1;
