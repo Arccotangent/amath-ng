@@ -1,8 +1,8 @@
 package net.arccotangent.amathng;
 
-import net.arccotangent.amathng.math.Cubic;
-import net.arccotangent.amathng.math.Quadratic;
-import net.arccotangent.amathng.math.Trigonometry;
+import net.arccotangent.amathng.math.*;
+import net.arccotangent.amathng.utils.Configuration;
+import net.arccotangent.amathng.utils.MathUtils;
 import net.arccotangent.amathng.utils.NumberHelper;
 import org.apfloat.*;
 
@@ -11,9 +11,10 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160715";
-	public static final long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
-	static final int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
+	private static final String VERSION = "20160718";
+	
+	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
+	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
 
 	public static void main(String[] args) {
 		int argc = args.length - 1;
@@ -50,7 +51,7 @@ public class Main {
 					"\n--Geometry--\n\n" +
 					"aoc <radius> - Calculate approximate area of circle\n" +
 					"hypot <side1> <side2> - Get hypotenuse of right triangle\n" +
-					//"dst <x1> <y1> <x2> <y2> - Get distance between 2 points\n" +
+					"dst <x1> <y1> <x2> <y2> - Get distance between 2 points\n" +
 					"ccm <radius> - Calculate circumference of circle\n" +
 					"\n--Statistics--\n\n" +
 					"avg <numbers> - Calculate average of numbers\n" +
@@ -87,9 +88,8 @@ public class Main {
 					"PRIMALITY TEST CERTAINTY IS SET TO " + CERTAINTY + "\n");
 			System.exit(1);
 		}
-
+		
 		Configuration.createConfiguration(); //Create configuration if and only if it doesn't already exist
-
 		int opcode = Opcode.getOpcode(args[0], argc);
 
 		switch (opcode) {
@@ -213,12 +213,12 @@ public class Main {
 				Apcomplex b = NumberHelper.create(args[2]);
 				Apcomplex c = NumberHelper.create(args[3]);
 
-				Apcomplex[] vertex = MathUtils.getVertex(a, b, c);
+				Apcomplex[] vertex = Vertex.getVertex(a, b, c);
 				//vertex[0] = x, vertex[1] = y
 				System.out.println("Vertex: (" + vertex[0] + ", " + vertex[1] + ")");
 				System.out.println("Vertex form equation: y = (x + " + vertex[0].negate() + ")^2 + " + vertex[1]);
 
-				boolean verified = MathUtils.verifyVertex(a, b, vertex[0]);
+				boolean verified = Vertex.verifyVertex(a, b, vertex[0]);
 				System.out.println(verified ? "Vertex verified" : "Vertex NOT verified!");
 				break;
 			}
@@ -226,10 +226,7 @@ public class Main {
 				Apcomplex a = NumberHelper.create(args[1]);
 				Apcomplex b = NumberHelper.create(args[2]);
 
-				Apcomplex a2 = ApcomplexMath.pow(a, 2);
-				Apcomplex b2 = ApcomplexMath.pow(b, 2);
-				Apcomplex c2 = a2.add(b2);
-				Apcomplex c = ApcomplexMath.sqrt(c2);
+				Apcomplex c = Geometry.hypot(a, b);
 				System.out.println(NumberHelper.format(c));
 				break;
 			}
@@ -321,7 +318,7 @@ public class Main {
 				Apcomplex compounds_year = NumberHelper.create(args[3]);
 
 				Apcomplex time = NumberHelper.create(args[4]);
-				Apcomplex total = MathUtils.getCompoundInterest(principal, pct_rate, compounds_year, time);
+				Apcomplex total = Algebra.getCompoundInterest(principal, pct_rate, compounds_year, time);
 				System.out.println(NumberHelper.format(total));
 				break;
 			}
@@ -545,6 +542,19 @@ public class Main {
 				int bits = Integer.parseInt(args[1]);
 				Apint prime = MathUtils.generateRandomPrime(bits);
 				System.out.println(prime.toString(true));
+				break;
+			}
+			case 55: {
+				Apcomplex x1 = NumberHelper.create(args[1]);
+				Apcomplex x2 = NumberHelper.create(args[2]);
+				Apcomplex y1 = NumberHelper.create(args[3]);
+				Apcomplex y2 = NumberHelper.create(args[4]);
+				
+				Apcomplex distanceSquared = Geometry.getDistanceSquared(x1, x2, y1, y2);
+				Apcomplex distance = ApcomplexMath.sqrt(distanceSquared);
+				
+				System.out.println("distance^2 = " + NumberHelper.format(distanceSquared));
+				System.out.println("distance = " + NumberHelper.format(distance));
 				break;
 			}
 			case -1:

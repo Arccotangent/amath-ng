@@ -1,8 +1,8 @@
 package net.arccotangent.amathng;
 
-public class Opcode {
+class Opcode {
 
-	public static int getOpcode(String operation, int argc) {
+	static int getOpcode(String operation, int argc) {
 		if (operation.equalsIgnoreCase("add")) {
 			if (argc >= 2)
 				return 1;
@@ -271,6 +271,11 @@ public class Opcode {
 		} else if (operation.equalsIgnoreCase("genprm")) {
 			if (argc == 1)
 				return 54;
+			else
+				return -1;
+		} else if (operation.equalsIgnoreCase("dst")) {
+			if (argc == 4)
+				return 55;
 			else
 				return -1;
 		} else {

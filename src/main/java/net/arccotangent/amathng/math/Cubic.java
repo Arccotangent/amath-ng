@@ -1,6 +1,6 @@
 package net.arccotangent.amathng.math;
 
-import net.arccotangent.amathng.MathUtils;
+import net.arccotangent.amathng.utils.MathUtils;
 import net.arccotangent.amathng.utils.NumberHelper;
 import org.apfloat.Apcomplex;
 import org.apfloat.ApcomplexMath;

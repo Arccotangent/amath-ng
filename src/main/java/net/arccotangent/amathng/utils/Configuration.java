@@ -1,4 +1,4 @@
-package net.arccotangent.amathng;
+package net.arccotangent.amathng.utils;
 
 import org.json.JSONObject;
 
@@ -9,9 +9,9 @@ import java.nio.file.Files;
 
 public class Configuration {
 
-	public static final String PATH = System.getProperty("user.home") + "/amath-ng.conf";
-	public static final long DEFAULT_PRECISION = 200;
-	public static final int DEFAULT_CERTAINTY = 100;
+	private static final String PATH = System.getProperty("user.home") + "/amath-ng.conf";
+	private static final long DEFAULT_PRECISION = 200;
+	private static final int DEFAULT_CERTAINTY = 100;
 
 	public static void createConfiguration() {
 		File c = new File(PATH);

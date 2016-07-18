@@ -1,7 +1,9 @@
 group 'net.arccotangent'
-version '20160715'
+version '20160718'
 
 apply plugin: 'java'
+
+sourceCompatibility = 1.7
 
 repositories {
     mavenCentral()
