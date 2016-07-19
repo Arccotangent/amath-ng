@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160719";
+	private static final String VERSION = "20160719-1";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -75,6 +75,9 @@ public class Main {
 					"\n--Science--\n\n" +
 					"pcr <accepted> <experimental> - Calculate percent error\n" +
 					"hl <amount> - Print amount of half lives with respective ratios\n" +
+					"\n--Unit Conversions--\n\n" +
+					"f2c <fahrenheit> - Convert degrees Fahrenheit into degrees Celsius\n" +
+					"c2f <celsius> - Convert degrees Celsius into degrees Fahrenheit\n" +
 					"\n--Miscellaneous--\n\n" +
 					"sf <1 number> - Get amount of significant figures in number\n" +
 					"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -557,6 +560,26 @@ public class Main {
 				
 				System.out.println("distance^2 = " + NumberHelper.format(distanceSquared));
 				System.out.println("distance = " + NumberHelper.format(distance));
+				break;
+			}
+			case FAHRENHEIT_TO_CELSIUS: {
+				Apcomplex fahrenheit = NumberHelper.create(args[1]);
+				
+				Apcomplex celsius = fahrenheit.subtract(NumberHelper.create("32"));
+				Apcomplex fiveOver9 = NumberHelper.create("5").divide(NumberHelper.create("9"));
+				celsius = celsius.multiply(fiveOver9);
+				
+				System.out.println(NumberHelper.format(celsius));
+				break;
+			}
+			case CELSIUS_TO_FAHRENHEIT: {
+				Apcomplex celsius = NumberHelper.create(args[1]);
+				
+				Apcomplex nineOver5 = NumberHelper.create("1.8");
+				Apcomplex fahrenheit = celsius.multiply(nineOver5);
+				fahrenheit = fahrenheit.add(NumberHelper.create("32"));
+				
+				System.out.println(NumberHelper.format(fahrenheit));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

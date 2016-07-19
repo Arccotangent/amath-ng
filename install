@@ -1,0 +1,19 @@
+#!/bin/bash
+####################################################################
+#
+# amath-ng installation script
+# Symlinks amath-ng to /usr/local/bin
+#
+# Must be run as root!
+#
+####################################################################
+
+if [ $UID != "0" ]
+then
+	echo "You must run this script as root!"
+	exit 0
+fi
+
+ln -fs "$PWD/amath-ng" "/usr/local/bin/amath-ng"
+echo "Script installed."
+

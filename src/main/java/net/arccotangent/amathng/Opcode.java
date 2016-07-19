@@ -278,6 +278,16 @@ class Opcode {
 				return Operation.DISTANCE;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("f2c")) {
+			if (argc == 1)
+				return Operation.FAHRENHEIT_TO_CELSIUS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("c2f")) {
+			if (argc == 1)
+				return Operation.CELSIUS_TO_FAHRENHEIT;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}
