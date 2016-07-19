@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160718";
+	private static final String VERSION = "20160719";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -90,10 +90,10 @@ public class Main {
 		}
 		
 		Configuration.createConfiguration(); //Create configuration if and only if it doesn't already exist
-		int opcode = Opcode.getOpcode(args[0], argc);
+		Operation op = Opcode.getOpcode(args[0], argc);
 
-		switch (opcode) {
-			case 1: {
+		switch (op) {
+			case ADDITION: {
 				Apcomplex res = NumberHelper.create();
 				for (int i = 1; i < args.length; i++) {
 					res = res.add(NumberHelper.create(args[i]));
@@ -101,7 +101,7 @@ public class Main {
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 2: {
+			case SUBTRACTION: {
 				Apcomplex res = NumberHelper.create(args[1]);
 				for (int i = 2; i < args.length; i++) {
 					res = res.subtract(NumberHelper.create(args[i]));
@@ -109,7 +109,7 @@ public class Main {
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 3: {
+			case MULTIPLICATION: {
 				Apcomplex res = NumberHelper.create(args[1]);
 				for (int i = 2; i < args.length; i++) {
 					res = res.multiply(NumberHelper.create(args[i]));
@@ -117,7 +117,7 @@ public class Main {
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 4: {
+			case DIVISION: {
 				Apcomplex res = NumberHelper.create(args[1]);
 				for (int i = 2; i < args.length; i++) {
 					res = res.divide(NumberHelper.create(args[i]));
@@ -125,20 +125,20 @@ public class Main {
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 5: {
+			case EXPONENTIATION: {
 				Apcomplex res = NumberHelper.create(args[1]);
 				Apcomplex exponent = NumberHelper.create(args[2]);
 				res = ApcomplexMath.pow(res, exponent);
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 6: {
+			case SQUARE_ROOT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = ApcomplexMath.sqrt(num);
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 7: {
+			case QUADRATIC: {
 				Apcomplex a = NumberHelper.create(args[1]);
 				Apcomplex b = NumberHelper.create(args[2]);
 				Apcomplex c = NumberHelper.create(args[3]);
@@ -157,32 +157,31 @@ public class Main {
 				System.out.println("x2 = " + NumberHelper.format(solutions[1]));
 				break;
 			}
-			case 8: {
-				Apcomplex num = NumberHelper.create(args[1]);
-				System.out.println(MathUtils.getSignificantFigures(num));
+			case SIGNIFICANT_FIGURES: {
+				System.out.println(MathUtils.getSignificantFigures(args[1]));
 				break;
 			}
-			case 9: {
+			case AREA_OF_CIRCLE: {
 				Apcomplex radius = NumberHelper.create(args[1]);
 				Apcomplex area = radius.multiply(radius);
 				area = area.multiply(ApfloatMath.pi(NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(area));
 				break;
 			}
-			case 10: {
+			case MODULUS: {
 				Apcomplex a = NumberHelper.create(args[1]);
 				Apcomplex b = NumberHelper.create(args[2]);
 				Apcomplex mod = a.real().mod(b.real());
 				System.out.println(NumberHelper.format(mod));
 				break;
 			}
-			case 11: {
+			case PRIMALITY_TEST: {
 				Apint num = new Apint(args[1]);
 				boolean prime = num.toBigInteger().isProbablePrime(CERTAINTY);
 				System.out.println((prime ? "Probably prime (Probability = " + MathUtils.probability(CERTAINTY).multiply(new Apfloat(100)).toString(true) + "%)" : "Definitely composite"));
 				break;
 			}
-			case 12: {
+			case RANDOM_NUMBER: {
 				SecureRandom rng = new SecureRandom();
 				Apint min = new Apint(args[1]);
 				Apint max = new Apint(args[2]);
@@ -192,7 +191,7 @@ public class Main {
 				System.out.println("Base 16 number: " + num.toString(true));
 				break;
 			}
-			case 13: {
+			case FACTOR: {
 				Apint num = new Apint(args[1]);
 				ArrayList<Apint> factorz = MathUtils.factor(num);
 				System.out.print(num.toString(true) + ":");
@@ -202,13 +201,13 @@ public class Main {
 				System.out.println("");
 				break;
 			}
-			case 14: {
+			case GREATEST_COMMON_DENOMINATOR: {
 				Apint a = new Apint(args[1]);
 				Apint b = new Apint(args[2]);
 				System.out.println(ApintMath.gcd(a, b).toString(true));
 				break;
 			}
-			case 15: {
+			case VERTEX: {
 				Apcomplex a = NumberHelper.create(args[1]);
 				Apcomplex b = NumberHelper.create(args[2]);
 				Apcomplex c = NumberHelper.create(args[3]);
@@ -222,7 +221,7 @@ public class Main {
 				System.out.println(verified ? "Vertex verified" : "Vertex NOT verified!");
 				break;
 			}
-			case 16: {
+			case HYPOTENUSE: {
 				Apcomplex a = NumberHelper.create(args[1]);
 				Apcomplex b = NumberHelper.create(args[2]);
 
@@ -230,74 +229,74 @@ public class Main {
 				System.out.println(NumberHelper.format(c));
 				break;
 			}
-			case 17: {
+			case FACTORIAL: {
 				Apint num = new Apint(args[1]);
 				Apint res = MathUtils.factorial(num);
 				System.out.println(res.toString(true));
 				break;
 			}
-			case 18: {
+			case SINE: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = ApcomplexMath.sin(MathUtils.toRadians(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 19: {
+			case COSINE: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = ApcomplexMath.cos(MathUtils.toRadians(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 20: {
+			case TANGENT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = ApcomplexMath.tan(MathUtils.toRadians(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 21: {
+			case ARCSINE: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.asin(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 22: {
+			case ARCCOSINE: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.acos(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 23: {
+			case ARCTANGENT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.atan(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 24: {
+			case CUBE_ROOT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex cbrtnum = ApcomplexMath.cbrt(num);
 				System.out.println(NumberHelper.format(cbrtnum));
 				break;
 			}
-			case 25: {
+			case LOGARITHM_E: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex logOfNum = ApcomplexMath.log(num);
 				System.out.println(NumberHelper.format(logOfNum));
 				break;
 			}
-			case 26: {
+			case LOGARITHM_10: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex log10OfNum = ApcomplexMath.log(num, MathUtils.TEN);
 				System.out.println(NumberHelper.format(log10OfNum));
 				break;
 			}
-			case 27: {
+			case PRINT_SQUARES: {
 				Apint num = new Apint(args[1]);
 				for (Apint i = MathUtils.ONE_INT; i.compareTo(num) < 1; i = i.add(MathUtils.ONE_INT)) {
 					System.out.println(ApintMath.pow(i, 2).toString(true));
 				}
 				break;
 			}
-			case 28: {
+			case PRINT_POWER: {
 				Apint num = new Apint(args[1]);
 				long p = Long.parseLong(args[2]);
 				for (Apint i = MathUtils.ONE_INT; i.compareTo(num) < 1; i = i.add(MathUtils.ONE_INT)) {
@@ -305,14 +304,15 @@ public class Main {
 				}
 				break;
 			}
-			case 29:
+			case PERCENT_ERROR: {
 				Apcomplex accepted = NumberHelper.create(args[1]);
 				Apcomplex experimental = NumberHelper.create(args[2]);
-
+				
 				Apcomplex error = MathUtils.getPercentError(accepted, experimental);
 				System.out.println(NumberHelper.format(error));
 				break;
-			case 30: {
+			}
+			case COMPOUND_INTEREST: {
 				Apcomplex principal = NumberHelper.create(args[1]);
 				Apcomplex pct_rate = NumberHelper.create(args[2]);
 				Apcomplex compounds_year = NumberHelper.create(args[3]);
@@ -322,16 +322,17 @@ public class Main {
 				System.out.println(NumberHelper.format(total));
 				break;
 			}
-			case 31:
+			case AVERAGE: {
 				Apcomplex result = NumberHelper.create();
 				for (int i = 1; i <= argc; i++) {
 					result = result.add(NumberHelper.create(args[i]));
 				}
-
+				
 				result = result.divide(NumberHelper.create(Integer.toString(argc)));
 				System.out.println(NumberHelper.format(result));
 				break;
-			case 32: {
+			}
+			case STANDARD_DEVIATION: {
 				Apcomplex total = NumberHelper.create();
 				for (int i = 1; i <= argc; i++) {
 					total = total.add(NumberHelper.create(args[i]));
@@ -352,7 +353,7 @@ public class Main {
 				System.out.println(NumberHelper.format(stdev));
 				break;
 			}
-			case 33: {
+			case Z_SCORE: {
 				Apcomplex data = NumberHelper.create(args[1]);
 				Apcomplex mean = NumberHelper.create(args[2]);
 				Apcomplex stdev = NumberHelper.create(args[3]);
@@ -362,31 +363,31 @@ public class Main {
 				System.out.println(NumberHelper.format(zscore));
 				break;
 			}
-			case 34:
+			case SORT: {
 				ArrayList<Apfloat> unsorted = new ArrayList<>();
 				for (int i = 1; i <= argc; i++) {
 					unsorted.add(NumberHelper.create(args[i]).real());
 				}
 				Apfloat[] messy = new Apfloat[unsorted.size()];
 				messy = unsorted.toArray(messy);
-
+				
 				Apfloat[] sorted = MathUtils.sort(messy);
-
+				
 				for (Apfloat aSorted : sorted) {
 					System.out.print(aSorted.toString(true) + " ");
 				}
 				System.out.println("");
-
-
+				
 				break;
-			case 35: {
+			}
+			case CIRCUMFERENCE: {
 				Apcomplex radius = NumberHelper.create(args[1]);
 				Apcomplex pi = NumberHelper.create(ApfloatMath.pi(NUMBER_PRECISION).toString(true));
 				Apcomplex c = radius.multiply(MathUtils.TWO_INT).multiply(pi);
 				System.out.println(NumberHelper.format(c));
 				break;
 			}
-			case 36: {
+			case LAW_OF_SINES: {
 				System.out.println("Mark your triangle: angle A across from side A, angle B across from side B, angle C across from side C");
 				Apcomplex angleA = NumberHelper.create(args[1]);
 				Apcomplex angleB = NumberHelper.create(args[2]);
@@ -396,7 +397,7 @@ public class Main {
 				System.out.println(NumberHelper.format(sideB));
 				break;
 			}
-			case 37: {
+			case LAW_OF_COSINES: {
 				System.out.println("Mark your triangle: angle A across from side A, angle B across from side B, angle C across from side C");
 				Apcomplex sideA = NumberHelper.create(args[1]);
 				Apcomplex sideB = NumberHelper.create(args[2]);
@@ -406,16 +407,17 @@ public class Main {
 				System.out.println(NumberHelper.format(angleC));
 				break;
 			}
-			case 38:
+			case PRINT_PRIMES: {
 				int amount = Integer.parseInt(args[1]);
-
+				
 				Apint[] primes = MathUtils.getPrimes(amount);
 				for (Apint prime1 : primes) {
 					System.out.println(prime1);
 				}
-
+				
 				break;
-			case 39: {
+			}
+			case HALF_LIFE: {
 				int num = Integer.parseInt(args[1]);
 				Apcomplex parent = MathUtils.ONE_HUNDRED;
 				Apcomplex daughter = MathUtils.ZERO;
@@ -426,63 +428,63 @@ public class Main {
 				}
 				break;
 			}
-			case 40: {
+			case COSECANT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.sin(MathUtils.toRadians(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 41: {
+			case SECANT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.cos(MathUtils.toRadians(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 42: {
+			case COTANGENT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.tan(MathUtils.toRadians(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 43: {
+			case ARCCOSECANT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.asin(MathUtils.ONE.divide(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 44: {
+			case ARCSECANT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.acos(MathUtils.ONE.divide(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 45: {
+			case ARCCOTANGENT: {
 				Apcomplex num = NumberHelper.create(args[1]);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.atan(MathUtils.ONE.divide(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 46: {
+			case LOGARITHM_BASE: {
 				Apcomplex base = NumberHelper.create(args[1]);
 				Apcomplex num = NumberHelper.create(args[2]);
 				Apcomplex res = ApcomplexMath.log(num, base);
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
-			case 47: {
+			case LEAST_COMMON_MULTIPLE: {
 				Apint a = new Apint(args[1]);
 				Apint b = new Apint(args[2]);
 				Apint lcm = ApintMath.lcm(a, b);
 				System.out.println(lcm.toString(true));
 				break;
 			}
-			case 48: {
+			case GET_FACTORS: {
 				Apint num = new Apint(args[1]);
 				Apint[] factors = MathUtils.getFactors(num);
 				MathUtils.printFactors(factors);
 				break;
 			}
-			case 49: {
+			case CUBIC: {
 				Apcomplex a = NumberHelper.create(args[1]);
 				Apcomplex b = NumberHelper.create(args[2]);
 				Apcomplex c = NumberHelper.create(args[3]);
@@ -504,7 +506,7 @@ public class Main {
 				System.out.println("x3 = " + NumberHelper.format(solutions[2]));
 				break;
 			}
-			case 50: {
+			case ARITHMETIC_SEQUENCE_TERM: {
 				Apcomplex term_num = NumberHelper.create(args[1]);
 				Apcomplex common_diff = NumberHelper.create(args[2]);
 				Apcomplex a1 = NumberHelper.create(args[3]);
@@ -514,7 +516,7 @@ public class Main {
 				System.out.println(NumberHelper.format(termN));
 				break;
 			}
-			case 51: {
+			case ARITHMETIC_SEQUENCE_SUM: {
 				Apcomplex term_count = NumberHelper.create(args[1]);
 				Apcomplex a1 = NumberHelper.create(args[2]);
 				Apcomplex an = NumberHelper.create(args[3]);
@@ -524,27 +526,27 @@ public class Main {
 				System.out.println(NumberHelper.format(sumOfSeries));
 				break;
 			}
-			case 52: {
+			case COMBINATION: {
 				Apint n = new Apint(args[1]);
 				Apint r = new Apint(args[2]);
 				Apint num = MathUtils.combination(n, r);
 				System.out.println(num.toString(true));
 				break;
 			}
-			case 53: {
+			case PERMUTATION: {
 				Apint n = new Apint(args[1]);
 				Apint r = new Apint(args[2]);
 				Apint num = MathUtils.permutation(n, r);
 				System.out.println(num.toString(true));
 				break;
 			}
-			case 54: {
+			case RANDOM_PRIME: {
 				int bits = Integer.parseInt(args[1]);
 				Apint prime = MathUtils.generateRandomPrime(bits);
 				System.out.println(prime.toString(true));
 				break;
 			}
-			case 55: {
+			case DISTANCE: {
 				Apcomplex x1 = NumberHelper.create(args[1]);
 				Apcomplex x2 = NumberHelper.create(args[2]);
 				Apcomplex y1 = NumberHelper.create(args[3]);
@@ -557,15 +559,18 @@ public class Main {
 				System.out.println("distance = " + NumberHelper.format(distance));
 				break;
 			}
-			case -1:
+			case INVALID_ARGUMENT_COUNT: {
 				System.out.println("amath-ng: ERROR: Review your argument count!");
 				break;
-			case -2:
+			}
+			case INVALID_OPERATION: {
 				System.out.println("amath-ng: ERROR: Invalid operation!");
 				break;
-			default:
-				System.out.println("amath-ng: ERROR: INVOPC - Please send this error to the developers! (opcode " + opcode + ", argc " + (argc + 1) + ", opargc " + argc + ")");
+			}
+			default: {
+				System.out.println("amath-ng: ERROR: INVOPC - Please send this error to the developers! (operation " + op + ", argc " + (argc + 1) + ", opargc " + argc + ")");
 				break;
+			}
 		}
 	}
 

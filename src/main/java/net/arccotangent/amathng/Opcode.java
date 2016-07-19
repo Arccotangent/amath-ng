@@ -2,284 +2,284 @@ package net.arccotangent.amathng;
 
 class Opcode {
 
-	static int getOpcode(String operation, int argc) {
+	static Operation getOpcode(String operation, int argc) {
 		if (operation.equalsIgnoreCase("add")) {
 			if (argc >= 2)
-				return 1;
+				return Operation.ADDITION;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("sub")) {
 			if (argc >= 2)
-				return 2;
+				return Operation.SUBTRACTION;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("mul")) {
 			if (argc >= 2)
-				return 3;
+				return Operation.MULTIPLICATION;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("div")) {
 			if (argc >= 2)
-				return 4;
+				return Operation.DIVISION;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("exp")) {
 			if (argc == 2)
-				return 5;
+				return Operation.EXPONENTIATION;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("sqrt")) {
 			if (argc == 1)
-				return 6;
+				return Operation.SQUARE_ROOT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("qdr")) {
 			if (argc == 3)
-				return 7;
+				return Operation.QUADRATIC;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("sf")) {
 			if (argc == 1)
-				return 8;
+				return Operation.SIGNIFICANT_FIGURES;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("aoc")) {
 			if (argc == 1)
-				return 9;
+				return Operation.AREA_OF_CIRCLE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("mod")) {
 			if (argc >= 2)
-				return 10;
+				return Operation.MODULUS;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("prm")) {
 			if (argc == 1)
-				return 11;
+				return Operation.PRIMALITY_TEST;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("rand")) {
 			if (argc == 2)
-				return 12;
+				return Operation.RANDOM_NUMBER;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("fac")) {
 			if (argc == 1)
-				return 13;
+				return Operation.FACTOR;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("gcd")) {
 			if (argc == 2)
-				return 14;
+				return Operation.GREATEST_COMMON_DENOMINATOR;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("vtx")) {
 			if (argc == 3)
-				return 15;
+				return Operation.VERTEX;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("hypot")) {
 			if (argc == 2)
-				return 16;
+				return Operation.HYPOTENUSE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("fct")) {
 			if (argc == 1)
-				return 17;
+				return Operation.FACTORIAL;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("sin")) {
 			if (argc == 1)
-				return 18;
+				return Operation.SINE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("cos")) {
 			if (argc == 1)
-				return 19;
+				return Operation.COSINE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("tan")) {
 			if (argc == 1)
-				return 20;
+				return Operation.TANGENT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("asin")) {
 			if (argc == 1)
-				return 21;
+				return Operation.ARCSINE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("acos")) {
 			if (argc == 1)
-				return 22;
+				return Operation.ARCCOSINE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("atan")) {
 			if (argc == 1)
-				return 23;
+				return Operation.ARCTANGENT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("cbrt")) {
 			if (argc == 1)
-				return 24;
+				return Operation.CUBE_ROOT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("log")) {
 			if (argc == 1)
-				return 25;
+				return Operation.LOGARITHM_E;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("log10")) {
 			if (argc == 1)
-				return 26;
+				return Operation.LOGARITHM_10;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("psq")) {
 			if (argc == 1)
-				return 27;
+				return Operation.PRINT_SQUARES;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("ppwr")) {
 			if (argc == 2)
-				return 28;
+				return Operation.PRINT_POWER;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("pcr")) {
 			if (argc == 2)
-				return 29;
+				return Operation.PERCENT_ERROR;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("cpi")) {
 			if (argc == 4)
-				return 30;
+				return Operation.COMPOUND_INTEREST;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("avg")) {
 			if (argc >= 2)
-				return 31;
+				return Operation.AVERAGE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("stdev")) {
 			if (argc >= 2)
-				return 32;
+				return Operation.STANDARD_DEVIATION;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("zsc")) {
 			if (argc == 3)
-				return 33;
+				return Operation.Z_SCORE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("ord")) {
 			if (argc >= 2)
-				return 34;
+				return Operation.SORT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("ccm")) {
 			if (argc == 1)
-				return 35;
+				return Operation.CIRCUMFERENCE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("los")) {
 			if (argc == 3)
-				return 36;
+				return Operation.LAW_OF_SINES;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("loc")) {
 			if (argc == 3)
-				return 37;
+				return Operation.LAW_OF_COSINES;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("pprm")) {
 			if (argc == 1)
-				return 38;
+				return Operation.PRINT_PRIMES;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("hl")) {
 			if (argc == 1)
-				return 39;
+				return Operation.HALF_LIFE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("csc")) {
 			if (argc == 1)
-				return 40;
+				return Operation.COSECANT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("sec")) {
 			if (argc == 1)
-				return 41;
+				return Operation.SECANT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("cot")) {
 			if (argc == 1)
-				return 42;
+				return Operation.COTANGENT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("acsc")) {
 			if (argc == 1)
-				return 43;
+				return Operation.ARCCOSECANT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("asec")) {
 			if (argc == 1)
-				return 44;
+				return Operation.ARCSECANT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("acot")) {
 			if (argc == 1)
-				return 45;
+				return Operation.ARCCOTANGENT;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("logb")) {
 			if (argc == 2)
-				return 46;
+				return Operation.LOGARITHM_BASE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("lcm")) {
 			if (argc == 2)
-				return 47;
+				return Operation.LEAST_COMMON_MULTIPLE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("getf")) {
 			if (argc == 1)
-				return 48;
+				return Operation.GET_FACTORS;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("cbc")) {
 			if (argc == 4)
-				return 49;
+				return Operation.CUBIC;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("st")) {
 			if (argc == 3)
-				return 50;
+				return Operation.ARITHMETIC_SEQUENCE_TERM;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("ss")) {
 			if (argc == 3)
-				return 51;
+				return Operation.ARITHMETIC_SEQUENCE_SUM;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("ncr")) {
 			if (argc == 2)
-				return 52;
+				return Operation.COMBINATION;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("npr")) {
 			if (argc == 2)
-				return 53;
+				return Operation.PERMUTATION;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("genprm")) {
 			if (argc == 1)
-				return 54;
+				return Operation.RANDOM_PRIME;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("dst")) {
 			if (argc == 4)
-				return 55;
+				return Operation.DISTANCE;
 			else
-				return -1;
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
-			return -2;
+			return Operation.INVALID_OPERATION;
 		}
 	}
 

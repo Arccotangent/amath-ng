@@ -1,6 +1,7 @@
 package net.arccotangent.amathng.utils;
 
 import net.arccotangent.amathng.Main;
+import org.apache.commons.lang3.StringUtils;
 import org.apfloat.*;
 
 import java.math.BigInteger;
@@ -115,10 +116,17 @@ public class MathUtils {
 		return error.multiply(ONE_HUNDRED);
 	}
 
-	public static long getSignificantFigures(Apcomplex input) {
-		return (input.scale() < 0
-						? input.precision() - input.scale()
-						: input.precision());
+	public static long getSignificantFigures(String inputStr) {
+		if (inputStr.contains(".")) {
+			inputStr = StringUtils.remove(inputStr, '.');
+			int firstNonZero = StringUtils.indexOfAnyBut(inputStr, '0');
+			return inputStr.substring(firstNonZero).length();
+		} else {
+			int firstNonZero = StringUtils.indexOfAnyBut(inputStr, '0');
+			String inputStrRev = StringUtils.reverse(inputStr);
+			int lastNonZero = inputStr.length() - StringUtils.indexOfAnyBut(inputStrRev, '0');
+			return inputStr.substring(firstNonZero, lastNonZero).length();
+		}
 	}
 
 	public static Apcomplex probability(int certainty) {
