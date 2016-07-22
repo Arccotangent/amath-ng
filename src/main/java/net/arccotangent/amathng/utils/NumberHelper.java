@@ -19,6 +19,10 @@ public class NumberHelper {
 			Apfloat real = ApfloatMath.pi(Main.NUMBER_PRECISION);
 			Apfloat imag = new Apfloat("0", Main.NUMBER_PRECISION);
 			return new Apcomplex(real, imag);
+		} else if (real_value.equalsIgnoreCase("e")) {
+			Apfloat real = ApfloatMath.exp(MathUtils.ONE.real());
+			Apfloat imag = new Apfloat("0", Main.NUMBER_PRECISION);
+			return new Apcomplex(real, imag);
 		} else if (real_value.equalsIgnoreCase("-i")) {
 			Apfloat real = new Apfloat("0", Main.NUMBER_PRECISION);
 			Apfloat imag = new Apfloat("-1", Main.NUMBER_PRECISION);

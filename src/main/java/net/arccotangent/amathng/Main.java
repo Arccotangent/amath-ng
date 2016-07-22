@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160722";
+	private static final String VERSION = "20160722-1";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -52,6 +52,7 @@ public class Main {
 					"aoc <radius> - Calculate approximate area of circle\n" +
 					"hypot <side1> <side2> - Get hypotenuse of right triangle\n" +
 					"dst <x1> <y1> <x2> <y2> - Get distance between 2 points\n" +
+					"midpt <x1> <y1> <x2> <y2> - Get midpoint of 2 points\n" +
 					"ccm <radius> - Calculate circumference of circle\n" +
 					"\n--Statistics--\n\n" +
 					"avg <numbers> - Calculate average of numbers\n" +
@@ -640,6 +641,29 @@ public class Main {
 				Apcomplex feet = meters.divide(a);
 				
 				System.out.println(NumberHelper.format(feet));
+				break;
+			}
+			case MIDPOINT: {
+				Apcomplex x1 = NumberHelper.create(args[1]);
+				Apcomplex x2 = NumberHelper.create(args[2]);
+				Apcomplex y1 = NumberHelper.create(args[3]);
+				Apcomplex y2 = NumberHelper.create(args[4]);
+				
+				Apcomplex[] midpoint = Geometry.getMidpoint(x1, x2, y1, y2);
+				//midpoint[0] = x, midpoint[1] = y
+				
+				System.out.println("midpoint = (" + NumberHelper.format(midpoint[0]) + ", " + NumberHelper.format(midpoint[1]) + ")");
+				break;
+			}
+			case SLOPE: {
+				Apcomplex x1 = NumberHelper.create(args[1]);
+				Apcomplex x2 = NumberHelper.create(args[2]);
+				Apcomplex y1 = NumberHelper.create(args[3]);
+				Apcomplex y2 = NumberHelper.create(args[4]);
+				
+				Apcomplex slope = Geometry.getSlope(x1, x2, y1, y2);
+				
+				System.out.println("slope = " + NumberHelper.format(slope));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

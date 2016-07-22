@@ -318,6 +318,16 @@ class Opcode {
 				return Operation.METERS_TO_FEET;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("midpt")) {
+			if (argc == 4)
+				return Operation.MIDPOINT;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("slp")) {
+			if (argc == 4)
+				return Operation.SLOPE;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}
