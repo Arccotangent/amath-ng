@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160719-1";
+	private static final String VERSION = "20160722";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -77,7 +77,13 @@ public class Main {
 					"hl <amount> - Print amount of half lives with respective ratios\n" +
 					"\n--Unit Conversions--\n\n" +
 					"f2c <fahrenheit> - Convert degrees Fahrenheit into degrees Celsius\n" +
-					"c2f <celsius> - Convert degrees Celsius into degrees Fahrenheit\n" +
+					"c2f <celsius> - Convert degrees Celsius into degrees Fahrenheit\n\n" +
+					"i2c <inches> - Convert inches to centimeters\n" +
+					"c2i <centimeters> - Convert centimeters to inches\n" +
+					"m2k <miles> - Convert miles to kilometers\n" +
+					"k2m <centimeters> - Convert kilometers to miles\n" +
+					"f2m <feet> - Convert feet to meters\n" +
+					"m2f <meters> - Convert meters to feet\n" +
 					"\n--Miscellaneous--\n\n" +
 					"sf <1 number> - Get amount of significant figures in number\n" +
 					"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -580,6 +586,60 @@ public class Main {
 				fahrenheit = fahrenheit.add(NumberHelper.create("32"));
 				
 				System.out.println(NumberHelper.format(fahrenheit));
+				break;
+			}
+			case INCHES_TO_CENTIMETERS: {
+				Apcomplex inches = NumberHelper.create(args[1]);
+				
+				Apcomplex a = NumberHelper.create("2.54");
+				Apcomplex centimeters = inches.multiply(a);
+				
+				System.out.println(NumberHelper.format(centimeters));
+				break;
+			}
+			case CENTIMETERS_TO_INCHES: {
+				Apcomplex centimeters = NumberHelper.create(args[1]);
+				
+				Apcomplex a = NumberHelper.create("2.54");
+				Apcomplex inches = centimeters.divide(a);
+				
+				System.out.println(NumberHelper.format(inches));
+				break;
+			}
+			case MILES_TO_KILOMETERS: {
+				Apcomplex miles = NumberHelper.create(args[1]);
+				
+				Apcomplex a = NumberHelper.create("1.609344");
+				Apcomplex kilometers = miles.multiply(a);
+				
+				System.out.println(NumberHelper.format(kilometers));
+				break;
+			}
+			case KILOMETERS_TO_MILES: {
+				Apcomplex kilometers = NumberHelper.create(args[1]);
+				
+				Apcomplex a = NumberHelper.create("1.609344");
+				Apcomplex miles = kilometers.divide(a);
+				
+				System.out.println(NumberHelper.format(miles));
+				break;
+			}
+			case FEET_TO_METERS: {
+				Apcomplex feet = NumberHelper.create(args[1]);
+				
+				Apcomplex a = NumberHelper.create("0.3048");
+				Apcomplex meters = feet.multiply(a);
+				
+				System.out.println(NumberHelper.format(meters));
+				break;
+			}
+			case METERS_TO_FEET: {
+				Apcomplex meters = NumberHelper.create(args[1]);
+				
+				Apcomplex a = NumberHelper.create("0.3048");
+				Apcomplex feet = meters.divide(a);
+				
+				System.out.println(NumberHelper.format(feet));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

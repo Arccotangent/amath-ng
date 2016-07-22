@@ -288,6 +288,36 @@ class Opcode {
 				return Operation.CELSIUS_TO_FAHRENHEIT;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("i2c")) {
+			if (argc == 1)
+				return Operation.INCHES_TO_CENTIMETERS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("c2i")) {
+			if (argc == 1)
+				return Operation.CENTIMETERS_TO_INCHES;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("m2k")) {
+			if (argc == 1)
+				return Operation.MILES_TO_KILOMETERS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("k2m")) {
+			if (argc == 1)
+				return Operation.KILOMETERS_TO_MILES;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("f2m")) {
+			if (argc == 1)
+				return Operation.FEET_TO_METERS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("m2f")) {
+			if (argc == 1)
+				return Operation.METERS_TO_FEET;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}
