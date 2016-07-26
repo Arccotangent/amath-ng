@@ -328,6 +328,16 @@ class Opcode {
 				return Operation.SLOPE;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("d2r")) {
+			if (argc == 1)
+				return Operation.DEGREES_TO_RADIANS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("r2d")) {
+			if (argc == 1)
+				return Operation.RADIANS_TO_DEGREES;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}

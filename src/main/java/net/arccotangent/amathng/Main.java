@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160722-1";
+	private static final String VERSION = "20160726";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -84,7 +84,9 @@ public class Main {
 					"m2k <miles> - Convert miles to kilometers\n" +
 					"k2m <centimeters> - Convert kilometers to miles\n" +
 					"f2m <feet> - Convert feet to meters\n" +
-					"m2f <meters> - Convert meters to feet\n" +
+					"m2f <meters> - Convert meters to feet\n\n" +
+					"d2r <degrees> - Convert degrees to radians\n" +
+					"r2d <radians> - Convert radians to degrees\n" +
 					"\n--Miscellaneous--\n\n" +
 					"sf <1 number> - Get amount of significant figures in number\n" +
 					"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -664,6 +666,20 @@ public class Main {
 				Apcomplex slope = Geometry.getSlope(x1, x2, y1, y2);
 				
 				System.out.println("slope = " + NumberHelper.format(slope));
+				break;
+			}
+			case DEGREES_TO_RADIANS: {
+				Apcomplex degrees = NumberHelper.create(args[1]);
+				
+				Apcomplex radians = MathUtils.toRadians(degrees);
+				System.out.println(NumberHelper.format(radians));
+				break;
+			}
+			case RADIANS_TO_DEGREES: {
+				Apcomplex radians = NumberHelper.create(args[1]);
+				
+				Apcomplex degrees = MathUtils.toDegrees(radians);
+				System.out.println(NumberHelper.format(degrees));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {
