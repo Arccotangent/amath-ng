@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160726";
+	private static final String VERSION = "20160727";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -86,7 +86,9 @@ public class Main {
 					"f2m <feet> - Convert feet to meters\n" +
 					"m2f <meters> - Convert meters to feet\n\n" +
 					"d2r <degrees> - Convert degrees to radians\n" +
-					"r2d <radians> - Convert radians to degrees\n" +
+					"r2d <radians> - Convert radians to degrees\n\n" +
+					"p2k <pounds> - Convert pounds to kilograms\n" +
+					"k2p <kilograms> - Convert kilograms to pounds\n" +
 					"\n--Miscellaneous--\n\n" +
 					"sf <1 number> - Get amount of significant figures in number\n" +
 					"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -680,6 +682,20 @@ public class Main {
 				
 				Apcomplex degrees = MathUtils.toDegrees(radians);
 				System.out.println(NumberHelper.format(degrees));
+				break;
+			}
+			case POUNDS_TO_KILOGRAMS: {
+				Apcomplex pounds = NumberHelper.create(args[1]);
+				
+				Apcomplex kilograms = pounds.multiply(NumberHelper.create("0.45359237"));
+				System.out.println(NumberHelper.format(kilograms));
+				break;
+			}
+			case KILOGRAMS_TO_POUNDS: {
+				Apcomplex kilograms = NumberHelper.create(args[1]);
+				
+				Apcomplex pounds = kilograms.multiply(NumberHelper.create("2.20462234"));
+				System.out.println(NumberHelper.format(pounds));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

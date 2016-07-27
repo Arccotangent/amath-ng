@@ -338,6 +338,16 @@ class Opcode {
 				return Operation.RADIANS_TO_DEGREES;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("p2k")) {
+			if (argc == 1)
+				return Operation.POUNDS_TO_KILOGRAMS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("k2p")) {
+			if (argc == 1)
+				return Operation.KILOGRAMS_TO_POUNDS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}
