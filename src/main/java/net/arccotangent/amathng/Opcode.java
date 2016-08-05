@@ -348,6 +348,26 @@ class Opcode {
 				return Operation.KILOGRAMS_TO_POUNDS;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("g2l")) {
+			if (argc == 1)
+				return Operation.GALLONS_TO_LITERS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("l2g")) {
+			if (argc == 1)
+				return Operation.LITERS_TO_GALLONS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("cf2cm")) {
+			if (argc == 1)
+				return Operation.CUBIC_FEET_TO_CUBIC_METERS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("cm2cf")) {
+			if (argc == 1)
+				return Operation.CUBIC_METERS_TO_CUBIC_FEET;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}

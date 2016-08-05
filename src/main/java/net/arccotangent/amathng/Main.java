@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160727";
+	private static final String VERSION = "20160804";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -88,7 +88,11 @@ public class Main {
 					"d2r <degrees> - Convert degrees to radians\n" +
 					"r2d <radians> - Convert radians to degrees\n\n" +
 					"p2k <pounds> - Convert pounds to kilograms\n" +
-					"k2p <kilograms> - Convert kilograms to pounds\n" +
+					"k2p <kilograms> - Convert kilograms to pounds\n\n" +
+					"g2l <gallons> - Convert gallons to liters\n" +
+					"l2g <liters> - Convert liters to gallons\n" +
+					"cf2cm <cubic feet> - Convert cubic feet to cubic meters\n" +
+					"cm2cf <cubic meters> - Convert cubic meters to cubic feet\n" +
 					"\n--Miscellaneous--\n\n" +
 					"sf <1 number> - Get amount of significant figures in number\n" +
 					"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -696,6 +700,34 @@ public class Main {
 				
 				Apcomplex pounds = kilograms.multiply(NumberHelper.create("2.20462234"));
 				System.out.println(NumberHelper.format(pounds));
+				break;
+			}
+			case GALLONS_TO_LITERS: {
+				Apcomplex gallons = NumberHelper.create(args[1]);
+				
+				Apcomplex liters = gallons.multiply(NumberHelper.create("3.785411784"));
+				System.out.println(NumberHelper.format(liters));
+				break;
+			}
+			case LITERS_TO_GALLONS: {
+				Apcomplex liters = NumberHelper.create(args[1]);
+				
+				Apcomplex gallons = liters.divide(NumberHelper.create("3.785411784"));
+				System.out.println(NumberHelper.format(gallons));
+				break;
+			}
+			case CUBIC_FEET_TO_CUBIC_METERS: {
+				Apcomplex cubicFeet = NumberHelper.create(args[1]);
+				
+				Apcomplex cubicMeters = cubicFeet.multiply(NumberHelper.create("0.028316846592"));
+				System.out.println(NumberHelper.format(cubicMeters));
+				break;
+			}
+			case CUBIC_METERS_TO_CUBIC_FEET: {
+				Apcomplex cubicMeters = NumberHelper.create(args[1]);
+				
+				Apcomplex cubicFeet = cubicMeters.divide(NumberHelper.create("0.028316846592"));
+				System.out.println(NumberHelper.format(cubicFeet));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {
