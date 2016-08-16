@@ -368,6 +368,11 @@ class Opcode {
 				return Operation.CUBIC_METERS_TO_CUBIC_FEET;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("crd")) {
+			if (argc == 1)
+				return Operation.CIRCLE_RADIUS;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}

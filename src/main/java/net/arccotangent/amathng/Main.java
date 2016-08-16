@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160804";
+	private static final String VERSION = "20160815";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -54,6 +54,7 @@ public class Main {
 					"dst <x1> <y1> <x2> <y2> - Get distance between 2 points\n" +
 					"midpt <x1> <y1> <x2> <y2> - Get midpoint of 2 points\n" +
 					"ccm <radius> - Calculate circumference of circle\n" +
+					"crd <circumference> - Calculate radius of circle\n" +
 					"\n--Statistics--\n\n" +
 					"avg <numbers> - Calculate average of numbers\n" +
 					"stdev <numbers> - Calculate standard deviation of numbers\n" +
@@ -728,6 +729,14 @@ public class Main {
 				
 				Apcomplex cubicFeet = cubicMeters.divide(NumberHelper.create("0.028316846592"));
 				System.out.println(NumberHelper.format(cubicFeet));
+				break;
+			}
+			case CIRCLE_RADIUS: {
+				Apcomplex circumference = NumberHelper.create(args[1]);
+				
+				Apcomplex twoPi = NumberHelper.create("pi").multiply(MathUtils.TWO);
+				Apcomplex radius = circumference.divide(twoPi);
+				System.out.println(NumberHelper.format(radius));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {
