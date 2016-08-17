@@ -6,12 +6,13 @@ import net.arccotangent.amathng.utils.MathUtils;
 import net.arccotangent.amathng.utils.NumberHelper;
 import org.apfloat.*;
 
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160815";
+	private static final String VERSION = "20160816";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -59,6 +60,7 @@ public class Main {
 					"avg <numbers> - Calculate average of numbers\n" +
 					"stdev <numbers> - Calculate standard deviation of numbers\n" +
 					"zsc <data> <average> <standard deviation> - Get z-score of a number\n" +
+					"ti <minimum z-score> <maximum z-score> - Tolerance interval (think of the normal distribution bell curve, 68-95-99.7 rule)\n" +
 					"\n--Trigonometry--\n\n" +
 					"sin <number> - Trigonometric function - Sine - opposite / hypotenuse\n" +
 					"cos <number> - Trigonometric function - Cosine - adjacent / hypotenuse\n" +
@@ -94,6 +96,10 @@ public class Main {
 					"l2g <liters> - Convert liters to gallons\n" +
 					"cf2cm <cubic feet> - Convert cubic feet to cubic meters\n" +
 					"cm2cf <cubic meters> - Convert cubic meters to cubic feet\n" +
+					"\n--Logic--\n\n" +
+					"and <2 numbers> - Logical AND\n" +
+					"or <2 numbers> - Logical OR\n" +
+					"xor <2 numbers> - Logical XOR\n" +
 					"\n--Miscellaneous--\n\n" +
 					"sf <1 number> - Get amount of significant figures in number\n" +
 					"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -737,6 +743,38 @@ public class Main {
 				Apcomplex twoPi = NumberHelper.create("pi").multiply(MathUtils.TWO);
 				Apcomplex radius = circumference.divide(twoPi);
 				System.out.println(NumberHelper.format(radius));
+				break;
+			}
+			case AND: {
+				BigInteger numA = new BigInteger(args[1]);
+				BigInteger numB = new BigInteger(args[2]);
+				
+				System.out.println(numA.and(numB).toString());
+				break;
+			}
+			case OR: {
+				BigInteger numA = new BigInteger(args[1]);
+				BigInteger numB = new BigInteger(args[2]);
+				
+				System.out.println(numA.or(numB).toString());
+				break;
+			}
+			case XOR: {
+				BigInteger numA = new BigInteger(args[1]);
+				BigInteger numB = new BigInteger(args[2]);
+				
+				System.out.println(numA.xor(numB).toString());
+				break;
+			}
+			case TOLERANCE_INTERVAL: {
+				Apfloat min = NumberHelper.create(args[1]).real();
+				Apfloat max = NumberHelper.create(args[2]).real();
+				
+				Apfloat minCDF = Statistics.cdf(min);
+				Apfloat maxCDF = Statistics.cdf(max);
+				
+				Apfloat interval = maxCDF.subtract(minCDF);
+				System.out.println(interval.toString(true));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

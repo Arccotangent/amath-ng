@@ -373,6 +373,26 @@ class Opcode {
 				return Operation.CIRCLE_RADIUS;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("and")) {
+			if (argc == 2)
+				return Operation.AND;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("or")) {
+			if (argc == 2)
+				return Operation.OR;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("xor")) {
+			if (argc == 2)
+				return Operation.XOR;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("ti")) {
+			if (argc == 2)
+				return Operation.TOLERANCE_INTERVAL;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}
