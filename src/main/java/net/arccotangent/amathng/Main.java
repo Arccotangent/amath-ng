@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160816";
+	private static final String VERSION = "20160831";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -65,17 +65,17 @@ public class Main {
 					"sin <number> - Trigonometric function - Sine - opposite / hypotenuse\n" +
 					"cos <number> - Trigonometric function - Cosine - adjacent / hypotenuse\n" +
 					"tan <number> - Trigonometric function - Tangent - opposite / adjacent\n" +
-					"asin <number> - Trigonometric function - Arcsine\n" +
-					"acos <number> - Trigonometric function - Arccosine\n" +
-					"atan <number> - Trigonometric function - Arctangent\n" +
+					"asin <number> - Inverse Trigonometric function - Arcsine\n" +
+					"acos <number> - Inverse Trigonometric function - Arccosine\n" +
+					"atan <number> - Inverse Trigonometric function - Arctangent\n" +
 					"los <side A> <side B> <angle A> - Trigonometric law of sines - Returns angle B (across from side B)\n" +
 					"loc <side A> <side B> <side C> - Trigonometric law of cosines - Returns angle C (across from side C)\n" +
 					"csc <number> - Reciprocal Trigonometric Function - Cosecant - hypotenuse / opposite\n" +
 					"sec <number> - Reciprocal Trigonometric Function - Secant - hypotenuse / adjacent\n" +
 					"cot <number> - Reciprocal Trigonometric Function - Cotangent - adjacent / opposite\n" +
-					"acsc <number> - Reciprocal Trigonometric Function - Arccosecant\n" +
-					"asec <number> - Reciprocal Trigonometric Function - Arcsecant\n" +
-					"acot <number> - Reciprocal Trigonometric Function - Arccotangent\n" +
+					"acsc <number> - Inverse Reciprocal Trigonometric Function - Arccosecant\n" +
+					"asec <number> - Inverse Reciprocal Trigonometric Function - Arcsecant\n" +
+					"acot <number> - Inverse Reciprocal Trigonometric Function - Arccotangent\n" +
 					"\n--Science--\n\n" +
 					"pcr <accepted> <experimental> - Calculate percent error\n" +
 					"hl <amount> - Print amount of half lives with respective ratios\n" +
