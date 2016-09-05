@@ -63,6 +63,14 @@ Examples of invalid arguments: `+2+3i +2-3i 2+-3i 2-+3i`
 
 Any quoted arguments with spaces will throw an exception. Any unquoted arguments with spaces will be treated as 2 separate arguments.
 
+### Constants
+
+Currently, two constants are built in to amath-ng. These constants can be passed to amath-ng as arguments.
+
+e - 2.718281828...
+
+pi - 3.14159265358979...
+
 ## Configuration
 
 amath-ng now has a configuration file that can be edited to change the answer precision in significant figures and the certainty of the primality test. The configuration data is stored in JSON format.

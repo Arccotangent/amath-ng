@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160831";
+	private static final String VERSION = "20160905";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -54,6 +54,7 @@ public class Main {
 					"hypot <side1> <side2> - Get hypotenuse of right triangle\n" +
 					"dst <x1> <y1> <x2> <y2> - Get distance between 2 points\n" +
 					"midpt <x1> <y1> <x2> <y2> - Get midpoint of 2 points\n" +
+					"slp <x1> <y1> <x2> <y2> - Get slope of line between 2 points\n" +
 					"ccm <radius> - Calculate circumference of circle\n" +
 					"crd <circumference> - Calculate radius of circle\n" +
 					"\n--Statistics--\n\n" +
