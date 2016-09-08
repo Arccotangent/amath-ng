@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160905";
+	private static final String VERSION = "20160908";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -574,8 +574,8 @@ public class Main {
 			}
 			case DISTANCE: {
 				Apcomplex x1 = NumberHelper.create(args[1]);
-				Apcomplex x2 = NumberHelper.create(args[2]);
-				Apcomplex y1 = NumberHelper.create(args[3]);
+				Apcomplex y1 = NumberHelper.create(args[2]);
+				Apcomplex x2 = NumberHelper.create(args[3]);
 				Apcomplex y2 = NumberHelper.create(args[4]);
 				
 				Apcomplex distanceSquared = Geometry.getDistanceSquared(x1, x2, y1, y2);
@@ -661,8 +661,8 @@ public class Main {
 			}
 			case MIDPOINT: {
 				Apcomplex x1 = NumberHelper.create(args[1]);
-				Apcomplex x2 = NumberHelper.create(args[2]);
-				Apcomplex y1 = NumberHelper.create(args[3]);
+				Apcomplex y1 = NumberHelper.create(args[2]);
+				Apcomplex x2 = NumberHelper.create(args[3]);
 				Apcomplex y2 = NumberHelper.create(args[4]);
 				
 				Apcomplex[] midpoint = Geometry.getMidpoint(x1, x2, y1, y2);
@@ -673,8 +673,8 @@ public class Main {
 			}
 			case SLOPE: {
 				Apcomplex x1 = NumberHelper.create(args[1]);
-				Apcomplex x2 = NumberHelper.create(args[2]);
-				Apcomplex y1 = NumberHelper.create(args[3]);
+				Apcomplex y1 = NumberHelper.create(args[2]);
+				Apcomplex x2 = NumberHelper.create(args[3]);
 				Apcomplex y2 = NumberHelper.create(args[4]);
 				
 				Apcomplex slope = Geometry.getSlope(x1, x2, y1, y2);

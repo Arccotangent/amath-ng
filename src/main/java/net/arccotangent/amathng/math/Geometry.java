@@ -7,8 +7,8 @@ import org.apfloat.ApcomplexMath;
 public class Geometry {
 	
 	public static Apcomplex getDistanceSquared(Apcomplex x1, Apcomplex x2, Apcomplex y1, Apcomplex y2) {
-		Apcomplex distanceX = x2.subtract(x1);
-		Apcomplex distanceY = y2.subtract(y1);
+		Apcomplex distanceX = ApcomplexMath.pow(x2.subtract(x1), 2);
+		Apcomplex distanceY = ApcomplexMath.pow(y2.subtract(y1), 2);
 		return distanceX.add(distanceY);
 	}
 	
