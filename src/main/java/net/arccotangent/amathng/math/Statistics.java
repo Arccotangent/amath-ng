@@ -9,7 +9,7 @@ import org.apfloat.Apint;
 public class Statistics {
 	
 	// The Gaussian error function erf(z) expressed as a Taylor series
-	private static Apfloat erf(Apfloat z) {
+	public static Apfloat erf(Apfloat z) {
 		Apfloat sqrtPi = ApfloatMath.sqrt(NumberHelper.create("pi").real());
 		Apfloat term1 = MathUtils.TWO.real().divide(sqrtPi);
 		

@@ -393,6 +393,11 @@ class Opcode {
 				return Operation.TOLERANCE_INTERVAL;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("erf")) {
+			if (argc == 1)
+				return Operation.ERROR_FUNCTION;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160908";
+	private static final String VERSION = "20160911";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -62,6 +62,7 @@ public class Main {
 					"stdev <numbers> - Calculate standard deviation of numbers\n" +
 					"zsc <data> <average> <standard deviation> - Get z-score of a number\n" +
 					"ti <minimum z-score> <maximum z-score> - Tolerance interval (think of the normal distribution bell curve, 68-95-99.7 rule)\n" +
+					"erf <number> - Error function\n" +
 					"\n--Trigonometry--\n\n" +
 					"sin <number> - Trigonometric function - Sine - opposite / hypotenuse\n" +
 					"cos <number> - Trigonometric function - Cosine - adjacent / hypotenuse\n" +
@@ -110,6 +111,9 @@ public class Main {
 					"rand <min> <max> - Generate random integer between MIN and MAX with optional SEED\n" +
 					"prm <number> - Test if number is a probable prime by Miller-Rabin and Lucas-Lehmer primality tests\n" +
 					"genprm <bits> - Generate a prime number with bitsize BITS\n" +
+					"\n--Constants\n\n" +
+					"e - Base of the natural logarithm (2.71828182...)\n" +
+					"pi - Ratio of a perfect circle's circumference to its diameter (3.14159265358979...)\n" +
 					"\nMAXIMUM PRECISION IS SET TO " + NUMBER_PRECISION + " SIGNIFICANT FIGURES\n" +
 					"PRIMALITY TEST CERTAINTY IS SET TO " + CERTAINTY + "\n");
 			System.exit(1);
@@ -776,6 +780,13 @@ public class Main {
 				
 				Apfloat interval = maxCDF.subtract(minCDF);
 				System.out.println(interval.toString(true));
+				break;
+			}
+			case ERROR_FUNCTION: {
+				Apfloat num = NumberHelper.create(args[1]).real();
+				
+				Apfloat error = Statistics.erf(num);
+				System.out.println(error.toString(true));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

@@ -1,5 +1,5 @@
 group 'net.arccotangent'
-version '20160908'
+version '20160911'
 
 apply plugin: 'java'
 
