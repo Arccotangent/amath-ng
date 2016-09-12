@@ -69,7 +69,7 @@ class Opcode {
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("gcd")) {
-			if (argc == 2)
+			if (argc >= 2)
 				return Operation.GREATEST_COMMON_DENOMINATOR;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
@@ -234,7 +234,7 @@ class Opcode {
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
 		} else if (operation.equalsIgnoreCase("lcm")) {
-			if (argc == 2)
+			if (argc >= 2)
 				return Operation.LEAST_COMMON_MULTIPLE;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;

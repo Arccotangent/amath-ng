@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	private static final String VERSION = "20160911";
+	private static final String VERSION = "20160911-P1";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -34,8 +34,8 @@ public class Main {
 					"cbrt <1 number> - Cube root\n" +
 					"fct <number> - Factorial of number\n" +
 					"fac <number> - Get prime factors of number by trial division (slow, only for small integers)\n" +
-					"gcd <2 numbers> - Get GCD (greatest common denominator) of numbers\n" +
-					"lcm <2 numbers> - Get LCM (least common multiple) of numbers\n" +
+					"gcd <2+ numbers> - Get GCD (greatest common denominator) of numbers\n" +
+					"lcm <2+ numbers> - Get LCM (least common multiple) of numbers\n" +
 					"\n--Algebra--\n\n" +
 					"qdr <a> <b> <c> - Solve quadratic equation equal to 0\n" +
 					"cbc <a> <b> <c> <d> - Solve cubic equation equal to 0\n" +
@@ -232,9 +232,11 @@ public class Main {
 				break;
 			}
 			case GREATEST_COMMON_DENOMINATOR: {
-				Apint a = new Apint(args[1]);
-				Apint b = new Apint(args[2]);
-				System.out.println(ApintMath.gcd(a, b).toString(true));
+				ArrayList<Apint> numbers = new ArrayList<>();
+				for (int i = 1; i < args.length; i++) {
+					numbers.add(new Apint(args[i]));
+				}
+				System.out.println(Algebra.gcd(numbers).toString(true));
 				break;
 			}
 			case VERTEX: {
@@ -502,10 +504,11 @@ public class Main {
 				break;
 			}
 			case LEAST_COMMON_MULTIPLE: {
-				Apint a = new Apint(args[1]);
-				Apint b = new Apint(args[2]);
-				Apint lcm = ApintMath.lcm(a, b);
-				System.out.println(lcm.toString(true));
+				ArrayList<Apint> numbers = new ArrayList<>();
+				for (int i = 1; i < args.length; i++) {
+					numbers.add(new Apint(args[i]));
+				}
+				System.out.println(Algebra.lcm(numbers).toString(true));
 				break;
 			}
 			case GET_FACTORS: {
