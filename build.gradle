@@ -1,5 +1,5 @@
 group 'net.arccotangent'
-version '20160911-P1'
+version '20160913'
 
 apply plugin: 'java'
 
@@ -14,7 +14,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
     compile group: 'org.apfloat', name: 'apfloat', version: '1.8.2'
-    compile group: 'org.json', name: 'json', version: '20160212'
+    compile group: 'org.json', name: 'json', version: '20160810'
 }
 
 //noinspection GroovyAssignabilityCheck

@@ -10,7 +10,7 @@ My ultimate goal here is to create a program capable of solving many different t
 ## Dependencies
 
 + Apfloat 1.8.2
-+ JSON 20160212
++ JSON 20160810
 + Apache Commons Lang 3.4
 + Java Runtime Environment (JRE) 7 or later
 
