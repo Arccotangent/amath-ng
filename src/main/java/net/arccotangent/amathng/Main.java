@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	public static final String VERSION = "20160913";
+	public static final String VERSION = "20160915";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -695,6 +695,15 @@ public class Main {
 				
 				Apfloat error = Statistics.erf(num);
 				System.out.println(error.toString(true));
+				break;
+			}
+			case BASE_CONVERT: {
+				int orig_base = Integer.parseInt(args[1]);
+				int new_base = Integer.parseInt(args[2]);
+				Apcomplex num = NumberHelper.create(args[3], orig_base);
+				
+				Apcomplex new_num = num.toRadix(new_base);
+				System.out.println(new_num.toString(true));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

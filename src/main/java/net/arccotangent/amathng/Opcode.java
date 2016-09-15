@@ -398,6 +398,11 @@ class Opcode {
 				return Operation.ERROR_FUNCTION;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("bc")) {
+			if (argc == 3)
+				return Operation.BASE_CONVERT;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}

@@ -88,6 +88,8 @@ enum Operation {
 	OR,
 	XOR,
 	
+	BASE_CONVERT,
+	
 	INVALID_ARGUMENT_COUNT,
 	INVALID_OPERATION,
 	

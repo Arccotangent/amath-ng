@@ -115,6 +115,7 @@ public class MathUtils {
 				"rand <min> <max> - Generate random integer between MIN and MAX with optional SEED\n" +
 				"prm <number> - Test if number is a probable prime by Miller-Rabin and Lucas-Lehmer primality tests\n" +
 				"genprm <bits> - Generate a prime number with bitsize BITS\n" +
+				"bc <original base> <target base> <number in original base> - Convert a number from base x to base y, base must be between 2-36\n" +
 				"\n--Constants\n\n" +
 				"e - Base of the natural logarithm (2.71828182...)\n" +
 				"pi - Ratio of a perfect circle's circumference to its diameter (3.14159265358979...)\n" +
