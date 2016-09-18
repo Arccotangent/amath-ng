@@ -1,5 +1,6 @@
 package net.arccotangent.amathng.math;
 
+import net.arccotangent.amathng.Main;
 import net.arccotangent.amathng.utils.MathUtils;
 import net.arccotangent.amathng.utils.NumberHelper;
 import org.apfloat.Apfloat;
@@ -10,7 +11,7 @@ public class Statistics {
 	
 	// The Gaussian error function erf(z) expressed as a Taylor series
 	public static Apfloat erf(Apfloat z) {
-		Apfloat sqrtPi = ApfloatMath.sqrt(NumberHelper.create("pi").real());
+		Apfloat sqrtPi = ApfloatMath.sqrt(NumberHelper.create("pi", Main.RADIX).real());
 		Apfloat term1 = MathUtils.TWO.real().divide(sqrtPi);
 		
 		boolean negate = false;
@@ -44,7 +45,7 @@ public class Statistics {
 	}
 	
 	public static Apfloat cdf(Apfloat x) {
-		Apfloat ONE_HALF = NumberHelper.create("0.5").real();
+		Apfloat ONE_HALF = NumberHelper.create("0.5", Main.RADIX).real();
 		Apfloat sqrtTwo = ApfloatMath.sqrt(MathUtils.TWO.real());
 		
 		Apfloat error = erf(x.divide(sqrtTwo));
