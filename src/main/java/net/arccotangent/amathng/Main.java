@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	public static final String VERSION = "20160918";
+	public static final String VERSION = "20160925";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -703,6 +703,22 @@ public class Main {
 				
 				Apcomplex new_num = num.toRadix(new_base);
 				System.out.println(new_num.toString(true));
+				break;
+			}
+			case PARALLEL_RESISTANCE: {
+				ArrayList<Apcomplex> resistors = new ArrayList<>();
+				
+				for (int i = 1; i < args.length; i++) {
+					resistors.add(NumberHelper.create(args[i], 10));
+				}
+				
+				Apcomplex resistanceReciprocal = MathUtils.ZERO;
+				
+				for (Apcomplex resistor : resistors) {
+					resistanceReciprocal = resistanceReciprocal.add(MathUtils.ONE.divide(resistor));
+				}
+				
+				System.out.println(NumberHelper.format(MathUtils.ONE.divide(resistanceReciprocal)));
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

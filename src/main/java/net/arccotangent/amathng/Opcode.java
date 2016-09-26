@@ -403,6 +403,11 @@ class Opcode {
 				return Operation.BASE_CONVERT;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("pr")) {
+			if (argc == 3)
+				return Operation.PARALLEL_RESISTANCE;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}
