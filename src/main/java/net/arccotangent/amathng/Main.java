@@ -1,5 +1,6 @@
 package net.arccotangent.amathng;
 
+import net.arccotangent.amathng.crypto.RSA;
 import net.arccotangent.amathng.math.*;
 import net.arccotangent.amathng.utils.Configuration;
 import net.arccotangent.amathng.utils.MathUtils;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-	public static final String VERSION = "20160925";
+	public static final String VERSION = "20160928";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -719,6 +720,70 @@ public class Main {
 				}
 				
 				System.out.println(NumberHelper.format(MathUtils.ONE.divide(resistanceReciprocal)));
+				break;
+			}
+			case GENERATE_RSA_KEY: {
+				int rsa_bits = Integer.parseInt(args[1]);
+				
+				int prime_bits = rsa_bits / 2;
+				System.out.print("Generating primes... 0/2\r");
+				Apint p = MathUtils.generateRandomPrime(prime_bits);
+				System.out.print("Generating primes... 1/2\r");
+				Apint q = MathUtils.generateRandomPrime(prime_bits);
+				System.out.println("Generating primes... 2/2");
+				
+				Apint n = p.multiply(q);
+				System.out.println("Calculated n (product of primes).");
+				
+				Apint totient = (p.subtract(MathUtils.ONE_INT)).multiply(q.subtract(MathUtils.ONE_INT));
+				System.out.println("Calculated totient of primes.");
+				
+				Apint potential_e;
+				int attempts = 0;
+				long lastUnixTime = System.currentTimeMillis();
+				System.out.print("Finding e... (0 attempts so far)\r");
+				do {
+					potential_e = MathUtils.getRandom(MathUtils.TWO_INT, totient.subtract(MathUtils.ONE_INT), new SecureRandom());
+					attempts++;
+					if (System.currentTimeMillis() - lastUnixTime >= 1000) {
+						System.out.print("Finding e... (" + attempts + " attempts so far)\r");
+						lastUnixTime = System.currentTimeMillis();
+					}
+				} while (!MathUtils.areNumbersCoprime(potential_e, totient));
+				System.out.println("Finding e... (" + attempts + " attempts so far)");
+				System.out.println("Found e.");
+				Apint e = potential_e;
+				Apint d = Algebra.modularMultiplicativeInverse(e, totient);
+				System.out.println("Calculated the modular multiplicative inverse of e and totient (d).");
+				System.out.println("Key generated.");
+				
+				System.out.println();
+				System.out.println("p = " + p.toString(true));
+				System.out.println("q = " + q.toString(true));
+				System.out.println();
+				System.out.println("n = " + n.toString(true));
+				System.out.println("e = " + e.toString(true));
+				System.out.println("d = " + d.toString(true));
+				System.out.println();
+				System.out.println("totient(n) = " + totient.toString(true));
+				System.out.println();
+				
+				System.out.println("Performing crypto test.");
+				Apint test_m = MathUtils.getRandom(new Apint("1"), new Apint("100"), new SecureRandom());
+				System.out.println("m = " + test_m.toString(true));
+				System.out.println("Encrypting m to get c.");
+				Apint test_c = RSA.RSA_encrypt(n, e, test_m);
+				System.out.println("c = " + test_c);
+				System.out.println("Decrypting c to get decrypted m.");
+				
+				Apint decrypted_m = RSA.RSA_decrypt(n, d, test_c);
+				System.out.println("decrypted m = " + decrypted_m.toString(true));
+				
+				if (test_m.equals(decrypted_m))
+					System.out.println("Test success!");
+				else
+					System.out.println("Test FAILURE!");
+				
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

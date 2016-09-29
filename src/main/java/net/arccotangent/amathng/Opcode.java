@@ -408,6 +408,11 @@ class Opcode {
 				return Operation.PARALLEL_RESISTANCE;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("genrsa")) {
+			if (argc == 1)
+				return Operation.GENERATE_RSA_KEY;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}

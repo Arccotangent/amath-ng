@@ -106,6 +106,9 @@ public class MathUtils {
 				"and <2 numbers> - Logical AND\n" +
 				"or <2 numbers> - Logical OR\n" +
 				"xor <2 numbers> - Logical XOR\n" +
+				"\n--Cryptography--\n\n" +
+				"genprm <bits> - Generate a prime number with bitsize BITS\n" +
+				"genrsa <bits> - Generate an RSA key with bitsize BITS\n" +
 				"\n--Miscellaneous--\n\n" +
 				"sf <1 number> - Get amount of significant figures in number\n" +
 				"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -114,7 +117,6 @@ public class MathUtils {
 				"ord <numbers> - Order numbers smallest to greatest\n" +
 				"rand <min> <max> - Generate random integer between MIN and MAX with optional SEED\n" +
 				"prm <number> - Test if number is a probable prime by Miller-Rabin and Lucas-Lehmer primality tests\n" +
-				"genprm <bits> - Generate a prime number with bitsize BITS\n" +
 				"bc <original base> <target base> <number in original base> - Convert a number from base x to base y, base must be between 2-36\n" +
 				"\n--Electricity--\n\n" +
 				"pr <2+ numbers in ohms> - Calculate the value of resistors in parallel\n" +
@@ -190,6 +192,10 @@ public class MathUtils {
 		num = num.nextProbablePrime(); //Uses a certainty of 100 (amath-ng's default), which should be good enough
 
 		return new Apint(num);
+	}
+	
+	public static boolean areNumbersCoprime(Apint num1, Apint num2) {
+		return ApintMath.gcd(num1, num2).equals(ONE_INT);
 	}
 
 	public static Apint[] getFactors(Apint num) {

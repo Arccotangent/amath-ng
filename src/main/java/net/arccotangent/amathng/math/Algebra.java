@@ -6,6 +6,7 @@ import org.apfloat.ApcomplexMath;
 import org.apfloat.Apint;
 import org.apfloat.ApintMath;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class Algebra {
@@ -37,6 +38,13 @@ public class Algebra {
 		}
 		
 		return res;
+	}
+	
+	public static Apint modularMultiplicativeInverse(Apint a, Apint m) {
+		BigInteger a2 = a.toBigInteger();
+		BigInteger m2 = m.toBigInteger();
+		
+		return new Apint(a2.modInverse(m2));
 	}
 	
 }
