@@ -32,11 +32,11 @@ Linux: `./gradlew build`
 
 ## Running
 
-The built jar file can be found in the build/libs directory. Its name is `amath-ng-VERSION.jar` with VERSION being the release version.
+The built jar file can be found in the build/libs directory. Its name is `amath-ng.jar`.
 
 The built jar is portable. Once the jar is built, only a compatible JRE is needed to run it.
 
-From the source directory (all platforms): `java -jar build/libs/amath-ng-VERSION.jar <operation> <arguments>`
+From the source directory (all platforms): `java -jar build/libs/amath-ng.jar <operation> <arguments>`
 
 To run from any directory (Linux only):
 
