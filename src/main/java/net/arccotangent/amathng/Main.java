@@ -10,14 +10,17 @@ import org.apfloat.*;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
-	public static final String VERSION = "20160928";
+	public static final String VERSION = "20161021";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
 	public static final int RADIX = 10;
+	
+	private static Scanner stdin = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		int argc = args.length - 1;
@@ -784,6 +787,82 @@ public class Main {
 				else
 					System.out.println("Test FAILURE!");
 				
+				break;
+			}
+			case ADD_MATRICES: {
+				int matrix_count = Integer.parseInt(args[1]);
+				
+				if (matrix_count < 2) {
+					System.out.println("amath-ng: ERROR: You must declare at least 2 matrices.");
+					break;
+				}
+				
+				int rows = Integer.parseInt(args[2]);
+				int cols = Integer.parseInt(args[3]);
+				
+				ArrayList<Apcomplex[][]> matrices = new ArrayList<>();
+				
+				for (int i = 0; i < matrix_count; i++) {
+					System.out.println("---MATRIX " + i + "---");
+					Apcomplex[][] matrix = new Apcomplex[rows][cols];
+					for (int x = 0; x < rows; x++) {
+						for (int y = 0; y < cols; y++) {
+							System.out.print("Enter value at row " + x + ", column " + y + ": ");
+							matrix[x][y] = NumberHelper.create(stdin.nextLine(), 10);
+						}
+					}
+					matrices.add(matrix);
+					System.out.println("Accepted matrix " + i + ", printing below.");
+					Matrix.printMatrix(matrix);
+				}
+				
+				Apcomplex[][] result = matrices.get(0);
+				
+				for (int i = 1; i < matrix_count; i++) {
+					result = Matrix.addMatrices(result, matrices.get(i));
+				}
+				
+				System.out.println("Answer calculated, printing below.");
+				System.out.println("--------------------------");
+				Matrix.printMatrix(result);
+				break;
+			}
+			case SUBTRACT_MATRICES: {
+				int matrix_count = Integer.parseInt(args[1]);
+				
+				if (matrix_count < 2) {
+					System.out.println("amath-ng: ERROR: You must declare at least 2 matrices.");
+					break;
+				}
+				
+				int rows = Integer.parseInt(args[2]);
+				int cols = Integer.parseInt(args[3]);
+				
+				ArrayList<Apcomplex[][]> matrices = new ArrayList<>();
+				
+				for (int i = 0; i < matrix_count; i++) {
+					System.out.println("---MATRIX " + i + "---");
+					Apcomplex[][] matrix = new Apcomplex[rows][cols];
+					for (int x = 0; x < rows; x++) {
+						for (int y = 0; y < cols; y++) {
+							System.out.print("Enter value at row " + x + ", column " + y + ": ");
+							matrix[x][y] = NumberHelper.create(stdin.nextLine(), 10);
+						}
+					}
+					matrices.add(matrix);
+					System.out.println("Accepted matrix " + i + ", printing below.");
+					Matrix.printMatrix(matrix);
+				}
+				
+				Apcomplex[][] result = matrices.get(0);
+				
+				for (int i = 1; i < matrix_count; i++) {
+					result = Matrix.subtractMatrices(result, matrices.get(i));
+				}
+				
+				System.out.println("Answer calculated, printing below.");
+				System.out.println("--------------------------");
+				Matrix.printMatrix(result);
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

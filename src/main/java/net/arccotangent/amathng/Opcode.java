@@ -413,6 +413,16 @@ class Opcode {
 				return Operation.GENERATE_RSA_KEY;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("addmtx")) {
+			if (argc == 3)
+				return Operation.ADD_MATRICES;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("submtx")) {
+			if (argc == 3)
+				return Operation.SUBTRACT_MATRICES;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}

@@ -109,6 +109,9 @@ public class MathUtils {
 				"\n--Cryptography--\n\n" +
 				"genprm <bits> - Generate a prime number with bitsize BITS\n" +
 				"genrsa <bits> - Generate an RSA key with bitsize BITS\n" +
+				"\n--Matrices--\n\n" +
+				"addmtx <amount of matrices> <rows> <cols> - Add matrices, each with ROWS rows and COLS columns\n" +
+				"submtx <amount of matrices> <rows> <cols> - Subtract matrices, each with ROWS rows and COLS columns\n" +
 				"\n--Miscellaneous--\n\n" +
 				"sf <1 number> - Get amount of significant figures in number\n" +
 				"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
