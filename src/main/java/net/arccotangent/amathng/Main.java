@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static final String VERSION = "20161021";
+	public static final String VERSION = "20161117";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -92,7 +92,7 @@ public class Main {
 					discriminant = ApcomplexMath.root(discriminantSquared, 2);
 
 				Apcomplex solutions[] = Quadratic.solve(a, b, discriminant);
-				System.out.println("Discriminant = " + NumberHelper.format(discriminant));
+				System.out.println("Discriminant = " + NumberHelper.format(discriminantSquared));
 				System.out.println("x1 = " + NumberHelper.format(solutions[0]));
 				System.out.println("x2 = " + NumberHelper.format(solutions[1]));
 				break;
@@ -289,6 +289,8 @@ public class Main {
 
 				variance = variance.divide(NumberHelper.create(Integer.toString(argc), RADIX));
 				Apcomplex stdev = ApcomplexMath.sqrt(variance);
+				System.out.println("Arguments = " + argc);
+				System.out.println("Variance = " + NumberHelper.format(variance));
 
 				System.out.println(NumberHelper.format(stdev));
 				break;

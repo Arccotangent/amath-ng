@@ -52,6 +52,38 @@ public class Matrix {
 		
 	}
 	
+	/*
+	
+	TODO fix matrix multiplication
+	
+	public static Apcomplex[][] multiplyMatrices(Apcomplex[][] matrix1, Apcomplex[][] matrix2) {
+		int rows_1 = getMatrixRows(matrix1);
+		int rows_2 = getMatrixRows(matrix2);
+		int cols_1 = getMatrixColumns(matrix1);
+		int cols_2 = getMatrixColumns(matrix2);
+		
+		if (rows_1 != cols_2) {
+			throw new IllegalArgumentException("Matrix 1 row count is not equal to matrix 2 column count.");
+		}
+		
+		Apcomplex[][] result = new Apcomplex[rows_2][cols_2];
+		
+		int resrow = 0;
+		int rescol = 0;
+		
+		for (int x1 = 0; x1 < rows_1; x1++) {
+			Apcomplex value = MathUtils.ZERO;
+			for (int y = 0; y < cols_1; y++) {
+				value = value.add(matrix1[x1][y].multiply(matrix2[y][x1]));
+			}
+			result[resrow][rescol] = value;
+			resrow++;
+		}
+		
+		return result;
+	}
+	*/
+	
 	public static void printMatrix(Apcomplex[][] matrix) {
 		int rows = getMatrixRows(matrix);
 		int cols = getMatrixColumns(matrix);

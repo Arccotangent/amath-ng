@@ -31,7 +31,7 @@ public class Vertex {
 	
 	public static boolean verifyVertex(Apcomplex a, Apcomplex b, Apcomplex x) {
 		Apcomplex neg_b = b.negate();
-		Apcomplex test_x = neg_b.divide(a);
+		Apcomplex test_x = neg_b.divide(MathUtils.TWO.multiply(a));
 		
 		return test_x.equals(x);
 	}

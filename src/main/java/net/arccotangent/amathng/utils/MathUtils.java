@@ -123,7 +123,7 @@ public class MathUtils {
 				"bc <original base> <target base> <number in original base> - Convert a number from base x to base y, base must be between 2-36\n" +
 				"\n--Electricity--\n\n" +
 				"pr <2+ numbers in ohms> - Calculate the value of resistors in parallel\n" +
-				"\n--Constants\n\n" +
+				"\n--Constants--\n\n" +
 				"e - Base of the natural logarithm (2.71828182...)\n" +
 				"pi - Ratio of a perfect circle's circumference to its diameter (3.14159265358979...)\n" +
 				"\nMAXIMUM PRECISION IS SET TO " + Main.NUMBER_PRECISION + " SIGNIFICANT FIGURES\n" +
