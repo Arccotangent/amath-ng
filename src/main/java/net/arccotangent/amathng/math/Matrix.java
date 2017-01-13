@@ -18,6 +18,12 @@ public class Matrix {
 		return matrix[0].length;
 	}
 	
+	/**
+	 * Add matrices
+	 * @param matrix1 First matrix
+	 * @param matrix2 Second matrix
+	 * @return Resultant matrix
+	 */
 	public static Apcomplex[][] addMatrices(Apcomplex[][] matrix1, Apcomplex[][] matrix2) {
 		
 		int rows = getMatrixRows(matrix1);
@@ -35,6 +41,12 @@ public class Matrix {
 		
 	}
 	
+	/**
+	 * Subtract matrices
+	 * @param matrix1 First matrix
+	 * @param matrix2 Second matrix
+	 * @return Resultant matrix
+	 */
 	public static Apcomplex[][] subtractMatrices(Apcomplex[][] matrix1, Apcomplex[][] matrix2) {
 		
 		int rows = getMatrixRows(matrix1);

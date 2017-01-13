@@ -18,7 +18,7 @@ public class Main {
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
-	public static final int RADIX = 10;
+	public static final int RADIX = 10; //Number base, 10 = decimal, 2 = binary, 16 = hexadecimal
 	
 	private static Scanner stdin = new Scanner(System.in);
 

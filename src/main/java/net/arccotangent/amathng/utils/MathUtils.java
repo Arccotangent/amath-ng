@@ -157,7 +157,12 @@ public class MathUtils {
 
 		return numer.divide(denom);
 	}
-
+	
+	/**
+	 * Sort an array of numbers from least to greatest
+	 * @param unsorted The array to be sorted
+	 * @return The sorted array
+	 */
 	public static Apfloat[] sort(Apfloat[] unsorted) {
 		//bubble sort
 		for (int i = 0; i < unsorted.length; i++) {
@@ -172,7 +177,12 @@ public class MathUtils {
 		}
 		return unsorted;
 	}
-
+	
+	/**
+	 * Get the first x prime numbers (ex. 3, 5, 7, 11, etc)
+	 * @param amount The amount of prime numbers to calculate
+	 * @return The array of prime numbers
+	 */
 	public static Apint[] getPrimes(int amount) {
 		Apint[] primez = new Apint[amount];
 
@@ -188,7 +198,12 @@ public class MathUtils {
 
 		return primez;
 	}
-
+	
+	/**
+	 * Generate a random prime number
+	 * @param bits Bit size of the prime number
+	 * @return The prime number
+	 */
 	public static Apint generateRandomPrime(int bits) {
 		SecureRandom rng = new SecureRandom();
 		BigInteger num = new BigInteger(bits, rng);
@@ -200,7 +215,7 @@ public class MathUtils {
 	public static boolean areNumbersCoprime(Apint num1, Apint num2) {
 		return ApintMath.gcd(num1, num2).equals(ONE_INT);
 	}
-
+	
 	public static Apint[] getFactors(Apint num) {
 		ArrayList<Apint> factorz = new ArrayList<>();
 
@@ -220,13 +235,24 @@ public class MathUtils {
 		Apint[] factors = new Apint[factorz.size()];
 		return factorz.toArray(factors);
 	}
-
+	
+	/**
+	 * Calculate the percent error given the accepted and experimental values
+	 * @param accepted The accepted value
+	 * @param experimental The experimental value
+	 * @return The percent error
+	 */
 	public static Apcomplex getPercentError(Apcomplex accepted, Apcomplex experimental) {
 		Apcomplex numer = ApcomplexMath.abs(accepted.subtract(experimental));
 		Apcomplex error = numer.divide(accepted);
 		return error.multiply(ONE_HUNDRED);
 	}
-
+	
+	/**
+	 * Get the amount of significant figures in a number
+	 * @param inputStr The number represented as a string
+	 * @return The amount of significant figures in the number
+	 */
 	public static long getSignificantFigures(String inputStr) {
 		if (inputStr.contains(".")) {
 			inputStr = StringUtils.remove(inputStr, '.');
@@ -239,13 +265,20 @@ public class MathUtils {
 			return inputStr.substring(firstNonZero, lastNonZero).length();
 		}
 	}
-
+	
 	public static Apcomplex probability(int certainty) {
 		Apcomplex ONE_HALF = NumberHelper.create("0.5", Main.RADIX);
 		Apcomplex a = ApcomplexMath.pow(ONE_HALF, NumberHelper.create(Integer.toString(certainty), Main.RADIX));
 		return ONE.subtract(a);
 	}
-
+	
+	/**
+	 * Generate a random number
+	 * @param min The minimum number possible
+	 * @param max The maximum number possible
+	 * @param rng A Random object for generation, use a SecureRandom if necessary
+	 * @return The random number
+	 */
 	public static Apint getRandom(Apint min, Apint max, Random rng) {
 		Apint result;
 		do {
@@ -255,7 +288,7 @@ public class MathUtils {
 
 		return result;
 	}
-
+	
 	public static Apint factorial(Apint x) {
 		Apint res = new Apint(ONE.toString());
 		for (int i = x.intValue(); i > 1; i--) {
@@ -263,7 +296,12 @@ public class MathUtils {
 		}
 		return res;
 	}
-
+	
+	/**
+	 * Factor an integer
+	 * @param x The integer to be factored
+	 * @return Prime factors of the integer
+	 */
 	public static ArrayList<Apint> factor(Apint x) {
 		ArrayList<Apint> factorz = new ArrayList<>();
 

@@ -12,7 +12,10 @@ public class Configuration {
 	private static final String PATH = System.getProperty("user.home") + "/amath-ng.conf";
 	private static final long DEFAULT_PRECISION = 200;
 	private static final int DEFAULT_CERTAINTY = 100;
-
+	
+	/**
+	 * Create a new configuration file if it doesn't already exist. If it exists, this function does nothing.
+	 */
 	public static void createConfiguration() {
 		File c = new File(PATH);
 		if (!c.exists()) {
@@ -30,7 +33,11 @@ public class Configuration {
 			}
 		}
 	}
-
+	
+	/**
+	 * Read the precision setting from the configuration file.
+	 * @return The precision in significant figures. In the case of an error, the default precision is returned.
+	 */
 	public static long getPrecision() {
 		try {
 			byte[] conf = Files.readAllBytes(new File(PATH).toPath());
@@ -41,7 +48,11 @@ public class Configuration {
 			return DEFAULT_PRECISION;
 		}
 	}
-
+	
+	/**
+	 * Read the certainty setting from the configuration file.
+	 * @return The certainty of the primality test. In the case of an error, the default certainty is returned.
+	 */
 	public static int getCertainty() {
 		try {
 			byte[] conf = Files.readAllBytes(new File(PATH).toPath());

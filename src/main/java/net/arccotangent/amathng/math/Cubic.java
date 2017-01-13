@@ -14,7 +14,15 @@ public class Cubic {
 
 		return numer.divide(MathUtils.TWO);
 	}
-
+	
+	/**
+	 * Calculate the discriminant of a cubic equation to be used in solving
+	 * @param a The first coefficient of the cubic equation (ax^3)
+	 * @param b The second coefficient of the cubic equation (bx^2)
+	 * @param c The third coefficient of the cubic equation (cx)
+	 * @param d The fourth coefficient of the cubic equation (d) // the constant
+	 * @return The discriminant of the cubic equation
+	 */
 	public static Apcomplex getDiscrim(Apcomplex a, Apcomplex b, Apcomplex c, Apcomplex d) {
 		//discriminant = 18abcd - 4b^3d + b^2c^2 - 4ac^3 - 27a^2d^2
 
@@ -84,7 +92,18 @@ public class Cubic {
 			return ApcomplexMath.cbrt(cbrt);
 		}
 	}
-
+	
+	/**
+	 * Calculate the solutions of a cubic equation given the coefficients, the C and T0 constants, and the discriminant
+	 * @param a The first coefficient of the cubic equation (ax^3)
+	 * @param b The second coefficient of the cubic equation (bx^2)
+	 * @param c The third coefficient of the cubic equation (cx)
+	 * @param d The fourth coefficient of the cubic equation (d) // the constant
+	 * @param C The C constant calculated by getC()
+	 * @param t0 The T0 constant calculated by getT0()
+	 * @param discrim The discriminant
+	 * @return An array containing the solutions
+	 */
 	public static Apcomplex[] getSolutions(Apcomplex a, Apcomplex b, Apcomplex c, Apcomplex d, Apcomplex C, Apcomplex t0, Apcomplex discrim) {
 		Apcomplex[] solutionz = new Apcomplex[3];
 

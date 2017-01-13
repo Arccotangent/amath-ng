@@ -22,6 +22,11 @@ public class Algebra {
 		return principal.multiply(factor);
 	}
 	
+	/**
+	 * Given a list of integers, calculate their greatest common denominator (GCD)
+	 * @param integers A list of integers with which to calculate the GCD
+	 * @return The GCD
+	 */
 	public static Apint gcd(ArrayList<Apint> integers) {
 		Apint res = ApintMath.gcd(integers.get(0), integers.get(1));
 		for (int i = 2; i < integers.size(); i++) {
@@ -31,6 +36,11 @@ public class Algebra {
 		return res;
 	}
 	
+	/**
+	 * Given a list of integers, calculate their least common multiple (LCM)
+	 * @param integers A list of integers with which to calculate the LCM
+	 * @return The LCM
+	 */
 	public static Apint lcm(ArrayList<Apint> integers) {
 		Apint res = ApintMath.lcm(integers.get(0), integers.get(1));
 		for (int i = 2; i < integers.size(); i++) {

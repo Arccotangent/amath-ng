@@ -29,6 +29,12 @@ public class Geometry {
 		return rise.divide(run);
 	}
 	
+	/**
+	 * Calculate the length of the hypotenuse of a right triangle
+	 * @param a The length of the first leg
+	 * @param b The length of the second leg
+	 * @return The length of the hypotenuse
+	 */
 	public static Apcomplex hypot(Apcomplex a, Apcomplex b) {
 		Apcomplex a2 = ApcomplexMath.pow(a, 2);
 		Apcomplex b2 = ApcomplexMath.pow(b, 2);

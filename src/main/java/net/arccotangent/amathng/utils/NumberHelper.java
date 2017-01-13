@@ -8,12 +8,23 @@ import org.apfloat.ApfloatMath;
 
 public class NumberHelper {
 	
+	/**
+	 * Create a zero number
+	 * @return A number with a value of 0+0i
+	 */
 	public static Apcomplex create() {
 		Apfloat real = new Apfloat("0", Main.NUMBER_PRECISION);
 		Apfloat imag = new Apfloat("0", Main.NUMBER_PRECISION);
 		return new Apcomplex(real, imag);
 	}
 	
+	/**
+	 * Create a number with a set real value and an imaginary value of zero
+	 * @param real_value The real value, constants are supported
+	 * @param radix The base of the number, 10 for decimal, 2 for binary, 16 for hexadecimal, etc
+	 * @return The number
+	 * @throws IllegalArgumentException If the real value is invalid
+	 */
 	public static Apcomplex create(String real_value, int radix) throws IllegalArgumentException {
 		if (real_value.equalsIgnoreCase("pi")) {
 			Apfloat real = ApfloatMath.pi(Main.NUMBER_PRECISION);
@@ -105,6 +116,11 @@ public class NumberHelper {
 		return new Apcomplex(real, imag);
 	}
 	
+	/**
+	 * Format a number as a String
+	 * @param toFormat The number to format
+	 * @return The formatted string in a+bi form
+	 */
 	public static String format(Apcomplex toFormat) {
 		String real = toFormat.real().toString(true);
 		String imag = toFormat.imag().toString(true);

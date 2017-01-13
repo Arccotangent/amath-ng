@@ -9,7 +9,11 @@ import org.apfloat.Apint;
 
 public class Statistics {
 	
-	// The Gaussian error function erf(z) expressed as a Taylor series
+	/**
+	 * Gaussian error function
+	 * @param z Value
+	 * @return erf(z)
+	 */
 	public static Apfloat erf(Apfloat z) {
 		Apfloat sqrtPi = ApfloatMath.sqrt(NumberHelper.create("pi", Main.RADIX).real());
 		Apfloat term1 = MathUtils.TWO.real().divide(sqrtPi);
@@ -44,6 +48,11 @@ public class Statistics {
 		return term1.multiply(current);
 	}
 	
+	/**
+	 * Cumulative distribution function
+	 * @param x Value x
+	 * @return cdf(x)
+	 */
 	public static Apfloat cdf(Apfloat x) {
 		Apfloat ONE_HALF = NumberHelper.create("0.5", Main.RADIX).real();
 		Apfloat sqrtTwo = ApfloatMath.sqrt(MathUtils.TWO.real());
