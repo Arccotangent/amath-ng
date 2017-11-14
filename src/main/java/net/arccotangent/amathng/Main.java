@@ -14,10 +14,11 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static final String VERSION = "20161117";
+	public static final String VERSION = "20171114";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
+	public static long REGRESSION_PRECISION = Configuration.getRegressionPrecision(); //Precision of regression line coefficients/intercepts in significant figures
 	public static final int RADIX = 10; //Number base, 10 = decimal, 2 = binary, 16 = hexadecimal
 	
 	private static Scanner stdin = new Scanner(System.in);
@@ -34,54 +35,54 @@ public class Main {
 
 		switch (op) {
 			case ADDITION: {
-				Apcomplex res = NumberHelper.create();
+				Apcomplex res = NumberHelper.create(NUMBER_PRECISION);
 				for (int i = 1; i < args.length; i++) {
-					res = res.add(NumberHelper.create(args[i], RADIX));
+					res = res.add(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION));
 				}
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case SUBTRACTION: {
-				Apcomplex res = NumberHelper.create(args[1], RADIX);
+				Apcomplex res = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				for (int i = 2; i < args.length; i++) {
-					res = res.subtract(NumberHelper.create(args[i], RADIX));
+					res = res.subtract(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION));
 				}
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case MULTIPLICATION: {
-				Apcomplex res = NumberHelper.create(args[1], RADIX);
+				Apcomplex res = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				for (int i = 2; i < args.length; i++) {
-					res = res.multiply(NumberHelper.create(args[i], RADIX));
+					res = res.multiply(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION));
 				}
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case DIVISION: {
-				Apcomplex res = NumberHelper.create(args[1], RADIX);
+				Apcomplex res = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				for (int i = 2; i < args.length; i++) {
-					res = res.divide(NumberHelper.create(args[i], RADIX));
+					res = res.divide(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION));
 				}
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case EXPONENTIATION: {
-				Apcomplex res = NumberHelper.create(args[1], RADIX);
-				Apcomplex exponent = NumberHelper.create(args[2], RADIX);
+				Apcomplex res = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex exponent = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
 				res = ApcomplexMath.pow(res, exponent);
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case SQUARE_ROOT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = ApcomplexMath.sqrt(num);
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case QUADRATIC: {
-				Apcomplex a = NumberHelper.create(args[1], RADIX);
-				Apcomplex b = NumberHelper.create(args[2], RADIX);
-				Apcomplex c = NumberHelper.create(args[3], RADIX);
+				Apcomplex a = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex b = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex c = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
 
 				Apcomplex discriminantSquared = Quadratic.getDiscrimSquared(a, b, c);
 				Apcomplex discriminant;
@@ -102,15 +103,15 @@ public class Main {
 				break;
 			}
 			case AREA_OF_CIRCLE: {
-				Apcomplex radius = NumberHelper.create(args[1], RADIX);
+				Apcomplex radius = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex area = radius.multiply(radius);
 				area = area.multiply(ApfloatMath.pi(NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(area));
 				break;
 			}
 			case MODULUS: {
-				Apcomplex a = NumberHelper.create(args[1], RADIX);
-				Apcomplex b = NumberHelper.create(args[2], RADIX);
+				Apcomplex a = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex b = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
 				Apcomplex mod = a.real().mod(b.real());
 				System.out.println(NumberHelper.format(mod));
 				break;
@@ -148,9 +149,9 @@ public class Main {
 				break;
 			}
 			case VERTEX: {
-				Apcomplex a = NumberHelper.create(args[1], RADIX);
-				Apcomplex b = NumberHelper.create(args[2], RADIX);
-				Apcomplex c = NumberHelper.create(args[3], RADIX);
+				Apcomplex a = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex b = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex c = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
 
 				Apcomplex[] vertex = Vertex.getVertex(a, b, c);
 				//vertex[0] = x, vertex[1] = y
@@ -162,8 +163,8 @@ public class Main {
 				break;
 			}
 			case HYPOTENUSE: {
-				Apcomplex a = NumberHelper.create(args[1], RADIX);
-				Apcomplex b = NumberHelper.create(args[2], RADIX);
+				Apcomplex a = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex b = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
 
 				Apcomplex c = Geometry.hypot(a, b);
 				System.out.println(NumberHelper.format(c));
@@ -176,55 +177,55 @@ public class Main {
 				break;
 			}
 			case SINE: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = ApcomplexMath.sin(MathUtils.toRadians(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case COSINE: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = ApcomplexMath.cos(MathUtils.toRadians(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case TANGENT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = ApcomplexMath.tan(MathUtils.toRadians(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case ARCSINE: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.asin(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case ARCCOSINE: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.acos(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case ARCTANGENT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.atan(num));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case CUBE_ROOT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex cbrtnum = ApcomplexMath.cbrt(num);
 				System.out.println(NumberHelper.format(cbrtnum));
 				break;
 			}
 			case LOGARITHM_E: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex logOfNum = ApcomplexMath.log(num);
 				System.out.println(NumberHelper.format(logOfNum));
 				break;
 			}
 			case LOGARITHM_10: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex log10OfNum = ApcomplexMath.log(num, MathUtils.TEN);
 				System.out.println(NumberHelper.format(log10OfNum));
 				break;
@@ -245,49 +246,49 @@ public class Main {
 				break;
 			}
 			case PERCENT_ERROR: {
-				Apcomplex accepted = NumberHelper.create(args[1], RADIX);
-				Apcomplex experimental = NumberHelper.create(args[2], RADIX);
+				Apcomplex accepted = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex experimental = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
 				
 				Apcomplex error = MathUtils.getPercentError(accepted, experimental);
 				System.out.println(NumberHelper.format(error));
 				break;
 			}
 			case COMPOUND_INTEREST: {
-				Apcomplex principal = NumberHelper.create(args[1], RADIX);
-				Apcomplex pct_rate = NumberHelper.create(args[2], RADIX);
-				Apcomplex compounds_year = NumberHelper.create(args[3], RADIX);
+				Apcomplex principal = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex pct_rate = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex compounds_year = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
 
-				Apcomplex time = NumberHelper.create(args[4], RADIX);
+				Apcomplex time = NumberHelper.create(args[4], RADIX, NUMBER_PRECISION);
 				Apcomplex total = Algebra.getCompoundInterest(principal, pct_rate, compounds_year, time);
 				System.out.println(NumberHelper.format(total));
 				break;
 			}
 			case AVERAGE: {
-				Apcomplex result = NumberHelper.create();
+				Apcomplex result = NumberHelper.create(NUMBER_PRECISION);
 				for (int i = 1; i <= argc; i++) {
-					result = result.add(NumberHelper.create(args[i], RADIX));
+					result = result.add(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION));
 				}
 				
-				result = result.divide(NumberHelper.create(Integer.toString(argc), RADIX));
+				result = result.divide(NumberHelper.create(Integer.toString(argc), RADIX, NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(result));
 				break;
 			}
 			case STANDARD_DEVIATION: {
-				Apcomplex total = NumberHelper.create();
+				Apcomplex total = NumberHelper.create(NUMBER_PRECISION);
 				for (int i = 1; i <= argc; i++) {
-					total = total.add(NumberHelper.create(args[i], RADIX));
+					total = total.add(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION));
 				}
 
-				Apcomplex avg = total.divide(NumberHelper.create(Integer.toString(argc), RADIX));
-				Apcomplex variance = NumberHelper.create();
+				Apcomplex avg = total.divide(NumberHelper.create(Integer.toString(argc), RADIX, NUMBER_PRECISION));
+				Apcomplex variance = NumberHelper.create(NUMBER_PRECISION);
 
 				for (int i = 1; i <= argc; i++) {
-					Apcomplex data = NumberHelper.create(args[i], RADIX);
+					Apcomplex data = NumberHelper.create(args[i], RADIX, NUMBER_PRECISION);
 					Apcomplex dfm = data.subtract(avg);
 					variance = variance.add(ApcomplexMath.pow(dfm, 2));
 				}
 
-				variance = variance.divide(NumberHelper.create(Integer.toString(argc), RADIX));
+				variance = variance.divide(NumberHelper.create(Integer.toString(argc), RADIX, NUMBER_PRECISION));
 				Apcomplex stdev = ApcomplexMath.sqrt(variance);
 				System.out.println("Arguments = " + argc);
 				System.out.println("Variance = " + NumberHelper.format(variance));
@@ -296,9 +297,9 @@ public class Main {
 				break;
 			}
 			case Z_SCORE: {
-				Apcomplex data = NumberHelper.create(args[1], RADIX);
-				Apcomplex mean = NumberHelper.create(args[2], RADIX);
-				Apcomplex stdev = NumberHelper.create(args[3], RADIX);
+				Apcomplex data = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex mean = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex stdev = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
 
 				Apcomplex zscore = data.subtract(mean);
 				zscore = zscore.divide(stdev);
@@ -308,7 +309,7 @@ public class Main {
 			case SORT: {
 				ArrayList<Apfloat> unsorted = new ArrayList<>();
 				for (int i = 1; i <= argc; i++) {
-					unsorted.add(NumberHelper.create(args[i], RADIX).real());
+					unsorted.add(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION).real());
 				}
 				Apfloat[] messy = new Apfloat[unsorted.size()];
 				messy = unsorted.toArray(messy);
@@ -323,17 +324,17 @@ public class Main {
 				break;
 			}
 			case CIRCUMFERENCE: {
-				Apcomplex radius = NumberHelper.create(args[1], RADIX);
-				Apcomplex pi = NumberHelper.create(ApfloatMath.pi(NUMBER_PRECISION).toString(true), RADIX);
+				Apcomplex radius = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex pi = NumberHelper.create(ApfloatMath.pi(NUMBER_PRECISION).toString(true), RADIX, NUMBER_PRECISION);
 				Apcomplex c = radius.multiply(MathUtils.TWO_INT).multiply(pi);
 				System.out.println(NumberHelper.format(c));
 				break;
 			}
 			case LAW_OF_SINES: {
 				System.out.println("Mark your triangle: angle A across from side A, angle B across from side B, angle C across from side C");
-				Apcomplex angleA = NumberHelper.create(args[1], RADIX);
-				Apcomplex angleB = NumberHelper.create(args[2], RADIX);
-				Apcomplex sideA = NumberHelper.create(args[3], RADIX);
+				Apcomplex angleA = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex angleB = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex sideA = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
 
 				Apcomplex sideB = Trigonometry.lawOfSines(angleA, angleB, sideA);
 				System.out.println(NumberHelper.format(sideB));
@@ -341,9 +342,9 @@ public class Main {
 			}
 			case LAW_OF_COSINES: {
 				System.out.println("Mark your triangle: angle A across from side A, angle B across from side B, angle C across from side C");
-				Apcomplex sideA = NumberHelper.create(args[1], RADIX);
-				Apcomplex sideB = NumberHelper.create(args[2], RADIX);
-				Apcomplex sideC = NumberHelper.create(args[3], RADIX);
+				Apcomplex sideA = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex sideB = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex sideC = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
 
 				Apcomplex angleC = Trigonometry.lawOfCosines(sideA, sideB, sideC);
 				System.out.println(NumberHelper.format(angleC));
@@ -371,44 +372,44 @@ public class Main {
 				break;
 			}
 			case COSECANT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.sin(MathUtils.toRadians(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case SECANT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.cos(MathUtils.toRadians(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case COTANGENT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.ONE.divide(ApcomplexMath.tan(MathUtils.toRadians(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case ARCCOSECANT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.asin(MathUtils.ONE.divide(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case ARCSECANT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.acos(MathUtils.ONE.divide(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case ARCCOTANGENT: {
-				Apcomplex num = NumberHelper.create(args[1], RADIX);
+				Apcomplex num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				Apcomplex res = MathUtils.toDegrees(ApcomplexMath.atan(MathUtils.ONE.divide(num)));
 				System.out.println(NumberHelper.format(res));
 				break;
 			}
 			case LOGARITHM_BASE: {
-				Apcomplex base = NumberHelper.create(args[1], RADIX);
-				Apcomplex num = NumberHelper.create(args[2], RADIX);
+				Apcomplex base = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex num = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
 				Apcomplex res = ApcomplexMath.log(num, base);
 				System.out.println(NumberHelper.format(res));
 				break;
@@ -428,10 +429,10 @@ public class Main {
 				break;
 			}
 			case CUBIC: {
-				Apcomplex a = NumberHelper.create(args[1], RADIX);
-				Apcomplex b = NumberHelper.create(args[2], RADIX);
-				Apcomplex c = NumberHelper.create(args[3], RADIX);
-				Apcomplex d = NumberHelper.create(args[4], RADIX);
+				Apcomplex a = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex b = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex c = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
+				Apcomplex d = NumberHelper.create(args[4], RADIX, NUMBER_PRECISION);
 
 				Apcomplex discrim = Cubic.getDiscrim(a, b, c, d);
 				System.out.println("Discriminant = " + NumberHelper.format(discrim));
@@ -450,9 +451,9 @@ public class Main {
 				break;
 			}
 			case ARITHMETIC_SEQUENCE_TERM: {
-				Apcomplex term_num = NumberHelper.create(args[1], RADIX);
-				Apcomplex common_diff = NumberHelper.create(args[2], RADIX);
-				Apcomplex a1 = NumberHelper.create(args[3], RADIX);
+				Apcomplex term_num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex common_diff = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex a1 = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
 
 				term_num = term_num.subtract(MathUtils.ONE);
 				Apcomplex termN = a1.add(common_diff.multiply(term_num));
@@ -460,9 +461,9 @@ public class Main {
 				break;
 			}
 			case ARITHMETIC_SEQUENCE_SUM: {
-				Apcomplex term_count = NumberHelper.create(args[1], RADIX);
-				Apcomplex a1 = NumberHelper.create(args[2], RADIX);
-				Apcomplex an = NumberHelper.create(args[3], RADIX);
+				Apcomplex term_count = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex a1 = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex an = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
 
 				Apcomplex snNumer = term_count.multiply(a1.add(an));
 				Apcomplex sumOfSeries = snNumer.divide(MathUtils.TWO);
@@ -490,10 +491,10 @@ public class Main {
 				break;
 			}
 			case DISTANCE: {
-				Apcomplex x1 = NumberHelper.create(args[1], RADIX);
-				Apcomplex y1 = NumberHelper.create(args[2], RADIX);
-				Apcomplex x2 = NumberHelper.create(args[3], RADIX);
-				Apcomplex y2 = NumberHelper.create(args[4], RADIX);
+				Apcomplex x1 = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex y1 = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex x2 = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
+				Apcomplex y2 = NumberHelper.create(args[4], RADIX, NUMBER_PRECISION);
 				
 				Apcomplex distanceSquared = Geometry.getDistanceSquared(x1, x2, y1, y2);
 				Apcomplex distance = ApcomplexMath.sqrt(distanceSquared);
@@ -503,84 +504,84 @@ public class Main {
 				break;
 			}
 			case FAHRENHEIT_TO_CELSIUS: {
-				Apcomplex fahrenheit = NumberHelper.create(args[1], RADIX);
+				Apcomplex fahrenheit = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex celsius = fahrenheit.subtract(NumberHelper.create("32", RADIX));
-				Apcomplex fiveOver9 = NumberHelper.create("5", RADIX).divide(NumberHelper.create("9", RADIX));
+				Apcomplex celsius = fahrenheit.subtract(NumberHelper.create("32", RADIX, NUMBER_PRECISION));
+				Apcomplex fiveOver9 = NumberHelper.create("5", RADIX, NUMBER_PRECISION).divide(NumberHelper.create("9", RADIX, NUMBER_PRECISION));
 				celsius = celsius.multiply(fiveOver9);
 				
 				System.out.println(NumberHelper.format(celsius));
 				break;
 			}
 			case CELSIUS_TO_FAHRENHEIT: {
-				Apcomplex celsius = NumberHelper.create(args[1], RADIX);
+				Apcomplex celsius = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex nineOver5 = NumberHelper.create("1.8", RADIX);
+				Apcomplex nineOver5 = NumberHelper.create("1.8", RADIX, NUMBER_PRECISION);
 				Apcomplex fahrenheit = celsius.multiply(nineOver5);
-				fahrenheit = fahrenheit.add(NumberHelper.create("32", RADIX));
+				fahrenheit = fahrenheit.add(NumberHelper.create("32", RADIX, NUMBER_PRECISION));
 				
 				System.out.println(NumberHelper.format(fahrenheit));
 				break;
 			}
 			case INCHES_TO_CENTIMETERS: {
-				Apcomplex inches = NumberHelper.create(args[1], RADIX);
+				Apcomplex inches = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex a = NumberHelper.create("2.54", RADIX);
+				Apcomplex a = NumberHelper.create("2.54", RADIX, NUMBER_PRECISION);
 				Apcomplex centimeters = inches.multiply(a);
 				
 				System.out.println(NumberHelper.format(centimeters));
 				break;
 			}
 			case CENTIMETERS_TO_INCHES: {
-				Apcomplex centimeters = NumberHelper.create(args[1], RADIX);
+				Apcomplex centimeters = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex a = NumberHelper.create("2.54", RADIX);
+				Apcomplex a = NumberHelper.create("2.54", RADIX, NUMBER_PRECISION);
 				Apcomplex inches = centimeters.divide(a);
 				
 				System.out.println(NumberHelper.format(inches));
 				break;
 			}
 			case MILES_TO_KILOMETERS: {
-				Apcomplex miles = NumberHelper.create(args[1], RADIX);
+				Apcomplex miles = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex a = NumberHelper.create("1.609344", RADIX);
+				Apcomplex a = NumberHelper.create("1.609344", RADIX, NUMBER_PRECISION);
 				Apcomplex kilometers = miles.multiply(a);
 				
 				System.out.println(NumberHelper.format(kilometers));
 				break;
 			}
 			case KILOMETERS_TO_MILES: {
-				Apcomplex kilometers = NumberHelper.create(args[1], RADIX);
+				Apcomplex kilometers = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex a = NumberHelper.create("1.609344", RADIX);
+				Apcomplex a = NumberHelper.create("1.609344", RADIX, NUMBER_PRECISION);
 				Apcomplex miles = kilometers.divide(a);
 				
 				System.out.println(NumberHelper.format(miles));
 				break;
 			}
 			case FEET_TO_METERS: {
-				Apcomplex feet = NumberHelper.create(args[1], RADIX);
+				Apcomplex feet = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex a = NumberHelper.create("0.3048", RADIX);
+				Apcomplex a = NumberHelper.create("0.3048", RADIX, NUMBER_PRECISION);
 				Apcomplex meters = feet.multiply(a);
 				
 				System.out.println(NumberHelper.format(meters));
 				break;
 			}
 			case METERS_TO_FEET: {
-				Apcomplex meters = NumberHelper.create(args[1], RADIX);
+				Apcomplex meters = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex a = NumberHelper.create("0.3048", RADIX);
+				Apcomplex a = NumberHelper.create("0.3048", RADIX, NUMBER_PRECISION);
 				Apcomplex feet = meters.divide(a);
 				
 				System.out.println(NumberHelper.format(feet));
 				break;
 			}
 			case MIDPOINT: {
-				Apcomplex x1 = NumberHelper.create(args[1], RADIX);
-				Apcomplex y1 = NumberHelper.create(args[2], RADIX);
-				Apcomplex x2 = NumberHelper.create(args[3], RADIX);
-				Apcomplex y2 = NumberHelper.create(args[4], RADIX);
+				Apcomplex x1 = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex y1 = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex x2 = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
+				Apcomplex y2 = NumberHelper.create(args[4], RADIX, NUMBER_PRECISION);
 				
 				Apcomplex[] midpoint = Geometry.getMidpoint(x1, x2, y1, y2);
 				//midpoint[0] = x, midpoint[1] = y
@@ -589,10 +590,10 @@ public class Main {
 				break;
 			}
 			case SLOPE: {
-				Apcomplex x1 = NumberHelper.create(args[1], RADIX);
-				Apcomplex y1 = NumberHelper.create(args[2], RADIX);
-				Apcomplex x2 = NumberHelper.create(args[3], RADIX);
-				Apcomplex y2 = NumberHelper.create(args[4], RADIX);
+				Apcomplex x1 = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
+				Apcomplex y1 = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION);
+				Apcomplex x2 = NumberHelper.create(args[3], RADIX, NUMBER_PRECISION);
+				Apcomplex y2 = NumberHelper.create(args[4], RADIX, NUMBER_PRECISION);
 				
 				Apcomplex slope = Geometry.getSlope(x1, x2, y1, y2);
 				
@@ -600,65 +601,65 @@ public class Main {
 				break;
 			}
 			case DEGREES_TO_RADIANS: {
-				Apcomplex degrees = NumberHelper.create(args[1], RADIX);
+				Apcomplex degrees = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
 				Apcomplex radians = MathUtils.toRadians(degrees);
 				System.out.println(NumberHelper.format(radians));
 				break;
 			}
 			case RADIANS_TO_DEGREES: {
-				Apcomplex radians = NumberHelper.create(args[1], RADIX);
+				Apcomplex radians = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
 				Apcomplex degrees = MathUtils.toDegrees(radians);
 				System.out.println(NumberHelper.format(degrees));
 				break;
 			}
 			case POUNDS_TO_KILOGRAMS: {
-				Apcomplex pounds = NumberHelper.create(args[1], RADIX);
+				Apcomplex pounds = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex kilograms = pounds.multiply(NumberHelper.create("0.45359237", RADIX));
+				Apcomplex kilograms = pounds.multiply(NumberHelper.create("0.45359237", RADIX, NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(kilograms));
 				break;
 			}
 			case KILOGRAMS_TO_POUNDS: {
-				Apcomplex kilograms = NumberHelper.create(args[1], RADIX);
+				Apcomplex kilograms = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex pounds = kilograms.multiply(NumberHelper.create("2.20462234", RADIX));
+				Apcomplex pounds = kilograms.multiply(NumberHelper.create("2.20462234", RADIX, NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(pounds));
 				break;
 			}
 			case GALLONS_TO_LITERS: {
-				Apcomplex gallons = NumberHelper.create(args[1], RADIX);
+				Apcomplex gallons = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex liters = gallons.multiply(NumberHelper.create("3.785411784", RADIX));
+				Apcomplex liters = gallons.multiply(NumberHelper.create("3.785411784", RADIX, NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(liters));
 				break;
 			}
 			case LITERS_TO_GALLONS: {
-				Apcomplex liters = NumberHelper.create(args[1], RADIX);
+				Apcomplex liters = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex gallons = liters.divide(NumberHelper.create("3.785411784", RADIX));
+				Apcomplex gallons = liters.divide(NumberHelper.create("3.785411784", RADIX, NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(gallons));
 				break;
 			}
 			case CUBIC_FEET_TO_CUBIC_METERS: {
-				Apcomplex cubicFeet = NumberHelper.create(args[1], RADIX);
+				Apcomplex cubicFeet = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex cubicMeters = cubicFeet.multiply(NumberHelper.create("0.028316846592", RADIX));
+				Apcomplex cubicMeters = cubicFeet.multiply(NumberHelper.create("0.028316846592", RADIX, NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(cubicMeters));
 				break;
 			}
 			case CUBIC_METERS_TO_CUBIC_FEET: {
-				Apcomplex cubicMeters = NumberHelper.create(args[1], RADIX);
+				Apcomplex cubicMeters = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex cubicFeet = cubicMeters.divide(NumberHelper.create("0.028316846592", RADIX));
+				Apcomplex cubicFeet = cubicMeters.divide(NumberHelper.create("0.028316846592", RADIX, NUMBER_PRECISION));
 				System.out.println(NumberHelper.format(cubicFeet));
 				break;
 			}
 			case CIRCLE_RADIUS: {
-				Apcomplex circumference = NumberHelper.create(args[1], RADIX);
+				Apcomplex circumference = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION);
 				
-				Apcomplex twoPi = NumberHelper.create("pi", RADIX).multiply(MathUtils.TWO);
+				Apcomplex twoPi = NumberHelper.create("pi", RADIX, NUMBER_PRECISION).multiply(MathUtils.TWO);
 				Apcomplex radius = circumference.divide(twoPi);
 				System.out.println(NumberHelper.format(radius));
 				break;
@@ -685,8 +686,8 @@ public class Main {
 				break;
 			}
 			case TOLERANCE_INTERVAL: {
-				Apfloat min = NumberHelper.create(args[1], RADIX).real();
-				Apfloat max = NumberHelper.create(args[2], RADIX).real();
+				Apfloat min = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION).real();
+				Apfloat max = NumberHelper.create(args[2], RADIX, NUMBER_PRECISION).real();
 				
 				Apfloat minCDF = Statistics.cdf(min);
 				Apfloat maxCDF = Statistics.cdf(max);
@@ -696,7 +697,7 @@ public class Main {
 				break;
 			}
 			case ERROR_FUNCTION: {
-				Apfloat num = NumberHelper.create(args[1], RADIX).real();
+				Apfloat num = NumberHelper.create(args[1], RADIX, NUMBER_PRECISION).real();
 				
 				Apfloat error = Statistics.erf(num);
 				System.out.println(error.toString(true));
@@ -705,7 +706,7 @@ public class Main {
 			case BASE_CONVERT: {
 				int orig_base = Integer.parseInt(args[1]);
 				int new_base = Integer.parseInt(args[2]);
-				Apcomplex num = NumberHelper.create(args[3], orig_base);
+				Apcomplex num = NumberHelper.create(args[3], orig_base, NUMBER_PRECISION);
 				
 				Apcomplex new_num = num.toRadix(new_base);
 				System.out.println(new_num.toString(true));
@@ -715,7 +716,7 @@ public class Main {
 				ArrayList<Apcomplex> resistors = new ArrayList<>();
 				
 				for (int i = 1; i < args.length; i++) {
-					resistors.add(NumberHelper.create(args[i], 10));
+					resistors.add(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION));
 				}
 				
 				Apcomplex resistanceReciprocal = MathUtils.ZERO;
@@ -810,7 +811,7 @@ public class Main {
 					for (int x = 0; x < rows; x++) {
 						for (int y = 0; y < cols; y++) {
 							System.out.print("Enter value at row " + x + ", column " + y + ": ");
-							matrix[x][y] = NumberHelper.create(stdin.nextLine(), 10);
+							matrix[x][y] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION);
 						}
 					}
 					matrices.add(matrix);
@@ -848,7 +849,7 @@ public class Main {
 					for (int x = 0; x < rows; x++) {
 						for (int y = 0; y < cols; y++) {
 							System.out.print("Enter value at row " + x + ", column " + y + ": ");
-							matrix[x][y] = NumberHelper.create(stdin.nextLine(), 10);
+							matrix[x][y] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION);
 						}
 					}
 					matrices.add(matrix);
@@ -865,6 +866,37 @@ public class Main {
 				System.out.println("Answer calculated, printing below.");
 				System.out.println("--------------------------");
 				Matrix.printMatrix(result);
+				break;
+			}
+			case LINEAR_REGRESSION: {
+				int amount = Integer.parseInt(args[1]);
+				
+				Apfloat[][] values = new Apfloat[2][amount];
+				
+				System.out.println("Only accepting real numbers (no complex/imaginary).");
+				
+				for (int i = 0; i < amount; i++) {
+					System.out.print("Enter X value " + (i + 1) + ": ");
+					values[0][i] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION).real();
+					System.out.print("Enter Y value " + (i + 1) + ": ");
+					values[1][i] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION).real();
+				}
+				
+				System.out.println("Accepted the following values:");
+				for (int i = 0; i < amount; i++) {
+					System.out.println("(" + values[0][i] + ", " + values[1][i] + ")");
+				}
+				
+				System.out.println("Calculating linear regression line.");
+				Apfloat[] linreg = Statistics.linreg(values);
+				
+				if (linreg == null) {
+					System.out.println("ERROR: Invalid linear regression line returned! Invalid values?");
+					break;
+				}
+				
+				String equation = "y = " + NumberHelper.format(new Apcomplex(linreg[0])) + "x" + " + " + NumberHelper.format(new Apcomplex(linreg[1]));
+				System.out.println(equation);
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {

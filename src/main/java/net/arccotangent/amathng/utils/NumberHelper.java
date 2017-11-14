@@ -1,6 +1,5 @@
 package net.arccotangent.amathng.utils;
 
-import net.arccotangent.amathng.Main;
 import org.apache.commons.lang3.StringUtils;
 import org.apfloat.Apcomplex;
 import org.apfloat.Apfloat;
@@ -12,9 +11,9 @@ public class NumberHelper {
 	 * Create a zero number
 	 * @return A number with a value of 0+0i
 	 */
-	public static Apcomplex create() {
-		Apfloat real = new Apfloat("0", Main.NUMBER_PRECISION);
-		Apfloat imag = new Apfloat("0", Main.NUMBER_PRECISION);
+	public static Apcomplex create(long precision) {
+		Apfloat real = new Apfloat("0", precision);
+		Apfloat imag = new Apfloat("0", precision);
 		return new Apcomplex(real, imag);
 	}
 	
@@ -25,23 +24,23 @@ public class NumberHelper {
 	 * @return The number
 	 * @throws IllegalArgumentException If the real value is invalid
 	 */
-	public static Apcomplex create(String real_value, int radix) throws IllegalArgumentException {
+	public static Apcomplex create(String real_value, int radix, long precision) throws IllegalArgumentException {
 		if (real_value.equalsIgnoreCase("pi")) {
-			Apfloat real = ApfloatMath.pi(Main.NUMBER_PRECISION);
-			Apfloat imag = new Apfloat("0", Main.NUMBER_PRECISION, radix);
+			Apfloat real = ApfloatMath.pi(precision);
+			Apfloat imag = new Apfloat("0", precision, radix);
 			return new Apcomplex(real, imag);
 		} else if (real_value.equalsIgnoreCase("e")) {
 			Apfloat real = ApfloatMath.exp(MathUtils.ONE.real());
-			Apfloat imag = new Apfloat("0", Main.NUMBER_PRECISION, radix);
+			Apfloat imag = new Apfloat("0", precision, radix);
 			return new Apcomplex(real, imag);
 		} else if (real_value.equalsIgnoreCase("-i")) {
-			Apfloat real = new Apfloat("0", Main.NUMBER_PRECISION, radix);
-			Apfloat imag = new Apfloat("-1", Main.NUMBER_PRECISION, radix);
+			Apfloat real = new Apfloat("0", precision, radix);
+			Apfloat imag = new Apfloat("-1", precision, radix);
 			return new Apcomplex(real, imag);
 		} else {
 			if (!real_value.contains("i")) {
-				Apfloat real = new Apfloat(real_value, Main.NUMBER_PRECISION, radix);
-				Apfloat imag = new Apfloat("0", Main.NUMBER_PRECISION, radix);
+				Apfloat real = new Apfloat(real_value, precision, radix);
+				Apfloat imag = new Apfloat("0", precision, radix);
 				return new Apcomplex(real, imag);
 			} else {
 				boolean neg_real = false;
@@ -92,8 +91,8 @@ public class NumberHelper {
 					if (neg_imag || neg_first_term) {
 						imagstr = "-" + imagstr;
 					}
-					Apfloat real = new Apfloat("0", Main.NUMBER_PRECISION, radix);
-					Apfloat imag = new Apfloat(imagstr, Main.NUMBER_PRECISION, radix);
+					Apfloat real = new Apfloat("0", precision, radix);
+					Apfloat imag = new Apfloat(imagstr, precision, radix);
 					return new Apcomplex(real, imag);
 				}
 				
@@ -105,14 +104,14 @@ public class NumberHelper {
 				if (neg_imag)
 					i = "-" + i;
 				
-				return create(r, i);
+				return create(r, i, precision);
 			}
 		}
 	}
 	
-	private static Apcomplex create(String real_value, String imaginary_value) {
-		Apfloat real = new Apfloat(real_value, Main.NUMBER_PRECISION);
-		Apfloat imag = new Apfloat(imaginary_value, Main.NUMBER_PRECISION);
+	private static Apcomplex create(String real_value, String imaginary_value, long precision) {
+		Apfloat real = new Apfloat(real_value, precision);
+		Apfloat imag = new Apfloat(imaginary_value, precision);
 		return new Apcomplex(real, imag);
 	}
 	

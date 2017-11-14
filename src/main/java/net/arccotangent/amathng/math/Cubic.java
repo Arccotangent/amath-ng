@@ -9,7 +9,7 @@ import org.apfloat.ApcomplexMath;
 public class Cubic {
 
 	private static Apcomplex getCubeRootOfUnity() {
-		Apcomplex isqrt3 = ApcomplexMath.sqrt(NumberHelper.create("-3", Main.RADIX));
+		Apcomplex isqrt3 = ApcomplexMath.sqrt(NumberHelper.create("-3", Main.RADIX, Main.NUMBER_PRECISION));
 		Apcomplex numer = isqrt3.subtract(MathUtils.ONE); //same as adding -1
 
 		return numer.divide(MathUtils.TWO);
@@ -26,7 +26,7 @@ public class Cubic {
 	public static Apcomplex getDiscrim(Apcomplex a, Apcomplex b, Apcomplex c, Apcomplex d) {
 		//discriminant = 18abcd - 4b^3d + b^2c^2 - 4ac^3 - 27a^2d^2
 
-		Apcomplex term1 = NumberHelper.create("18", Main.RADIX).multiply(a).multiply(b).multiply(c).multiply(d);
+		Apcomplex term1 = NumberHelper.create("18", Main.RADIX, Main.NUMBER_PRECISION).multiply(a).multiply(b).multiply(c).multiply(d);
 
 		Apcomplex bCubed = ApcomplexMath.pow(b, 3);
 		Apcomplex term2 = bCubed.multiply(d).multiply(MathUtils.FOUR);
@@ -40,7 +40,7 @@ public class Cubic {
 
 		Apcomplex aSquared = ApcomplexMath.pow(a, 2);
 		Apcomplex dSquared = ApcomplexMath.pow(d, 2);
-		Apcomplex term5 = NumberHelper.create("27", Main.RADIX).multiply(aSquared).multiply(dSquared);
+		Apcomplex term5 = NumberHelper.create("27", Main.RADIX, Main.NUMBER_PRECISION).multiply(aSquared).multiply(dSquared);
 
 		return term1.subtract(term2).add(term3).subtract(term4).subtract(term5);
 	}
@@ -56,10 +56,10 @@ public class Cubic {
 		Apcomplex bCubed = ApcomplexMath.pow(b, 3);
 		Apcomplex term1 = bCubed.multiply(MathUtils.TWO);
 
-		Apcomplex term2 = NumberHelper.create("9", Main.RADIX).multiply(a).multiply(b).multiply(c);
+		Apcomplex term2 = NumberHelper.create("9", Main.RADIX, Main.NUMBER_PRECISION).multiply(a).multiply(b).multiply(c);
 
 		Apcomplex aSquared = ApcomplexMath.pow(a, 2);
-		Apcomplex term3 = NumberHelper.create("27", Main.RADIX).multiply(aSquared).multiply(d);
+		Apcomplex term3 = NumberHelper.create("27", Main.RADIX, Main.NUMBER_PRECISION).multiply(aSquared).multiply(d);
 
 		return term1.subtract(term2).add(term3);
 	}
@@ -114,7 +114,7 @@ public class Cubic {
 			solutionz[1] = sol;
 			solutionz[2] = sol;
 		} else if (discrim.equals(MathUtils.ZERO) && !t0.equals(MathUtils.ZERO)) { //double root
-			Apcomplex nineAD = NumberHelper.create("9", Main.RADIX).multiply(a).multiply(d);
+			Apcomplex nineAD = NumberHelper.create("9", Main.RADIX, Main.NUMBER_PRECISION).multiply(a).multiply(d);
 			Apcomplex bc = b.multiply(c);
 			Apcomplex twoT0 = t0.multiply(MathUtils.TWO);
 
@@ -126,7 +126,7 @@ public class Cubic {
 
 			Apcomplex fourABC = MathUtils.FOUR.multiply(a).multiply(b).multiply(c);
 			Apcomplex aSquared = ApcomplexMath.pow(a, 2);
-			Apcomplex nineA2D = NumberHelper.create("9", Main.RADIX).multiply(aSquared).multiply(d);
+			Apcomplex nineA2D = NumberHelper.create("9", Main.RADIX, Main.NUMBER_PRECISION).multiply(aSquared).multiply(d);
 			Apcomplex bCubed = ApcomplexMath.pow(b, 3);
 			Apcomplex aXT0 = a.multiply(t0);
 

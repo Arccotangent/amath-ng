@@ -423,6 +423,11 @@ class Opcode {
 				return Operation.SUBTRACT_MATRICES;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("linreg")) {
+			if (argc == 1)
+				return Operation.LINEAR_REGRESSION;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}

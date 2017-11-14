@@ -11,17 +11,17 @@ import java.util.Random;
 
 public class MathUtils {
 
-	public static final Apcomplex ZERO = NumberHelper.create("0", Main.RADIX);
+	public static final Apcomplex ZERO = NumberHelper.create("0", Main.RADIX, Main.NUMBER_PRECISION);
 	public static final Apint ZERO_INT = new Apint("0");
-	public static final Apcomplex ONE = NumberHelper.create("1", Main.RADIX);
+	public static final Apcomplex ONE = NumberHelper.create("1", Main.RADIX, Main.NUMBER_PRECISION);
 	public static final Apint ONE_INT = new Apint("1");
-	public static final Apcomplex TWO = NumberHelper.create("2", Main.RADIX);
+	public static final Apcomplex TWO = NumberHelper.create("2", Main.RADIX, Main.NUMBER_PRECISION);
 	public static final Apint TWO_INT = new Apint("2");
-	public static final Apcomplex THREE = NumberHelper.create("3", Main.RADIX);
+	public static final Apcomplex THREE = NumberHelper.create("3", Main.RADIX, Main.NUMBER_PRECISION);
 	public static final Apint THREE_INT = new Apint("3");
-	public static final Apcomplex FOUR = NumberHelper.create("4", Main.RADIX);
-	public static final Apcomplex TEN = NumberHelper.create("10", Main.RADIX);
-	public static final Apcomplex ONE_HUNDRED = NumberHelper.create("100", Main.RADIX);
+	public static final Apcomplex FOUR = NumberHelper.create("4", Main.RADIX, Main.NUMBER_PRECISION);
+	public static final Apcomplex TEN = NumberHelper.create("10", Main.RADIX, Main.NUMBER_PRECISION);
+	public static final Apcomplex ONE_HUNDRED = NumberHelper.create("100", Main.RADIX, Main.NUMBER_PRECISION);
 	
 	public static void printUsage() {
 		System.out.println("amath-ng " + Main.VERSION + " - A Command Line Calculator by Arccotangent\n" +
@@ -67,6 +67,7 @@ public class MathUtils {
 				"zsc <data> <average> <standard deviation> - Get z-score of a number\n" +
 				"ti <minimum z-score> <maximum z-score> - Tolerance interval (think of the normal distribution bell curve, 68-95-99.7 rule)\n" +
 				"erf <number> - Error function\n" +
+				"linreg <amount of data values> - Linear regression line calculator\n" +
 				"\n--Trigonometry--\n\n" +
 				"sin <number> - Trigonometric function - Sine - opposite / hypotenuse\n" +
 				"cos <number> - Trigonometric function - Cosine - adjacent / hypotenuse\n" +
@@ -131,12 +132,12 @@ public class MathUtils {
 	}
 
 	public static Apcomplex toDegrees(Apcomplex radian) {
-		Apcomplex a = NumberHelper.create("180", Main.RADIX).divide(ApfloatMath.pi(Main.NUMBER_PRECISION));
+		Apcomplex a = NumberHelper.create("180", Main.RADIX, Main.NUMBER_PRECISION).divide(ApfloatMath.pi(Main.NUMBER_PRECISION));
 		return radian.multiply(a);
 	}
 
 	public static Apcomplex toRadians(Apcomplex degree) {
-		Apcomplex a = ApfloatMath.pi(Main.NUMBER_PRECISION).divide(NumberHelper.create("180", Main.RADIX));
+		Apcomplex a = ApfloatMath.pi(Main.NUMBER_PRECISION).divide(NumberHelper.create("180", Main.RADIX, Main.NUMBER_PRECISION));
 		return degree.multiply(a);
 	}
 
@@ -267,8 +268,8 @@ public class MathUtils {
 	}
 	
 	public static Apcomplex probability(int certainty) {
-		Apcomplex ONE_HALF = NumberHelper.create("0.5", Main.RADIX);
-		Apcomplex a = ApcomplexMath.pow(ONE_HALF, NumberHelper.create(Integer.toString(certainty), Main.RADIX));
+		Apcomplex ONE_HALF = NumberHelper.create("0.5", Main.RADIX, Main.NUMBER_PRECISION);
+		Apcomplex a = ApcomplexMath.pow(ONE_HALF, NumberHelper.create(Integer.toString(certainty), Main.RADIX, Main.NUMBER_PRECISION));
 		return ONE.subtract(a);
 	}
 	
