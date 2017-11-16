@@ -18,8 +18,8 @@ public class NumberHelper {
 	}
 	
 	/**
-	 * Create a number with a set real value and an imaginary value of zero
-	 * @param real_value The real value, constants are supported
+	 * Create a number with a set real and/or imaginary value
+	 * @param real_value The value in the form a+bi, constants are supported
 	 * @param radix The base of the number, 10 for decimal, 2 for binary, 16 for hexadecimal, etc
 	 * @return The number
 	 * @throws IllegalArgumentException If the real value is invalid
