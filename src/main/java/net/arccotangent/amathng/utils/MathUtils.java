@@ -67,7 +67,7 @@ public class MathUtils {
 				"zsc <data> <average> <standard deviation> - Get z-score of a number\n" +
 				"ti <minimum z-score> <maximum z-score> - Tolerance interval (think of the normal distribution bell curve, 68-95-99.7 rule)\n" +
 				"erf <number> - Error function\n" +
-				"linreg <amount of data values> - Linear regression line calculator\n" +
+				"linreg <amount of data values> - Linear regression line and correlation coefficient calculator\n" +
 				"\n--Trigonometry--\n\n" +
 				"sin <number> - Trigonometric function - Sine - opposite / hypotenuse\n" +
 				"cos <number> - Trigonometric function - Cosine - adjacent / hypotenuse\n" +

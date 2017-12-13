@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static final String VERSION = "20171114";
+	public static final String VERSION = "20171130";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -871,15 +871,15 @@ public class Main {
 			case LINEAR_REGRESSION: {
 				int amount = Integer.parseInt(args[1]);
 				
-				Apfloat[][] values = new Apfloat[2][amount];
+				Apcomplex[][] values = new Apcomplex[2][amount];
 				
 				System.out.println("Only accepting real numbers (no complex/imaginary).");
 				
 				for (int i = 0; i < amount; i++) {
 					System.out.print("Enter X value " + (i + 1) + ": ");
-					values[0][i] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION).real();
+					values[0][i] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION);
 					System.out.print("Enter Y value " + (i + 1) + ": ");
-					values[1][i] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION).real();
+					values[1][i] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION);
 				}
 				
 				System.out.println("Accepted the following values:");
@@ -888,15 +888,25 @@ public class Main {
 				}
 				
 				System.out.println("Calculating linear regression line.");
-				Apfloat[] linreg = Statistics.linreg(values);
+				Apcomplex[] linreg = Statistics.linreg(values);
 				
 				if (linreg == null) {
 					System.out.println("ERROR: Invalid linear regression line returned! Invalid values?");
 					break;
 				}
 				
-				String equation = "y = " + NumberHelper.format(new Apcomplex(linreg[0])) + "x" + " + " + NumberHelper.format(new Apcomplex(linreg[1]));
+				System.out.println("Calculating correlation coefficient.");
+				Apcomplex r = Statistics.pearsonCorrelation(values);
+				
+				if (r == null) {
+					System.out.println("ERROR: Invalid correlation coefficient returned! Invalid values?");
+					break;
+				}
+				
+				String equation = "y = " + NumberHelper.format(linreg[0]) + "x" + " + " + NumberHelper.format(linreg[1]);
+				String correlation = "r = " + NumberHelper.format(r) + "\nr^2 = " + NumberHelper.format(ApcomplexMath.pow(r, MathUtils.TWO));
 				System.out.println(equation);
+				System.out.println(correlation);
 				break;
 			}
 			case INVALID_ARGUMENT_COUNT: {
@@ -908,7 +918,7 @@ public class Main {
 				break;
 			}
 			default: {
-				System.out.println("amath-ng: ERROR: INVOPC - Please send this error to the developers! (operation " + op + ", argc " + (argc + 1) + ", opargc " + argc + ")");
+				System.out.println("amath-ng: ERROR: Invalid opcode - Please report this error to the developers! (operation " + args[0] + ", opcode " + op + ", argc " + (argc + 1) + ", opargc " + argc + ")");
 				break;
 			}
 		}
