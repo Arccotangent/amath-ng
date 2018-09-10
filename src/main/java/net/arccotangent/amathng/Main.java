@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class Main {
 
-	public static final String VERSION = "20171130";
+	public static final String VERSION = "20180910";
 	
 	public static long NUMBER_PRECISION = Configuration.getPrecision(); //Precision in significant figures
 	public static int CERTAINTY = Configuration.getCertainty(); //Probability of prime number = 1 - 0.5^CERTAINTY
@@ -137,7 +137,7 @@ public class Main {
 				for (Apint aFactorz : factorz) {
 					System.out.print(" " + aFactorz.toString(true));
 				}
-				System.out.println("");
+				System.out.println();
 				break;
 			}
 			case GREATEST_COMMON_DENOMINATOR: {
@@ -319,7 +319,7 @@ public class Main {
 				for (Apfloat aSorted : sorted) {
 					System.out.print(aSorted.toString(true) + " ");
 				}
-				System.out.println("");
+				System.out.println();
 				
 				break;
 			}
@@ -804,21 +804,9 @@ public class Main {
 				int cols = Integer.parseInt(args[3]);
 				
 				ArrayList<Apcomplex[][]> matrices = new ArrayList<>();
-				
-				for (int i = 0; i < matrix_count; i++) {
-					System.out.println("---MATRIX " + i + "---");
-					Apcomplex[][] matrix = new Apcomplex[rows][cols];
-					for (int x = 0; x < rows; x++) {
-						for (int y = 0; y < cols; y++) {
-							System.out.print("Enter value at row " + x + ", column " + y + ": ");
-							matrix[x][y] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION);
-						}
-					}
-					matrices.add(matrix);
-					System.out.println("Accepted matrix " + i + ", printing below.");
-					Matrix.printMatrix(matrix);
-				}
-				
+
+				createMatrices(matrix_count, rows, cols, matrices);
+
 				Apcomplex[][] result = matrices.get(0);
 				
 				for (int i = 1; i < matrix_count; i++) {
@@ -842,21 +830,9 @@ public class Main {
 				int cols = Integer.parseInt(args[3]);
 				
 				ArrayList<Apcomplex[][]> matrices = new ArrayList<>();
-				
-				for (int i = 0; i < matrix_count; i++) {
-					System.out.println("---MATRIX " + i + "---");
-					Apcomplex[][] matrix = new Apcomplex[rows][cols];
-					for (int x = 0; x < rows; x++) {
-						for (int y = 0; y < cols; y++) {
-							System.out.print("Enter value at row " + x + ", column " + y + ": ");
-							matrix[x][y] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION);
-						}
-					}
-					matrices.add(matrix);
-					System.out.println("Accepted matrix " + i + ", printing below.");
-					Matrix.printMatrix(matrix);
-				}
-				
+
+				createMatrices(matrix_count, rows, cols, matrices);
+
 				Apcomplex[][] result = matrices.get(0);
 				
 				for (int i = 1; i < matrix_count; i++) {
@@ -909,6 +885,113 @@ public class Main {
 				System.out.println(correlation);
 				break;
 			}
+			case POLYNOMIAL_ADDITION: {
+				ArrayList<PolynomialTerm> terms = new ArrayList<>();
+				ArrayList<Polynomial> polynomials = new ArrayList<>();
+
+				int amt = Integer.parseInt(args[1]);
+
+				if (amt < 2) {
+					System.out.println("ERROR: You must enter at least 2 polynomials.");
+					break;
+				}
+
+				createPolynomials(terms, polynomials, amt);
+
+				Polynomial sum = polynomials.get(0);
+
+				for (int i = 1; i < polynomials.size(); i++) {
+					sum = sum.add(polynomials.get(i));
+				}
+
+				System.out.print("Final sum: ");
+				sum.print();
+				break;
+			}
+			case POLYNOMIAL_SUBTRACTION: {
+				ArrayList<PolynomialTerm> terms = new ArrayList<>();
+				ArrayList<Polynomial> polynomials = new ArrayList<>();
+
+				int amt = Integer.parseInt(args[1]);
+
+				if (amt < 2) {
+					System.out.println("ERROR: You must enter at least 2 polynomials.");
+					break;
+				}
+
+				createPolynomials(terms, polynomials, amt);
+
+				Polynomial difference = polynomials.get(0);
+
+				for (int i = 1; i < polynomials.size(); i++) {
+					difference = difference.subtract(polynomials.get(i));
+				}
+
+				System.out.print("Final difference: ");
+				difference.print();
+				break;
+			}
+			case POLYNOMIAL_MULTIPLICATION: {
+				ArrayList<PolynomialTerm> terms = new ArrayList<>();
+				ArrayList<Polynomial> polynomials = new ArrayList<>();
+
+				int amt = Integer.parseInt(args[1]);
+
+				if (amt < 2) {
+					System.out.println("ERROR: You must enter at least 2 polynomials.");
+					break;
+				}
+
+				createPolynomials(terms, polynomials, amt);
+
+				Polynomial product = polynomials.get(0);
+
+				for (int i = 1; i < polynomials.size(); i++) {
+					product = product.multiply(polynomials.get(i));
+				}
+
+				System.out.print("Final product: ");
+				product.print();
+				break;
+			}
+			case POLYNOMIAL_DIVISION: {
+				ArrayList<PolynomialTerm> terms = new ArrayList<>();
+				ArrayList<Polynomial> polynomials = new ArrayList<>();
+
+				int amt = Integer.parseInt(args[1]);
+
+				if (amt < 2) {
+					System.out.println("ERROR: You must enter at least 2 polynomials.");
+					break;
+				}
+
+				createPolynomials(terms, polynomials, amt);
+
+				Polynomial quotient = polynomials.get(0);
+
+				for (int i = 1; i < polynomials.size(); i++) {
+					quotient = quotient.divide(polynomials.get(i));
+				}
+
+				System.out.print("Final quotient: ");
+				quotient.print();
+				break;
+			}
+			case DIFFERENCE_QUOTIENT: {
+				ArrayList<PolynomialTerm> terms = new ArrayList<>();
+
+				for (int i = 1; i < args.length - 1; i++) {
+
+					terms.add(new PolynomialTerm(NumberHelper.create(args[i], RADIX, NUMBER_PRECISION).real(), "x^" + (args.length - 1 - i - 1)));
+				}
+
+				Polynomial f = new Polynomial(terms);
+				System.out.print("Accepted polynomial for f(x): ");
+				f.print();
+
+				System.out.println("Difference quotient calculator is a work in progress and currently incomplete!");
+				break;
+			}
 			case INVALID_ARGUMENT_COUNT: {
 				System.out.println("amath-ng: ERROR: Review your argument count!");
 				break;
@@ -921,6 +1004,57 @@ public class Main {
 				System.out.println("amath-ng: ERROR: Invalid opcode - Please report this error to the developers! (operation " + args[0] + ", opcode " + op + ", argc " + (argc + 1) + ", opargc " + argc + ")");
 				break;
 			}
+		}
+	}
+
+	private static void createPolynomials(ArrayList<PolynomialTerm> terms, ArrayList<Polynomial> polynomials, int amt) {
+		System.out.println("-----POLYNOMIAL TERM ENTERING INSTRUCTIONS-----");
+		System.out.println("Polynomial terms are accepted as follows: 'value<space>variable' or 'value variable'");
+		System.out.println("You would enter the value, a space, and then the variable and its exponent if applicable.");
+		System.out.println("To enter a value with no variable, simply enter the value with no variable.");
+		System.out.println("ex. to get 3x^2, one would enter '3 x^2' when prompted (without the quotes).");
+		System.out.println("ex. to get 2, one would enter '2' when prompted (without the quotes).");
+		System.out.println("COMPLEX NUMBERS ARE NOT ACCEPTED FOR THE TIME BEING. ENTERING COMPLEX NUMBERS WILL RESULT IN THE IMAGINARY PART BEING OMITTED.");
+		System.out.println("-----POLYNOMIAL TERM ENTERING INSTRUCTIONS-----");
+
+		for (int i = 1; i <= amt; i++) {
+			System.out.println("---POLYNOMIAL " + i + "---");
+			int termAmt;
+
+			System.out.print("How many terms are in this polynomial? ");
+			termAmt = Integer.parseInt(stdin.nextLine());
+
+			for (int j = 1; j <= termAmt; j++) {
+				System.out.print("Enter polynomial term " + j + ": ");
+				String rawTerm = stdin.nextLine();
+				String[] termParts = rawTerm.split(" ");
+
+				terms.add(new PolynomialTerm(NumberHelper.create(termParts[0], RADIX, NUMBER_PRECISION).real(), termParts.length > 1 ? termParts[1] : ""));
+			}
+
+			Polynomial polynomial = new Polynomial(terms);
+			terms = new ArrayList<>();
+
+			System.out.print("Polynomial " + i + " accepted as: ");
+			polynomial.print();
+
+			polynomials.add(polynomial);
+		}
+	}
+
+	private static void createMatrices(int matrix_count, int rows, int cols, ArrayList<Apcomplex[][]> matrices) {
+		for (int i = 0; i < matrix_count; i++) {
+			System.out.println("---MATRIX " + i + "---");
+			Apcomplex[][] matrix = new Apcomplex[rows][cols];
+			for (int x = 0; x < rows; x++) {
+				for (int y = 0; y < cols; y++) {
+					System.out.print("Enter value at row " + x + ", column " + y + ": ");
+					matrix[x][y] = NumberHelper.create(stdin.nextLine(), RADIX, NUMBER_PRECISION);
+				}
+			}
+			matrices.add(matrix);
+			System.out.println("Accepted matrix " + i + ", printing below.");
+			Matrix.printMatrix(matrix);
 		}
 	}
 

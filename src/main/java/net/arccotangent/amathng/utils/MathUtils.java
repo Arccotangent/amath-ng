@@ -29,9 +29,13 @@ public class MathUtils {
 				"List of operations below\n" +
 				"\n--General--\n\n" +
 				"add <2+ numbers> - Add numbers together\n" +
+				"padd <amount of polynomials> - Add polynomials together\n" +
 				"sub <2+ numbers> - Subtract numbers\n" +
+				"psub <amount of polynomials> - Subtract polynomials\n" +
 				"mul <2+ numbers> - Multiply numbers\n" +
+				"pmul <amount of polynomials> - Multiply polynomials\n" +
 				"div <2+ numbers> - Divide numbers\n" +
+				"pdiv <amount of polynomials> - Divide polynomials\n" +
 				"mod <2 numbers> - Get modulus of numbers (division remainder)\n" +
 				"exp <base> <exponent> - Calculate BASE^EXPONENT\n" +
 				"sqrt <1 number> - Square root\n" +
@@ -113,6 +117,8 @@ public class MathUtils {
 				"\n--Matrices--\n\n" +
 				"addmtx <amount of matrices> <rows> <cols> - Add matrices, each with ROWS rows and COLS columns\n" +
 				"submtx <amount of matrices> <rows> <cols> - Subtract matrices, each with ROWS rows and COLS columns\n" +
+				"\n--Calculus\n\n" +
+				"dq <polynomial f(x) as individual arguments> <h aka delta x> - Find difference quotient (polynomial must contain at least 2 terms, for minimum argument count of 3) (ex - amath-ng dq 1 3 2 4 - Find difference quotient of f(x) = x^2 + 3x + 2 with delta x = 4)\n" +
 				"\n--Miscellaneous--\n\n" +
 				"sf <1 number> - Get amount of significant figures in number\n" +
 				"psq <amount> - Print AMOUNT perfect squares starting with 1\n" +
@@ -142,7 +148,7 @@ public class MathUtils {
 	}
 
 	public static Apint combination(Apint n, Apint r) {
-		if (n.compareTo(r) == -1) {
+		if (n.compareTo(r) < 0) {
 			return ZERO_INT;
 		}
 
@@ -169,7 +175,7 @@ public class MathUtils {
 		for (int i = 0; i < unsorted.length; i++) {
 			for (int j = i + 1; j < unsorted.length; j++) {
 				Apfloat tmp;
-				if (unsorted[i].compareTo(unsorted[j]) == 1) {
+				if (unsorted[i].compareTo(unsorted[j]) > 0) {
 					tmp = unsorted[i];
 					unsorted[i] = unsorted[j];
 					unsorted[j] = tmp;

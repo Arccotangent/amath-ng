@@ -428,6 +428,31 @@ class Opcode {
 				return Operation.LINEAR_REGRESSION;
 			else
 				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("padd")) {
+			if (argc == 1)
+				return Operation.POLYNOMIAL_ADDITION;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("psub")) {
+			if (argc == 1)
+				return Operation.POLYNOMIAL_SUBTRACTION;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("pmul")) {
+			if (argc == 1)
+				return Operation.POLYNOMIAL_MULTIPLICATION;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("pdiv")) {
+			if (argc == 1)
+				return Operation.POLYNOMIAL_DIVISION;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
+		} else if (operation.equalsIgnoreCase("dq")) {
+			if (argc >= 3)
+				return Operation.DIFFERENCE_QUOTIENT;
+			else
+				return Operation.INVALID_ARGUMENT_COUNT;
 		} else {
 			return Operation.INVALID_OPERATION;
 		}
